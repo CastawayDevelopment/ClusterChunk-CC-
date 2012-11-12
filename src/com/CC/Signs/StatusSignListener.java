@@ -15,13 +15,14 @@ public class StatusSignListener implements Listener{
 		Player player = sign.getPlayer();
 		
 		if(sign.getLine(0).equalsIgnoreCase("[clusterchunk]") ||sign.getLine(0).equalsIgnoreCase("[cc]")){
-			if(sign.getLine(2).equalsIgnoreCase("status")){
-				if(sign.getLine(1).equalsIgnoreCase("self")){
+			if(sign.getLine(2).equalsIgnoreCase("self")){
+				if(sign.getLine(1).equalsIgnoreCase("status")){
 					
 						if(player.hasPermission("clusterchunk.sign.create.status")){
 							player.sendMessage(PlayerMessages.statusSignCreated(sign.getLine(2)));
 							sign.setLine(0, ChatColor.DARK_GRAY + "ClusterChunk");
 							sign.setLine(1, ChatColor.DARK_PURPLE + "Status");
+							sign.setLine(2, ChatColor.DARK_PURPLE + "Self");
 							sign.getBlock().getState().update(true);
 														
 						}else{
