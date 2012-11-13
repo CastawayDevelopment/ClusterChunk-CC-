@@ -9,7 +9,7 @@ public class Game
 	public enum Team {
 		 RED, BLUE;  
 		}
-			//Player        Arena   Team
+			//Player  Arena   Team
 	HashMap<Player, HashMap<String, Team>>  gameData =  new HashMap<Player, HashMap<String, Team>>();
 	
     public Game()
