@@ -1,5 +1,7 @@
 package com.CC.Game;
 
+import java.util.HashMap;
+
 public class GameManager
 {
 
@@ -26,7 +28,7 @@ public class GameManager
         return true;
     }
     
-    public void removeGame(String name)
+    public boolean removeGame(String name)
     {
         if(!this.games.containsKey(name))
         {

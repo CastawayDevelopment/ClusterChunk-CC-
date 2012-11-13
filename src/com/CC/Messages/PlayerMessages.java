@@ -18,16 +18,16 @@ public class PlayerMessages {
 	}
 	
 	public static String signCategoryDoesNotExist(String string){
-		return ChatColor.GRAY + "The extension, "+ string + "is not valid please use: Join"; 
+		return ChatColor.GRAY + "The extension, "+ string + "is not valid please use: Join or Status"; 
 	}
 	public static String teamColorException(String string){
-		return ChatColor.GRAY + "Please use either Blue or red not " + string; 
+		return ChatColor.GRAY + "Please use either Blue or Red not " + string; 
 	}
 	public static String joinSignCreated(String string){
 		return ChatColor.GRAY + "Congratulations! The join sign for the team " + string +  " has been created"; 
 	}
 	public static String statusSignCreated(String string){
-		return ChatColor.GRAY + "Congratulations! The status sign has been created"; 
+		return ChatColor.GRAY + "Congratulations! A status sign has been created"; 
 	}
 
 }
