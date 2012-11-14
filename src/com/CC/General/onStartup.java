@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.CC.Signs.JoinSignListener;
-import com.CC.Signs.StatusSignListener;
+import com.CC.SignsMightBeRemovedLater.JoinSignListener;
+import com.CC.SignsMightBeRemovedLater.StatusSignListener;
 
 	
 	 public class onStartup extends JavaPlugin implements Listener {
