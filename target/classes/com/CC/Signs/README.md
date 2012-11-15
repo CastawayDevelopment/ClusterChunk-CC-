@@ -1,4 +1,0 @@
-ClusterChunk
-============
-
-ClusterChunk Minecraft plugin.
