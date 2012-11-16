@@ -13,7 +13,7 @@ public class PartiesCommands {
 		if(sender instanceof Player) {
 			Player player = (Player)sender;
 			if (cmd.getName().equalsIgnoreCase("party")) {
-				if (args.length == 0){
+				if (args.length == 1){
 				if (args[0].equalsIgnoreCase("help")) {
 					Help.help(player);
 				} else if (args[0].equalsIgnoreCase("create")){
@@ -25,9 +25,9 @@ public class PartiesCommands {
 				} else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status")) {
 					Status.status(player);
 				} else if (args[0].equalsIgnoreCase("start")){
-					if (args.length == 1 && args[1].equalsIgnoreCase("red")){
+					if (args.length == 2 && args[1].equalsIgnoreCase("red")){
 					StartRed.start(player);
-					}else if (args.length == 1 && args[1].equalsIgnoreCase("blue")){
+					}else if (args.length == 2 && args[1].equalsIgnoreCase("blue")){
 						StartBlue.start(player);
 						
 					}
