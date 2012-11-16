@@ -6,5 +6,6 @@ public class StartRed {
 
 	public static void start(Player player){
 		player.sendMessage("StartRed workin");
+		//Check for open games
 	}
 }
