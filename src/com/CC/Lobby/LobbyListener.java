@@ -38,7 +38,7 @@ public class LobbyListener implements Listener
 	public void onQue(PlayerMoveEvent event)
     {
 		Player player = event.getPlayer();
-		if(plugin.gm.getGame(player) == null)
+		if(plugin.gm.getGame(player) == null && player.getLocation().getWorld().equals("lobby"))
         {
 			if(quedplayers.containsKey(event.getPlayer()))
             {
