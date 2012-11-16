@@ -42,7 +42,15 @@ public class PartyCommands implements CommandExecutor{
                         player.sendMessage("you did /party stats");
                         Status.status(player);
                     } 
-                    else if (args[0].equalsIgnoreCase("start"))
+                    else
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else if(args.length == 2)
+                {
+                    if (args[0].equalsIgnoreCase("start"))
                     {
                         player.sendMessage("you did /party start");
                         if (args.length == 2 && args[1].equalsIgnoreCase("red"))
@@ -54,11 +62,6 @@ public class PartyCommands implements CommandExecutor{
                             StartBlue.start(player);
                         }
                     }
-                    else
-                    {
-                        return false;
-                    }
-                    return true;
                 }
 			}
 			
