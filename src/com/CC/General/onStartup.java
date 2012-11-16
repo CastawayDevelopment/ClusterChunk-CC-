@@ -6,8 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.CC.SignsMightBeRemovedLater.JoinSignListener;
-import com.CC.SignsMightBeRemovedLater.StatusSignListener;
 import com.CC.Lobby.LobbyListener;
 import com.CC.Arenas.GameManager;
 
@@ -18,7 +16,7 @@ import com.CC.Arenas.GameManager;
 		 
 		
         public final LobbyListener ll;
-        private GameManager gm;
+        public GameManager gm;
 		 
         public onStartup()
         {

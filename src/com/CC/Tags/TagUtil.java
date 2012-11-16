@@ -10,6 +10,9 @@ import net.minecraft.server.Packet29DestroyEntity;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
+import com.CC.Arenas.Game;
+import com.CC.Arenas.Team;
+
 public class TagUtil
 {
 
@@ -41,7 +44,7 @@ public class TagUtil
                 continue;
             }
             
-            setTag(p, name, players);
+            setTag(p, name, g.getPlayers());
         }
     }
 
