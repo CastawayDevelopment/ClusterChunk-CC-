@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.CC.SignsMightBeRemovedLater.JoinSignListener;
 import com.CC.SignsMightBeRemovedLater.StatusSignListener;
 import com.CC.Lobby.LobbyListener;
-import com.CC.Game.GameManager;
+import com.CC.Arenas.GameManager;
 
 	
  public class onStartup extends JavaPlugin implements Listener 

@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import com.CC.Game.TeamEnum;
+
+import com.CC.Arenas.TeamEnum;
 import com.CC.General.onStartup;
 
 
