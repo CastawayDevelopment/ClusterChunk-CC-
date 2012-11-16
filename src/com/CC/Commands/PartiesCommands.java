@@ -15,20 +15,20 @@ public class PartiesCommands {
 			if (cmd.getName().equalsIgnoreCase("party")) {
 				if (args.length == 0){
 				if (args[0].equalsIgnoreCase("help")) {
-					Help.help();
+					Help.help(player);
 				} else if (args[0].equalsIgnoreCase("create")){
-					Create.create();
+					Create.create(player);
 				} else if (args[0].equalsIgnoreCase("join")){
-					Join.join();
+					Join.join(player);
 				} else if (args[0].equalsIgnoreCase("leave")){
-					Leave.leave();
+					Leave.leave(player);
 				} else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status")) {
-					Status.status();
+					Status.status(player);
 				} else if (args[0].equalsIgnoreCase("start")){
 					if (args.length == 1 && args[1].equalsIgnoreCase("red")){
-					StartRed.start();
+					StartRed.start(player);
 					}else if (args.length == 1 && args[1].equalsIgnoreCase("blue")){
-						StartBlue.start();
+						StartBlue.start(player);
 						
 					}
 				}
