@@ -52,7 +52,7 @@ public class LobbyListener implements Listener
             {
                 if(onLobby(player))
                 {
-                    Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+                	Block block = event.getPlayer().getWorld().getBlockAt(event.getPlayer().getLocation().getBlockX(), event.getPlayer().getLocation().getBlockY() - 1, event.getPlayer().getLocation().getBlockZ());
                     if(block.getType() == Material.WOOL)
                     {
                         byte blue = DyeColor.BLUE.getData();
@@ -75,7 +75,7 @@ public class LobbyListener implements Listener
 	
 	public boolean onLobby(Player player)
     {
-		Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+		Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() - 1, player.getLocation().getBlockZ());
 		if(block.getType() == Material.WOOL)
         {
             byte red = DyeColor.RED.getData();
