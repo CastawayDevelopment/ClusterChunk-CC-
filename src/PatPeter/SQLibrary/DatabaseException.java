@@ -1,7 +1,7 @@
 /**
  * 
  */
-package lib.PatPeter.SQLibrary;
+package PatPeter.SQLibrary;
 
 /**
  * DatabaseException

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SQLibrary.  If not, see <http://www.gnu.org/licenses/>.
  ************************************************************************/
-package lib.PatPeter.SQLibrary;
+package PatPeter.SQLibrary;
 
 /**
  * @author Balor (aka Antoine Aflalo)

@@ -1,4 +1,4 @@
-package lib.PatPeter.SQLibrary;
+package PatPeter.SQLibrary;
 
 public class PostgreSQL {
 
