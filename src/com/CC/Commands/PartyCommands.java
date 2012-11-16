@@ -2,12 +2,12 @@ package com.CC.Commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 
-import com.CC.Parties.Create;
-import com.CC.Parties.*;
+import com.CC.Party.*;
 
-public class PartiesCommands {
+public class PartyCommands implements CommandExecutor{
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) { 
 		if(sender instanceof Player) 

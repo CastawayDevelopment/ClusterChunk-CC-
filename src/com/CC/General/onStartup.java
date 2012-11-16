@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.CC.Lobby.LobbyListener;
 import com.CC.Arenas.GameManager;
+import com.CC.Commands.*;
 
 	
  public class onStartup extends JavaPlugin implements Listener 
@@ -26,6 +27,7 @@ import com.CC.Arenas.GameManager;
         @Override
         public void onEnable() 
         {
+            getCommand("party").setExecutor(new PartyCommands());
             gm = new GameManager();
             PluginManager pm = getServer().getPluginManager();
             pm.registerEvents(ll, this);

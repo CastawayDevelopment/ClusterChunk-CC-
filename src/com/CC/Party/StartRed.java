@@ -1,11 +1,11 @@
-package com.CC.Parties;
+package com.CC.Party;
 
 import org.bukkit.entity.Player;
 
-public class StartBlue {
+public class StartRed {
 
 	public static void start(Player player){
-		player.sendMessage("StartBlue workin");
+		player.sendMessage("StartRed workin");
 		//Check for open games
 	}
 }
