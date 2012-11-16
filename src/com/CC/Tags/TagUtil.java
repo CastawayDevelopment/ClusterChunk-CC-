@@ -18,9 +18,9 @@ public class TagUtil
     *    to the corresponding team colour
     *   @post the tag changed for all players in the game
     **/
-    public static void setTeamTag(List<String> players)
+    public static void setTeamTag(Game g)
     {
-        for(String player : players)
+        for(String player : g.getPlayers())
         {
             Player p = Bukkit.getPlayer(player);
             if(p == null)
@@ -28,13 +28,17 @@ public class TagUtil
                 continue;
             }
             String name = p.getName();
-            if(/*Implement team logic*/)
+            if(g.getTeam(p) == Team.RED)
             {
                 name = ChatColor.RED + name; // For red
             }
-            else
+            else if(g.getTeam(p) == Team.BLUE)
             {
                 name = ChatColor.BLUE + name; // For blue
+            }
+            else
+            {
+                continue;
             }
             
             setTag(p, name, players);

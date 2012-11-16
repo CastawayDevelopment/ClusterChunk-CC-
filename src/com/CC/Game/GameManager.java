@@ -2,15 +2,19 @@ package com.CC.Game;
 
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
+
 public class GameManager
 {
+
+    private HashMap<String, String> players;
+    private HashMap<String, Game> games;
 
     public GameManager()
     {
         this.games = new HashMap<String, Game>();
+        this.players =  new HashMap<String, String>();
     }
-    
-    private HashMap<String, Game> games;
     
     public Game getGame(String name)
     {
@@ -36,6 +40,23 @@ public class GameManager
         }
         this.games.remove(name);
         return true;
+    }
+    
+    public Game getGame(Player p)
+    {
+        return getGame(p.getName());
+    }
+    
+    /*
+    *   Can return null!
+    **/
+    public Game getGame(String pname)
+    {
+        if(players.containsKey(pname))
+        {
+            return games.get(players.get(pname));
+        }
+        return null;
     }
     
 }
