@@ -79,7 +79,10 @@ public class SpectatorListener implements Listener{
 			
 			@EventHandler
 			public void onChat(AsyncPlayerChatEvent event){
-				
+				if(spectators.contains(event.getPlayer().getName())){
+					event.getPlayer().sendMessage("You cannot chat while ");
+					event.setCancelled(true);
+				}
 			}
 	
 	
