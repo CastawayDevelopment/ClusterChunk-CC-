@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Ktar/Desktop/craftbukkit-1.4.2-R0.3-20121103.060223-2 (1).jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/plugin test/craftbukkit.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

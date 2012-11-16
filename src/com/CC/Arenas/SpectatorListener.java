@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInventoryEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SpectatorListener implements Listener{
 	
@@ -23,7 +24,7 @@ public class SpectatorListener implements Listener{
 		player.setFlying(true);
 		player.setGameMode(GameMode.CREATIVE);
 		player.sendMessage("You are succesfully spectating !");
-		//Need something to teleport the player to the games specator box game.getSpectateRoom() Returns a location
+		//Need something to teleport them in game
 		return;
 	}
 	
@@ -65,8 +66,21 @@ public class SpectatorListener implements Listener{
 				}
 	
 		}
+	}		
+			@EventHandler
+			public void noInteract(PlayerInteractEvent event){
+				if(spectators.contains(event.getPlayer().getName())){
+					event.setCancelled(true);
+					event.getPlayer().sendMessage("You cannot interact while spectating!");
+				}
+			
 		
 	}
+			
+			@EventHandler
+			public void onChat(AsyncPlayerChatEvent event){
+				
+			}
 	
 	
 
