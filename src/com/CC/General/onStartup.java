@@ -16,8 +16,7 @@ import com.CC.Arenas.GameManager;
  {
 		 
 		 
-		public final JoinSignListener jsl = new JoinSignListener ();
-		public final StatusSignListener ssl = new StatusSignListener ();
+		
         public final LobbyListener ll;
         private GameManager gm;
 		 
@@ -31,8 +30,6 @@ import com.CC.Arenas.GameManager;
         {
             gm = new GameManager();
             PluginManager pm = getServer().getPluginManager();
-            pm.registerEvents(jsl, this);
-            pm.registerEvents(ssl, this);
             pm.registerEvents(ll, this);
             getLogger().info("Plugin Is Enabled");
             getServer().getPluginManager().registerEvents(this,this);
@@ -44,7 +41,7 @@ import com.CC.Arenas.GameManager;
             getLogger().info("Plugin Is Disabled");	
         }	 
         
-        public getGameManager()
+        public GameManager getGameManager()
         {
             return this.gm;
         }

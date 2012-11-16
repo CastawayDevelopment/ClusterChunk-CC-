@@ -23,7 +23,11 @@ public class LobbyListener implements Listener
 	
 	private onStartup plugin;
     
-    public Lobby(onStartup p)
+    public LobbyListener(onStartup onStartup) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void Lobby(onStartup p)
     {
         this.plugin = p;
     }
