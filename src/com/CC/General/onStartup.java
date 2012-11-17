@@ -2,6 +2,7 @@ package com.CC.General;
 
 
 
+
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,12 +17,12 @@ import com.CC.Commands.*;
 		 
 		 
 		
-        public final LobbyListener ll;
+	 	public final LobbyListener ll = new LobbyListener(this);
         public GameManager gm;
 		 
         public onStartup()
         {
-            ll = new LobbyListener(this);
+            
         }
          
         @Override
@@ -30,6 +31,7 @@ import com.CC.Commands.*;
             getCommand("party").setExecutor(new PartyCommands());
             gm = new GameManager();
             PluginManager pm = getServer().getPluginManager();
+            System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
             getLogger().info("Plugin Is Enabled");
             getServer().getPluginManager().registerEvents(this,this);

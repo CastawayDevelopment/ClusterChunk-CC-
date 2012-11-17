@@ -25,44 +25,49 @@ public class LobbyListener implements Listener
 	
 	private onStartup plugin;
     
-    public LobbyListener(onStartup onStartup) {
-		// TODO Auto-generated constructor stub
+    public LobbyListener(onStartup instance) {
+    	plugin = instance;
+    	System.out.println("LobbyListener created.");
 	}
-
-	public void Lobby(onStartup p)
-    {
-        this.plugin = p;
-    }
 	
 	@EventHandler
-	public void onQue(PlayerMoveEvent event)
+	public void onQueue(PlayerMoveEvent event)
     {
+		System.out.println("onQueue called.");
 		Player player = event.getPlayer();
-		if(player.getLocation().getWorld().equals("lobby"))
+		if(player.getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
         {
+			player.sendMessage("Step 1");
 			if(quedplayers.containsKey(event.getPlayer()))
             {
-				if(onLobby(player))
+				player.sendMessage("Step 2");
+				if(!onLobby(player))
                 {
+					player.sendMessage("Step 3");
 						quedplayers.remove(player);
 						player.sendMessage("You have left the lobby, thus, unqueed.");
                 }
             }
             else
             {
+            	player.sendMessage("Step 1");
                 if(onLobby(player))
                 {
+                	player.sendMessage("Step 2");
                 	Block block = event.getPlayer().getWorld().getBlockAt(event.getPlayer().getLocation().getBlockX(), event.getPlayer().getLocation().getBlockY() - 1, event.getPlayer().getLocation().getBlockZ());
                     if(block.getType() == Material.WOOL)
                     {
+                    	player.sendMessage("Step 3");
                         byte blue = DyeColor.BLUE.getData();
                         if( block.getData() == blue)
                         {
+                        	player.sendMessage("Step 4");
                             player.sendMessage("You have been added to the blue team waiting list");
                             quedplayers.put(player, Team.BLUE);
                         }
                         else
                         {
+                        	player.sendMessage("Step 4");
                             player.sendMessage("You have been added to the red team waiting list");
                             quedplayers.put(player, Team.RED);
                         }    
