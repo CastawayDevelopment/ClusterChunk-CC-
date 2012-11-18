@@ -42,15 +42,15 @@ public class GameManager
         return true;
     }
     
-    public Game getGame(Player p)
+    public Game getGameByPlayer(Player p)
     {
-        return getGame(p.getName());
+        return getGameByPlayer(p.getName());
     }
     
     /*
     *   Can return null!
     **/
-    public Game getGame(String pname)
+    public Game getGameByPlayer(String pname)
     {
         if(players.containsKey(pname))
         {
