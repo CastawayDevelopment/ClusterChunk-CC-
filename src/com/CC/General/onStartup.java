@@ -31,7 +31,7 @@ import com.CC.Commands.*;
             getCommand("party").setExecutor(new PartyCommands());
             gm = new GameManager();
             PluginManager pm = getServer().getPluginManager();
-            System.out.println("Registering LobbyListener");
+            //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
             getLogger().info("Plugin Is Enabled");
             getServer().getPluginManager().registerEvents(this,this);

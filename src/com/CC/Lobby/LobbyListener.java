@@ -47,7 +47,7 @@ public class LobbyListener implements Listener
                 {
 					//player.sendMessage("Step 3");
 						quedplayers.remove(player);
-						player.sendMessage(ChatColor.BOLD + "You have left the lobby, thus, unqueued.");
+						player.sendMessage(ChatColor.BOLD + "You have left the lobby, and thus, have been unqueued.");
                 }
             }
             else

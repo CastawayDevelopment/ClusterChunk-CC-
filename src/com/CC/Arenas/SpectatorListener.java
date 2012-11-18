@@ -3,11 +3,14 @@ package com.CC.Arenas;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -80,10 +83,24 @@ public class SpectatorListener implements Listener{
 			@EventHandler
 			public void onChat(AsyncPlayerChatEvent event){
 				if(spectators.contains(event.getPlayer().getName())){
-					event.getPlayer().sendMessage("You cannot chat while ");
+					event.getPlayer().sendMessage("You cannot chat while spectating");
 					event.setCancelled(true);
 				}
 			}
+			
+			@EventHandler
+			public void noInventory(InventoryClickEvent event){
+				for(HumanEntity player : event.getViewers()){
+					if(player instanceof Player){
+						if(spectators.contains(player.getName())){
+							event.setCancelled(true);
+							((Player) player).sendMessage(ChatColor.GRAY + "You cannot use your inventory while spectating");
+						}
+					}
+					
+				}
+				
+				}
 	
 	
 
