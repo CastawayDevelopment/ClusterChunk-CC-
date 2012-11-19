@@ -19,27 +19,21 @@ public class PartyCommands implements CommandExecutor{
                 {
                     if (args[0].equalsIgnoreCase("help")) 
                     {
-                        player.sendMessage("you did /party help");
+
                         Help.help(player);
-                    } 
-                    else if (args[0].equalsIgnoreCase("create"))
-                    {
-                        player.sendMessage("you did /party create");
-                        Create.create(player);
-                    } 
-                    else if (args[0].equalsIgnoreCase("join"))
-                    {
-                        player.sendMessage("you did /party join");
-                        Join.join(player);
                     } 
                     else if (args[0].equalsIgnoreCase("leave"))
                     {
-                        player.sendMessage("you did /party leave");
+
                         Leave.leave(player);
+                    }
+                    else if (args[0].equalsIgnoreCase("list"))
+                    {
+                        List.list(player);
                     } 
                     else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status"))
                     {
-                        player.sendMessage("you did /party stats");
+
                         Status.status(player);
                     } 
                     else
@@ -52,7 +46,7 @@ public class PartyCommands implements CommandExecutor{
                 {
                     if (args[0].equalsIgnoreCase("start"))
                     {
-                        player.sendMessage("you did /party start");
+
                         if (args.length == 2 && args[1].equalsIgnoreCase("red"))
                         {
                             StartRed.start(player);
@@ -62,6 +56,30 @@ public class PartyCommands implements CommandExecutor{
                             StartBlue.start(player);
                         }
                     }
+                    else if (args[0].equalsIgnoreCase("set"))
+                    {
+                    	if(args.length == 2 && args[1].equalsIgnoreCase("open"))
+                    	{
+                    		Open.open(player);
+
+                    	}
+                    	else if (args.length == 2 && args[1].equalsIgnoreCase("close"))
+                        {	
+                    		Close.close(player);
+                    		
+                        }
+                    }
+                    else if (args[0].equalsIgnoreCase("join"))
+                    {
+                    	//ADD /JOIN <PARTY NAME>
+                        Join.join(player);
+                    }
+                    else if (args[0].equalsIgnoreCase("create"))
+                    {
+                    	//ADD /CREATE <PARTY NAME>
+                        Create.create(player);
+                    } 
+                    
                 }
 			}
 			
