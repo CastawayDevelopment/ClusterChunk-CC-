@@ -27,10 +27,6 @@ public class PartyCommands implements CommandExecutor{
 
                         Leave.leave(player);
                     }
-                    else if (args[0].equalsIgnoreCase("list"))
-                    {
-                        List.list(player);
-                    } 
                     else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status"))
                     {
 
@@ -56,19 +52,7 @@ public class PartyCommands implements CommandExecutor{
                             StartBlue.start(player);
                         }
                     }
-                    else if (args[0].equalsIgnoreCase("set"))
-                    {
-                    	if(args.length == 2 && args[1].equalsIgnoreCase("open"))
-                    	{
-                    		Open.open(player);
-
-                    	}
-                    	else if (args.length == 2 && args[1].equalsIgnoreCase("close"))
-                        {	
-                    		Close.close(player);
-                    		
-                        }
-                    }
+                   
                     else if (args[0].equalsIgnoreCase("join"))
                     {
                     	//ADD /JOIN <PARTY NAME>

@@ -24,12 +24,10 @@ public class Help {
 		player.sendMessage("/Party Create <party name>" + " - " + "Create a party with the specified name");
 		player.sendMessage("/Party Help" + " - " + "Take a guess <3");
 		player.sendMessage("/Party Invite <player name>" + " - " + "Invite a player to your closed party");
-		player.sendMessage("/Party Join <party name>" + " - " + "Join an open party");
+		player.sendMessage("/Party Join" + " - " + "Join a party you were invited to");
 		player.sendMessage("/Party Leave" + " - " + "Leave the party you are currently in");
 		player.sendMessage("/Party Start <red/blue>" + " - " + "Start a match with your party on red or blue team");
 		player.sendMessage("/Party Status" + " - " + "Get the status of your party");
-		player.sendMessage("/Party Set <open/close>" + " - " + "Set your party to open or closed");
-		player.sendMessage("/Party List" + " - " + "List all the open parties");
 		player.sendMessage("");
 		player.sendMessage(dgray + "===========" + dred + "[" + daqua + "Party Commands" + dred + "]" + dgray + "===========");
 		player.sendMessage("");
