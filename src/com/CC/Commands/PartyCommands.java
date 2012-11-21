@@ -45,23 +45,32 @@ public class PartyCommands implements CommandExecutor{
 
                         if (args.length == 2 && args[1].equalsIgnoreCase("red"))
                         {
+                        	
                             StartRed.start(player);
                         }
                         else if (args.length == 2 && args[1].equalsIgnoreCase("blue"))
                         {
+                        	
                             StartBlue.start(player);
                         }
                     }
                    
                     else if (args[0].equalsIgnoreCase("join"))
                     {
-                    	//ADD /JOIN <PARTY NAME>
-                        Join.join(player);
+                    	if (args.length == 2)
+                    	{
+                    		
+                    		String partyName = args[1];
+                    		
+                        Join.join(player, partyName);
+                    	}
                     }
                     else if (args[0].equalsIgnoreCase("create"))
                     {
-                    	//ADD /CREATE <PARTY NAME>
-                        Create.create(player);
+                    	
+                    	String partyName = args[1];
+                    	
+                        Create.create(player, partyName);
                     } 
                     
                 }
