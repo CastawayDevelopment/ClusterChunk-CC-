@@ -1,4 +1,6 @@
-package com.CC.Party;
+package com.CC.Commands.Party;
+
+import com.CC.General.onStartup;
 
 public class Invite 
 {

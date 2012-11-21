@@ -14,7 +14,7 @@ public class PartyCommands implements CommandExecutor
 
     private Help help;
     private Leave leave;
-    private Status status
+    private Status status;
     private StartRed startRed;
     private StartBlue startBlue;
     private Join join;
@@ -22,7 +22,7 @@ public class PartyCommands implements CommandExecutor
 
     public PartyCommands(onStartup plugin)
     {
-        help = new Help(plugin)(;
+        help = new Help(plugin);
         leave = new Leave(plugin);
         status = new Status(plugin);
         startRed = new StartRed(plugin);

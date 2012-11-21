@@ -1,7 +1,9 @@
-package com.CC.Party;
+package com.CC.Commands.Party;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import com.CC.General.onStartup;
 
 public class Help 
 {

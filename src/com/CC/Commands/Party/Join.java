@@ -1,4 +1,4 @@
-package com.CC.Party;
+package com.CC.Commands.Party;
 
 import org.bukkit.entity.Player;
 
