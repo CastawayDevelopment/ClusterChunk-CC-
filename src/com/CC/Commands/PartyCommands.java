@@ -61,6 +61,7 @@ public class PartyCommands implements CommandExecutor{
                     	{
                     		
                     		String partyName = args[1];
+                    		partyName.toLowerCase();
                     		
                         Join.join(player, partyName);
                     	}
