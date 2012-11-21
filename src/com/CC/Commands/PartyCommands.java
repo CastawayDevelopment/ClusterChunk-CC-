@@ -6,8 +6,30 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 
 import com.CC.Party.*;
+import com.CC.Commands.Party.*;
+import com.CC.General.onStartup;
 
-public class PartyCommands implements CommandExecutor{
+public class PartyCommands implements CommandExecutor
+{
+
+    private Help help;
+    private Leave leave;
+    private Status status
+    private StartRed startRed;
+    private StartBlue startBlue;
+    private Join join;
+    private Create create;
+
+    public PartyCommands(onStartup plugin)
+    {
+        help = new Help(plugin)(;
+        leave = new Leave(plugin);
+        status = new Status(plugin);
+        startRed = new StartRed(plugin);
+        startBlue = new StartBlue(plugin);
+        join = new Join(plugin);
+        create = new Create(plugin);
+    }
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) { 
 		if(sender instanceof Player) 
@@ -20,17 +42,17 @@ public class PartyCommands implements CommandExecutor{
                     if (args[0].equalsIgnoreCase("help")) 
                     {
 
-                        Help.help(player);
+                        help.help(player);
                     } 
                     else if (args[0].equalsIgnoreCase("leave"))
                     {
 
-                        Leave.leave(player);
+                        leave.leave(player);
                     }
                     else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status"))
                     {
 
-                        Status.status(player);
+                        status.status(player);
                     } 
                     else
                     {
@@ -46,12 +68,12 @@ public class PartyCommands implements CommandExecutor{
                         if (args.length == 2 && args[1].equalsIgnoreCase("red"))
                         {
                         	
-                            StartRed.start(player);
+                            startRed.start(player);
                         }
                         else if (args.length == 2 && args[1].equalsIgnoreCase("blue"))
                         {
                         	
-                            StartBlue.start(player);
+                            startBlue.start(player);
                         }
                     }
                    
@@ -63,7 +85,7 @@ public class PartyCommands implements CommandExecutor{
                     		String partyName = args[1];
                     		partyName.toLowerCase();
                     		
-                        Join.join(player, partyName);
+                            join.join(player, partyName);
                     	}
                     }
                     else if (args[0].equalsIgnoreCase("create"))
@@ -71,7 +93,7 @@ public class PartyCommands implements CommandExecutor{
                     	
                     	String partyName = args[1];
                     	
-                        Create.create(player, partyName);
+                        create.create(player, partyName);
                     } 
                     
                 }

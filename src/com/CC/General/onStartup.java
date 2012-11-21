@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.CC.Lobby.LobbyListener;
 import com.CC.Arenas.GameManager;
 import com.CC.Commands.*;
+import com.CC.Party.Storage;
 
 	
  public class onStartup extends JavaPlugin implements Listener 
@@ -18,7 +19,8 @@ import com.CC.Commands.*;
 		 
 		
 	 	public final LobbyListener ll = new LobbyListener(this);
-        public GameManager gm;
+        private GameManager gm;
+        private Storage parties;
 		 
         public onStartup()
         {
@@ -28,8 +30,9 @@ import com.CC.Commands.*;
         @Override
         public void onEnable() 
         {
-            getCommand("party").setExecutor(new PartyCommands());
+            getCommand("party").setExecutor(new PartyCommands(this));
             gm = new GameManager();
+            parties = new Storage();
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
@@ -46,6 +49,11 @@ import com.CC.Commands.*;
         public GameManager getGameManager()
         {
             return this.gm;
+        }
+        
+        public Storage getParties()
+        {
+            return this.parties;
         }
 		 
  }
