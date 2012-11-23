@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 
 public class WorldGeneration {
 	//Make sure there is the default world located at /BaseMap/BaseMap
@@ -27,7 +28,6 @@ public class WorldGeneration {
 			copyFile(new File(baseMap, "level.dat"), 
 					new File(newMapDir, "level.dat"));
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -37,10 +37,10 @@ public class WorldGeneration {
 			try {
 				copyFile(region, newRegion);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		Bukkit.getServer().createWorld(new WorldCreator(MapName));
 	}
 	
 	
