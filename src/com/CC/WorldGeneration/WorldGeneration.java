@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import org.bukkit.Bukkit;
+
 public class WorldGeneration {
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
@@ -15,6 +17,9 @@ public class WorldGeneration {
 		
 		File newMapDir = new File("./" + MapName);
 		File newRegionsDir = new File(newMapDir,  "region");
+		if(Bukkit.getWorld(MapName) != null){
+			Bukkit.unloadWorld(MapName, false);
+		}
 		deleteMap(newMapDir);
 		newRegionsDir.mkdirs();
 		
