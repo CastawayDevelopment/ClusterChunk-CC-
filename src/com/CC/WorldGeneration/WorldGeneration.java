@@ -13,14 +13,13 @@ public class WorldGeneration {
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
 	public static void newMap(String MapName) {
-	if(MapName.startsWith("."))return; //Check that the map name is not "..", Could delete server
+		if(MapName.startsWith(".")) return; //Check that the map name is not "..", Could delete server
 		File baseMap = new File("./BaseMap/BaseMap");
 		
 		File newMapDir = new File("./" + MapName);
 		File newRegionsDir = new File(newMapDir,  "region");
-		if(Bukkit.getWorld(MapName) != null){
-			Bukkit.unloadWorld(MapName, false);
-		}
+		
+	if(!Bukkit.unloadWorld(MapName, false)){
 		deleteMap(newMapDir);
 		newRegionsDir.mkdirs();
 		
@@ -41,6 +40,7 @@ public class WorldGeneration {
 			}
 		}
 		Bukkit.getServer().createWorld(new WorldCreator(MapName));
+		}
 	}
 	
 	
