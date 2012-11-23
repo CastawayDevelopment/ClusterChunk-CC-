@@ -11,6 +11,7 @@ import com.CC.Lobby.LobbyListener;
 import com.CC.Arenas.GameManager;
 import com.CC.Commands.*;
 import com.CC.Party.Storage;
+import com.CC.WorldGeneration.WorldGeneration;
 
 	
  public class onStartup extends JavaPlugin implements Listener 

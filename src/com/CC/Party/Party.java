@@ -1,6 +1,8 @@
 package com.CC.Party;
 import java.util.ArrayList;
 
+import org.bukkit.entity.Player;
+
 public class Party {
  
     private String name;
