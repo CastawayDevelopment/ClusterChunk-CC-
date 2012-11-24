@@ -7,9 +7,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.CC.Arenas.Game;
@@ -67,17 +69,41 @@ private Game playergame;
 		if(gamemanager.isInGame(player)){
 			if(result.getType() == Material.BED || result.getType() == Material.BED_BLOCK){
 				event.setCancelled(true);
-				playergame = gamemanager.getGameByPlayer(player);
-				ArrayList<String> players = playergame.getPlayers();
-				for(String s : players){
-					Player peter = Bukkit.getPlayer(s);
-					if(peter == player) return;
-						peter.sendMessage(ChatColor.GRAY + player.getName()+ ChatColor.GREEN+ " has tried to craft a bed");
-					
-				}
 			}
 		}
 	}
+	
+	@EventHandler(priority=EventPriority.LOWEST)
+	  public void onPlayerInteract(PlayerInteractEvent event)
+	  {
+	    if (event.isCancelled()) return;
+
+	    Player player = event.getPlayer();
+	    if ((event.getClickedBlock().getType() == Material.OBSIDIAN) && (event.getMaterial() == Material.FLINT_AND_STEEL))
+	    {
+	    	event.setCancelled(true);
+	    	player.sendMessage(ChatColor.RED + "You may not create Nether portals !");
+	    }
+	           
+	    
+	  }
+
+	  @EventHandler(priority=EventPriority.LOWEST)
+	  public void enderBlockInteract(PlayerInteractEvent event)
+	  {
+	    if (event.isCancelled()) return;
+
+	   
+
+	    Player player = event.getPlayer();
+	    if ((event.getClickedBlock().getType() == Material.ENDER_PORTAL_FRAME) && (event.getMaterial() == Material.EYE_OF_ENDER))
+	    {
+	      
+	        event.setCancelled(true);
+	        player.sendMessage(ChatColor.RED + "You may not create End portals !");
+	      
+	    }
+	  }
 	
 	
 	
