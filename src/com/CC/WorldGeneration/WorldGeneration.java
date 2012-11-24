@@ -9,11 +9,14 @@ import java.nio.channels.FileChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 
+import com.CC.General.onStartup;
+
 public class WorldGeneration {
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
 	public static boolean newMap(String MapName) {
 		if(MapName.startsWith(".")) return false; //Check that the map name is not "..", Could delete server
+		
 		File baseMap = new File("./BaseMap/BaseMap");
 		
 		File newMapDir = new File("./" + MapName);
@@ -22,10 +25,16 @@ public class WorldGeneration {
 
 		if (newMapDir.exists())
 			deleteMap(newMapDir);
+		if(onStartup.debugmode){
+			System.out.println("Deleting  " + MapName);
+		}
 		
 		newRegionsDir.mkdirs();
 		
 		try {
+		if(onStartup.debugmode){
+			System.out.println("Copying level.dat for " + MapName);
+		}
 			copyFile(new File(baseMap, "level.dat"), 
 					new File(newMapDir, "level.dat"));
 		} catch (IOException e1) {
@@ -36,6 +45,9 @@ public class WorldGeneration {
 		for(File region : regionFiles){
 			File newRegion = new File(newRegionsDir, region.getName());
 			try {
+				if(onStartup.debugmode){
+					System.out.println("Copying region files for " + MapName);
+				}
 				copyFile(region, newRegion);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -60,9 +72,13 @@ public class WorldGeneration {
 	    FileChannel destination = null;
 
 	    try {
+	    if(onStartup.debugmode){
+	    	System.out.println("Copying over " + sourceFile + " to " + destFile);
+	    }
 	        source = new FileInputStream(sourceFile).getChannel();
 	        destination = new FileOutputStream(destFile).getChannel();
 	        destination.transferFrom(source, 0, source.size());
+	        
 	    }
 	    finally {
 	        if(source != null) {

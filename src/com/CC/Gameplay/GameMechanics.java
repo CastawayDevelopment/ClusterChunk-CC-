@@ -1,6 +1,7 @@
 package com.CC.Gameplay;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -23,7 +25,7 @@ public class GameMechanics implements Listener{
 	
 private GameManager gamemanager;
 private Game playergame;
-    
+private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>();
     public GameMechanics(GameManager instance) {
     	gamemanager = instance;
 	}
@@ -94,7 +96,6 @@ private Game playergame;
 	    if (event.isCancelled()) return;
 
 	   
-
 	    Player player = event.getPlayer();
 	    if ((event.getClickedBlock().getType() == Material.ENDER_PORTAL_FRAME) && (event.getMaterial() == Material.EYE_OF_ENDER))
 	    {
@@ -104,6 +105,35 @@ private Game playergame;
 	      
 	    }
 	  }
+	  
+	  @EventHandler
+	  public void onBlockBreak(BlockBreakEvent event){
+		  Player peter = event.getPlayer();
+		  if(gamemanager.isInGame(peter)){
+			  if(event.getBlock().getType() == Material.GLASS){
+				  peter.sendMessage(ChatColor.RED + "Glass inclosed structures are off limits!");
+				  event.setCancelled(true);
+			  }
+		  }else{
+			  event.setCancelled(true);
+		  }
+	  }
+	  
+	  
+	  //Game Scoring Mechanics 
+	public int calculateScoreOnKill(Player killer, Player killed){
+		int killedcurrent = playertoscores.get(killed.getName());
+		int killercurrent = playertoscores.get(killer.getName());
+		if(killedcurrent > 4){
+			playertoscores.put(killed.getName(), killedcurrent - killedcurrent/killercurrent);	
+		}
+		//A bit random but thats the way it should be :D 
+		int plusscore = (killedcurrent/killercurrent + 1)*killercurrent/killedcurrent + 3;
+		playertoscores.put(killer.getName(), killercurrent + plusscore);
+		return 0;
+	}
+	
+	
 	
 	
 	

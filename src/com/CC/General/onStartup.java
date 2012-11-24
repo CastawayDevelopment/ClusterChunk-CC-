@@ -18,7 +18,7 @@ import com.CC.WorldGeneration.WorldGeneration;
  {
 		 
 		 
-		
+		public static boolean debugmode;
 	 	public final LobbyListener ll = new LobbyListener(this);
         private GameManager gm;
         private Storage parties;
