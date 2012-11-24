@@ -59,4 +59,16 @@ public class GameManager
         return null;
     }
     
+    public boolean isInGame(Player peter){
+    	if(players.containsKey(peter.getName())) return true;
+    	return false;
+        
+    }
+    
+    public boolean isInGame(String string){
+    	if(players.containsKey(string)) return true;
+    	return false;
+        
+    }
+    
 }
