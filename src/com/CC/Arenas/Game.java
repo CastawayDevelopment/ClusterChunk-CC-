@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 public class Game
 {
 	
-			//Player  Arena   Team
-	HashMap<Player, HashMap<String, Team>>  gameData =  new HashMap<Player, HashMap<String, Team>>();
     
     ArrayList<String> redTeam;
     ArrayList<String> blueTeam;

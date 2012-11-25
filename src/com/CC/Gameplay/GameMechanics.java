@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
-import com.CC.Arenas.SpectatorListener;
 import com.CC.Arenas.Team;
 
 public class GameMechanics implements Listener{
@@ -34,7 +33,6 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 			Player peter = event.getEntity();
 		if(gamemanager.isInGame(peter)){
 			if(peter.getBedSpawnLocation() != null){
-					SpectatorListener.addSpectator(peter, gamemanager.getGameByPlayer(peter));
 					playergame = gamemanager.getGameByPlayer(peter);
 					Team playersteam = playergame.getTeam(peter);
 					if(playersteam.equals(Team.BLUE)){
@@ -55,7 +53,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 					}
 			}else{
 				playergame.removePlayer(peter);
-				peter.kickPlayer(ChatColor.RED + "You have died and have no bed set.");
+				//Something to teleport to dead box of the game :D 
 				playergame = gamemanager.getGameByPlayer(peter);
 				
 			}
