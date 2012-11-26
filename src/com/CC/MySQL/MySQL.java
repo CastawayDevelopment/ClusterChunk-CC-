@@ -1,3 +1,5 @@
+package com.CC.MySQL;
+
 /**
  * MySQL
  * Inherited subclass for making a connection to a MySQL server.
@@ -5,7 +7,6 @@
  * Date Created: 2011-08-26 19:08
  * @author PatPeter
  */
-package PatPeter.SQLibrary;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -144,7 +145,8 @@ public class MySQL extends Database {
 		    default:
 		    	result = statement.executeQuery(query);
 	    }
-    	return result;
+            
+            return result;
 	}
 	
 	/*@Override

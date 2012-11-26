@@ -1,0 +1,7 @@
+# Because I thought this would be an epic place for a config file :D
+mysql:
+  host: localhost
+  port: 3306
+  database: ClusterChunk
+  username: root
+  password: root

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.CC.Arenas.Game;
 
-public class IPlayer 
+public class User 
 {
 	String player;
 	int PlayerPoints;
@@ -20,7 +20,7 @@ public class IPlayer
 	ArrayList<String> friends;
 	
 	
-	public IPlayer(Player p){
+	public User(Player p){
 		friends = new ArrayList<String>();
 		player = p.getName();
 		

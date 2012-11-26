@@ -1,4 +1,4 @@
-package PatPeter.SQLibrary;
+package com.CC.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
