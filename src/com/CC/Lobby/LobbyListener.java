@@ -80,7 +80,7 @@ public class LobbyListener implements Listener, Runnable
                             player.sendMessage(ChatColor.BLUE + "You have been added to the blue team waiting list");
                             quedplayers.put(player, Team.BLUE);
                             player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
-                            System.out.println("" + quedplayers);
+                            //System.out.println("" + quedplayers);
                         }
                         else if (block.getData() == red)
                         {
@@ -89,7 +89,7 @@ public class LobbyListener implements Listener, Runnable
                             player.sendMessage(ChatColor.RED + "You have been added to the red team waiting list");
                             quedplayers.put(player, Team.RED);
                             player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
-                            System.out.println("" + quedplayers);
+                            //System.out.println("" + quedplayers);
                         }
                         else 
                         {
@@ -98,7 +98,7 @@ public class LobbyListener implements Listener, Runnable
                         		player.sendMessage(ChatColor.BLUE + "You have been added to the blue team waiting list");
                         		quedplayers.put(player, Team.BLUE);
                         		player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
-                        		System.out.println("1" + quedplayers);
+                        		//System.out.println("1" + quedplayers);
                         	}
                         	else
                         	{
@@ -106,7 +106,7 @@ public class LobbyListener implements Listener, Runnable
                         		player.sendMessage(ChatColor.RED + "You have been added to the red team waiting list");
                                 quedplayers.put(player, Team.RED);
                                 player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
-                                System.out.println("1" + quedplayers);
+                               // System.out.println("1" + quedplayers);
                         	}
                         	
                         }
