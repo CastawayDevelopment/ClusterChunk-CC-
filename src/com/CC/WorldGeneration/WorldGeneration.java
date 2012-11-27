@@ -9,9 +9,16 @@ import java.nio.channels.FileChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 
+import com.CC.Arenas.Game;
+import com.CC.Arenas.GameManager;
 import com.CC.General.onStartup;
 
 public class WorldGeneration {
+	private static GameManager gamemanager;
+
+public WorldGeneration(GameManager instance){
+		gamemanager = instance;
+	}
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
 	public static boolean newMap(String MapName) {
@@ -54,6 +61,8 @@ public class WorldGeneration {
 			}
 		}
 		Bukkit.getServer().createWorld(new WorldCreator(MapName));
+		Game game = gamemanager.getGame(MapName);
+		game.setRegenerated(true);
 		return true;
 		}
 	

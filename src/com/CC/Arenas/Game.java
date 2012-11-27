@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Game
@@ -12,6 +13,7 @@ public class Game
     
     ArrayList<String> redTeam;
     ArrayList<String> blueTeam;
+    boolean regenerated;
 	
     public Game()
     {
@@ -96,6 +98,23 @@ public class Game
     	return false;
     	
     	}
+    
+    public void setRegenerated(boolean trueorfalse){
+    	regenerated = trueorfalse;
+    }
+    
+    public void addRedPlayer(String playername){
+    	redTeam.add(playername);
+    	Player player = Bukkit.getServer().getPlayer(playername);
+    	player.sendMessage(ChatColor.RED + "You have succesfully join the red team!");
+    }
+    
+    public void addBluePlayer(String playername){
+    	blueTeam.add(playername);
+    	Player player = Bukkit.getServer().getPlayer(playername);
+    	player.sendMessage(ChatColor.BLUE + "You have succesfully join the blue team!");
+    }
+    
     	
    }
     

@@ -1,5 +1,6 @@
 package com.CC.Lobby;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -18,19 +19,24 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.CC.Arenas.Game;
+import com.CC.Arenas.GameManager;
 import com.CC.Arenas.Team;
 import com.CC.General.onStartup;
 
 
-public class LobbyListener implements Listener
+public class LobbyListener implements Listener, Runnable
 {
 	
 	public static HashMap<Player, Team> quedplayers = new HashMap<Player, Team>();
 	
 	private onStartup plugin;
+	private GameManager gamemanager;
     
-    public LobbyListener(onStartup instance) {
+    public LobbyListener(onStartup instance, GameManager instance2) {
     	plugin = instance;
+    	plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin,  this, 0, 80);
+    	gamemanager = instance2;
     	//System.out.println("LobbyListener created.");
 	}
 	
@@ -39,6 +45,9 @@ public class LobbyListener implements Listener
     {
 		//System.out.println("onQueue called.");
 		Player player = event.getPlayer();
+	if(!gamemanager.isInGame(player)) {
+		
+
 		if(player.getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
         {
 			//player.sendMessage("Step 1");
@@ -100,7 +109,8 @@ public class LobbyListener implements Listener
                 }
             }
         }
-    }
+      }
+   }
 	
 	
 	public boolean onLobby(Player player)
@@ -175,6 +185,116 @@ public class LobbyListener implements Listener
         }
     }	
   }
+    
+    private boolean countTeams(){
+    	int blue = 0;
+    	int red = 0;
+    	for(Player p : quedplayers.keySet()){
+    		if(quedplayers.get(p).equals(Team.BLUE)){
+    			int newnumber = blue + 1;
+    			blue = newnumber;
+    		}else{
+    			int newnumber = red + 1;
+    			red = newnumber;
+    		}
+    	}
+    	if(blue >= 1 && red >=1){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    
+    }
+    
+    private ArrayList<Player> blueTeam(){
+    	int i = 0;
+    	ArrayList<Player> remove = new ArrayList<Player>();
+    	ArrayList<Player> players = new ArrayList<Player>();
+    	for(Player p : quedplayers.keySet()){
+    		if(!(i >= 1)){
+    			if(!quedplayers.get(p).equals(Team.RED)) 
+    			{
+    			players.add(p);
+    			int newnumber = i + 1;
+    			i = newnumber;
+    			remove.add(p);
+    			}
+    		}
+    	}
+    	return players;
+    }
+    
+    private ArrayList<Player> redTeam(){
+    	int i = 0;
+    	ArrayList<Player> remove = new ArrayList<Player>();
+    	ArrayList<Player> players = new ArrayList<Player>();
+    	for(Player p : quedplayers.keySet()){
+    		if(!(i >= 1)){
+    			if(!quedplayers.get(p).equals(Team.BLUE)) 
+    			{
+    			players.add(p);
+    			int newnumber = i + 1;
+    			i = newnumber;
+    			remove.add(p);
+    			}
+    		}
+    	}
+    	removePlayers(remove);
+    	return players;
+    }
+    
+    private Game gameToJoin(){
+    	
+    	return gamemanager.getOpenGames().get(1);
+    	
+    		
+    }
+    
+    private void removePlayers(ArrayList<Player> players){
+    	for(Player p : players){
+    		if(quedplayers.containsKey(p)){
+    			if(onStartup.debugmode){
+    				System.out.println("players removed!");
+    			}
+    			quedplayers.remove(p);
+    		}
+    	}
+    }
+    
+
+	public void run() {
+	if(!countTeams()) return;
+		if(gamemanager.getOpenGames().size() > 0 || gamemanager.getGames().keySet().size() < 20){
+			if(gamemanager.getOpenGames().size() > 0 && gamemanager.getGames().keySet().size() < 20){
+				Game game = gameToJoin();
+				for(Player p : redTeam()){
+					game.addRedPlayer(p.getName());
+				}
+				for(Player p : blueTeam()){
+					game.addBluePlayer(p.getName());
+				}
+			}else if(gamemanager.getOpenGames().size() > 0 && !(gamemanager.getGames().keySet().size() < 20)){
+				Game game = gameToJoin();
+				for(Player p : redTeam()){
+					game.addRedPlayer(p.getName());
+				}
+				for(Player p : blueTeam()){
+					game.addBluePlayer(p.getName());
+				}
+			}else if (!(gamemanager.getOpenGames().size() > 0) && gamemanager.getGames().keySet().size() < 20){
+				int amount = gamemanager.getGames().size() + 1;
+				String arenaName = "Arena" + amount;
+				gamemanager.createGame(arenaName);
+				Game game = gamemanager.getGame(arenaName);
+				for(Player p : redTeam()){
+					game.addRedPlayer(p.getName());
+				}
+				for(Player p : blueTeam()){
+					game.addBluePlayer(p.getName());
+				}
+			}
+		}
+	}
 }
 	
 

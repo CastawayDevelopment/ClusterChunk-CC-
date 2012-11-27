@@ -1,5 +1,6 @@
 package com.CC.Arenas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -33,6 +34,7 @@ public class GameManager
         }
         Game g = new Game();
         this.games.put(name, g);
+        WorldGeneration.newMap(name);
         return true;
     }
     
@@ -64,14 +66,21 @@ public class GameManager
     }
     
     public boolean isInGame(Player peter){
-    	if(players.containsKey(peter.getName())) return true;
-    	return false;
+    	if(players.containsKey(peter.getName())) { 
+    		return true;
+    	}else{
+    		return false;
+    	}
         
     }
     
     public boolean isInGame(String string){
-    	if(players.containsKey(string)) return true;
-    	return false;
+    	if(players.containsKey(string)){ 
+    		return true;
+    	}else{
+    		return false;
+    	}
+    	
         
     }
     
@@ -95,7 +104,6 @@ public class GameManager
     		for(Player p : game.getRedTeamPlayers()){
     			p.sendMessage("Congratulations ! Your team has won");
     		}
-    		games.remove(game);
     		return true;
     		
     	}
@@ -110,6 +118,23 @@ public class GameManager
     		}else{
     			return false;
     	}
+    }
+    
+    public ArrayList<Game> getOpenGames(){
+    	ArrayList<Game> opengames = new ArrayList<Game>();
+    	for(Game g : games.values()){
+    		if(g.getPlayers().size() == 0){
+    			if(g.regenerated){
+    				opengames.add(g);
+    				g.setRegenerated(false);
+    			}
+    		}
+    	}
+    	return opengames;
+    }
+    
+    public HashMap<String, Game> getGames(){
+    	return games;
     }
     
 }
