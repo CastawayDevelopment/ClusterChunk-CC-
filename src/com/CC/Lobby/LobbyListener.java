@@ -45,7 +45,7 @@ public class LobbyListener implements Listener, Runnable
     {
 		//System.out.println("onQueue called.");
 		Player player = event.getPlayer();
-	if(!gamemanager.isInGame(player)) {
+	if(gamemanager.isInGame(player)) return;
 		
 
 		if(player.getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
@@ -80,28 +80,33 @@ public class LobbyListener implements Listener, Runnable
                             player.sendMessage(ChatColor.BLUE + "You have been added to the blue team waiting list");
                             quedplayers.put(player, Team.BLUE);
                             player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
+                            System.out.println("" + quedplayers);
                         }
                         else if (block.getData() == red)
                         {
+                        	if(quedplayers.containsKey(player)) return; //This didn't even work :P
                         	//player.sendMessage("Step 4");
                             player.sendMessage(ChatColor.RED + "You have been added to the red team waiting list");
                             quedplayers.put(player, Team.RED);
-                            block.setData(red);
                             player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
-                            
+                            System.out.println("" + quedplayers);
                         }
-                        else
+                        else 
                         {
                         	if(randomTeam(player) == Team.BLUE){
+                        		if(quedplayers.containsKey(player)) return;
                         		player.sendMessage(ChatColor.BLUE + "You have been added to the blue team waiting list");
                         		quedplayers.put(player, Team.BLUE);
                         		player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
+                        		System.out.println("1" + quedplayers);
                         	}
                         	else
                         	{
+                        		if(quedplayers.containsKey(player)) return;
                         		player.sendMessage(ChatColor.RED + "You have been added to the red team waiting list");
                                 quedplayers.put(player, Team.RED);
                                 player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
+                                System.out.println("1" + quedplayers);
                         	}
                         	
                         }
@@ -109,7 +114,6 @@ public class LobbyListener implements Listener, Runnable
                 }
             }
         }
-      }
    }
 	
 	
@@ -239,7 +243,6 @@ public class LobbyListener implements Listener, Runnable
     			}
     		}
     	}
-    	removePlayers(remove);
     	return players;
     }
     
@@ -261,36 +264,55 @@ public class LobbyListener implements Listener, Runnable
     	}
     }
     
-
+//Currently this will not stop regenerating worlds till a certain amount because the players are not teleported
 	public void run() {
 	if(!countTeams()) return;
 		if(gamemanager.getOpenGames().size() > 0 || gamemanager.getGames().keySet().size() < 20){
+			if((redTeam() == null || blueTeam() == null) || (redTeam().size() == 0 || blueTeam().size() == 0)) return;
 			if(gamemanager.getOpenGames().size() > 0 && gamemanager.getGames().keySet().size() < 20){
 				Game game = gameToJoin();
 				for(Player p : redTeam()){
 					game.addRedPlayer(p.getName());
+					quedplayers.remove(p);
+					p.teleport(game.getRedSpawn());
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
+					quedplayers.remove(p);
+					p.teleport(game.getBlueSpawn());
 				}
 			}else if(gamemanager.getOpenGames().size() > 0 && !(gamemanager.getGames().keySet().size() < 20)){
 				Game game = gameToJoin();
 				for(Player p : redTeam()){
 					game.addRedPlayer(p.getName());
+					quedplayers.remove(p);
+					p.teleport(game.getRedSpawn());
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
+					quedplayers.remove(p);
+					p.teleport(game.getBlueSpawn());
 				}
-			}else if (!(gamemanager.getOpenGames().size() > 0) && gamemanager.getGames().keySet().size() < 20){
+			}else if (gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
+				ArrayList<Player> redTeam = redTeam();
+				ArrayList<Player> blueTeam = blueTeam();
+				for(Player p : redTeam()){
+					quedplayers.remove(p);
+				}
+				for(Player p : blueTeam()){
+					quedplayers.remove(p);
+				}
 				int amount = gamemanager.getGames().size() + 1;
 				String arenaName = "Arena" + amount;
 				gamemanager.createGame(arenaName);
 				Game game = gamemanager.getGame(arenaName);
-				for(Player p : redTeam()){
+				for(Player p : redTeam){
 					game.addRedPlayer(p.getName());
+					p.teleport(game.getRedSpawn());
 				}
-				for(Player p : blueTeam()){
+				for(Player p : blueTeam){
 					game.addBluePlayer(p.getName());
+					p.teleport(game.getBlueSpawn());
 				}
 			}
 		}

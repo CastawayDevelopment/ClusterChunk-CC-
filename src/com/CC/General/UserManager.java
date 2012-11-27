@@ -1,8 +1,9 @@
 package com.CC.General;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.sql.SQLException;
+import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -100,14 +101,12 @@ public class UserManager
             // log it. It failed!
             // Actually, might not log it
         }
-        // What do you want with this...? (counts only for "Latest Game")
-		user.changeLatestGame(/*Get latest Game from MySQL*/);
 		user.changePoints(points);
 		user.changeReputation(reputation);
 		user.setDeaths(deaths);
 		user.setFriendsList(/*Get from MySQL*/);
 		user.setKills(kills);
-		user.setTimesOnBlue(blue);
+		user.setTimeOnBlue(blue);
 		user.setTimesOnRed(red);
 	}
 	

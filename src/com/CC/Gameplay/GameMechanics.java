@@ -31,7 +31,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 	@EventHandler
 	public void spectateOnDeath(PlayerDeathEvent event){
 			Player peter = event.getEntity();
-		if(gamemanager.isInGame(peter)){
+		if(gamemanager.isInGame(peter.getName())){
 			if(peter.getBedSpawnLocation() != null){
 					playergame = gamemanager.getGameByPlayer(peter);
 					Team playersteam = playergame.getTeam(peter);
@@ -52,9 +52,10 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 				
 					}
 			}else{
+				playergame = gamemanager.getGameByPlayer(peter);
 				playergame.removePlayer(peter);
 				//Something to teleport to dead box of the game :D 
-				playergame = gamemanager.getGameByPlayer(peter);
+				
 				
 			}
 		}

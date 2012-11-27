@@ -1,8 +1,9 @@
 package com.CC.General;
 
 import java.util.logging.Logger;
-import java.util.sql.SQLException;
+import java.sql.SQLException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,12 +21,13 @@ import com.CC.MySQL.MySQL;
 		 
 		 
 		public static boolean debugmode;
-	 	public final LobbyListener ll = new LobbyListener(this);
+	 	public LobbyListener ll;
         private GameManager gm;
         private Storage parties;
         private MySQL con;
         public Logger log;
         private UserManager um;
+        private WorldGeneration worldgen;
 		 
         public onStartup()
         {
@@ -39,6 +41,8 @@ import com.CC.MySQL.MySQL;
             getCommand("party").setExecutor(new PartyCommands(this));
             gm = new GameManager();
             parties = new Storage();
+            ll = new LobbyListener(this, gm);
+            worldgen = new WorldGeneration(gm);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
@@ -75,7 +79,7 @@ import com.CC.MySQL.MySQL;
                 log.info("Exception thrown: "+ex.getMessage());
                 log.info("Disabling plugin...");
                 // Our plugin is MySQL dependant right :3?
-                Bukkit.getPluginManager().disablePlugin(this);
+                //Bukkit.getPluginManager().disablePlugin(this); NOT :D 
                 return;
             }
             
@@ -116,7 +120,7 @@ import com.CC.MySQL.MySQL;
                                                  + " name VARCHAR(30) NOT NULL"
                                                  + ");";
             String reputation = "CREATE TABLE reputation ( player_id INT NOT NULL,"
-                                                       + " reputation FLOAT(4,2) NOT NULL",
+                                                       + " reputation FLOAT(4,2) NOT NULL"
                                                        + " FOREIGN KEY(player_id)"
                                                        + "    REFERENCES players(id)"
                                                        + ");";      
@@ -134,7 +138,9 @@ import com.CC.MySQL.MySQL;
                                                  + " friends VARCHAR(500),"
                                                  + " FOREIGN KEY(player_id)"
                                                  + "    REFERENCES players(id)"
-                                                 + ");"
+                                                 + ");";
+            
+           return true; // Just so no errors are thrown while testing  
         }
  }
 	

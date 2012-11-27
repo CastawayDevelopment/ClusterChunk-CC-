@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class Game
@@ -14,9 +15,11 @@ public class Game
     ArrayList<String> redTeam;
     ArrayList<String> blueTeam;
     boolean regenerated;
+    private GameManager gm;
 	
-    public Game()
+    public Game(GameManager instance)
     {
+    	gm = instance;
         redTeam = new ArrayList<String>();
         blueTeam = new ArrayList<String>();
     }
@@ -77,9 +80,11 @@ public class Game
     	Team team = getTeam(string);
     	if(team.equals(Team.BLUE)){
     		blueTeam.remove(string);
+    		gm.removePlayerFromGame(string);
     		return true;
     	}else if (team.equals(Team.RED)){
     		redTeam.remove(string);
+    		gm.removePlayerFromGame(string);
     		return true;
     	}
     	return false;
@@ -90,9 +95,11 @@ public class Game
     	Team team = getTeam(player.getName());
     	if(team.equals(Team.BLUE)){
     		blueTeam.remove(player.getName());
+    		gm.removePlayerFromGame(player.getName());
     		return true;
     	}else if (team.equals(Team.RED)){
     		redTeam.remove(player.getName());
+    		gm.removePlayerFromGame(player.getName());
     		return true;
     	}
     	return false;
@@ -107,12 +114,28 @@ public class Game
     	redTeam.add(playername);
     	Player player = Bukkit.getServer().getPlayer(playername);
     	player.sendMessage(ChatColor.RED + "You have succesfully join the red team!");
+    	gm.playerJoinGame(playername);
     }
     
     public void addBluePlayer(String playername){
     	blueTeam.add(playername);
     	Player player = Bukkit.getServer().getPlayer(playername);
     	player.sendMessage(ChatColor.BLUE + "You have succesfully join the blue team!");
+    	gm.playerJoinGame(playername);
+    }
+    
+    
+    public Location getRedSpawn(){
+    	return Bukkit.getServer().getWorld("lobby").getSpawnLocation(); //Just for now until the actual spawn locations are found;
+    	/**
+    	 * When the new spawn locations are found it will be World == Arena Name and than the location of the spawn for the current team
+    	 */
+    }
+    public Location getBlueSpawn(){
+    	return Bukkit.getServer().getWorld("lobby").getSpawnLocation(); //Just for now until the actual spawn locations are found;
+    	/**
+    	 * When the new spawn locations are found it will be World == Arena Name and than the location of the spawn for the current team
+    	 */
     }
     
     	

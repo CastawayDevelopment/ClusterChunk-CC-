@@ -32,7 +32,7 @@ public class GameManager
         {
             return false;
         }
-        Game g = new Game();
+        Game g = new Game(this);
         this.games.put(name, g);
         WorldGeneration.newMap(name);
         return true;
@@ -135,6 +135,14 @@ public class GameManager
     
     public HashMap<String, Game> getGames(){
     	return games;
+    }
+    
+    public void playerJoinGame(String string){
+    	players.put(string, string);
+    }
+    
+    public void removePlayerFromGame(String string){
+    	players.remove(string);
     }
     
 }
