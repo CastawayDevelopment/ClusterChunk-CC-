@@ -18,7 +18,8 @@ public class User
 	int timeOnBlue;
 	String latestGame;
 	ArrayList<String> friends;
-	
+	ArrayList<String> friendsRequestsPending;
+	ArrayList<String> enemy;
 	
 	public User(Player p){
 		friends = new ArrayList<String>();
@@ -115,6 +116,33 @@ public class User
 	public void addFriend(String friendName){
 		friends.add(friendName);
 	}
+	
+	
+	public ArrayList<String> getEnemies(){
+		return enemy;
+	}
+	//for Loading 
+	public void setEnemiesList(ArrayList<String> enemyList){
+		enemy = enemyList;
+	}
+	
+	public void addEnemy(String enemyName){
+		enemy.add(enemyName);
+	}
+	
+	
+	public ArrayList<String> getFriendsRequestsPending(){
+		return friendsRequestsPending;
+	}
+	//for Loading 
+	public void setFriendRequestsPendingList(ArrayList<String> friendsRequestsPendingList){
+		friendsRequestsPending = friendsRequestsPendingList;
+	}
+	
+	public void addRequestsPending(String friendName){
+		friendsRequestsPending.add(friendName);
+	}
+	
 	
 	public Player getPlayer(){
 		return Bukkit.getServer().getPlayer(player);

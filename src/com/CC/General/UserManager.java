@@ -105,6 +105,8 @@ public class UserManager
 		user.changeReputation(reputation);
 		user.setDeaths(deaths);
 		user.setFriendsList(/*Get from MySQL*/);
+		user.setFriendRequestsPendingList(/*Get from MySQL*/);
+		user.setEnemiesList(/*Get from MySQL*/);
 		user.setKills(kills);
 		user.setTimeOnBlue(blue);
 		user.setTimesOnRed(red);
