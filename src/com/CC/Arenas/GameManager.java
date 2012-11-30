@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.CC.General.onStartup;
 import com.CC.WorldGeneration.WorldGeneration;
 
 public class GameManager
@@ -14,9 +15,13 @@ public class GameManager
 
     private HashMap<String, String> players;
     private HashMap<String, Game> games;
+    private onStartup plugin;
+    private WorldGeneration worldgen;
 
-    public GameManager()
+    public GameManager(onStartup instance)
     {
+    	plugin = instance;
+    	worldgen = plugin.getWorldGenerator();
         this.games = new HashMap<String, Game>();
         this.players =  new HashMap<String, String>();
     }
@@ -34,7 +39,7 @@ public class GameManager
         }
         Game g = new Game(this);
         this.games.put(name, g);
-        WorldGeneration.newMap(name);
+        worldgen.newMap(name);
         return true;
     }
     
@@ -113,7 +118,7 @@ public class GameManager
     	if(!games.containsKey(gameName)) return false;
     		if(endGame(getGame(gameName), winningTeam)){
     			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
-    			WorldGeneration.newMap(gameName);
+    			worldgen.newMap(gameName);
     			return true;
     		}else{
     			return false;

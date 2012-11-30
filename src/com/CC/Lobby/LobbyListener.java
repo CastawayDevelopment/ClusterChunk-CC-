@@ -33,10 +33,10 @@ public class LobbyListener implements Listener, Runnable
 	private onStartup plugin;
 	private GameManager gamemanager;
     
-    public LobbyListener(onStartup instance, GameManager instance2) {
+    public LobbyListener(onStartup instance) {
     	plugin = instance;
     	plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin,  this, 0, 80);
-    	gamemanager = instance2;
+    	gamemanager = plugin.getGameManager();
     	//System.out.println("LobbyListener created.");
 	}
 	
