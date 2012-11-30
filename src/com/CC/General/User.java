@@ -139,7 +139,7 @@ public class User
 		friendsRequestsPending = friendsRequestsPendingList;
 	}
 	
-	public void addRequestsPending(String friendName){
+	public void addRequestPending(String friendName){
 		friendsRequestsPending.add(friendName);
 	}
 	

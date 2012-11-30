@@ -31,6 +31,14 @@ public class UserManager
         return true;
 	}
 	
+	public User getUser(Player player){
+		if(players.containsKey(player.getName())){
+			return this.players.get(player.getName());
+		}else{
+			return null;
+		}
+	}
+	
 	public void loadPlayers(ArrayList<String> playerNames)
     {
 		//Get all of the PlayerNames from MySQL DataBase

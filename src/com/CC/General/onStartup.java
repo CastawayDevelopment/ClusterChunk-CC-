@@ -111,6 +111,10 @@ import com.CC.MySQL.MySQL;
         {
             return this.con;
         }
+        
+        public UserManager getUserManager(){
+        	return this.um;
+        }
 	
         // INCOMPLETE, ITS JUST A PRESET
         private boolean createTables() throws SQLException
