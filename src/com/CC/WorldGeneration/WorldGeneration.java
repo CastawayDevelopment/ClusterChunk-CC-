@@ -14,16 +14,14 @@ import com.CC.Arenas.GameManager;
 import com.CC.General.onStartup;
 
 public class WorldGeneration {
-	private onStartup plugin;
-	private GameManager gamemanager;
+	private static GameManager gamemanager;
 
-public WorldGeneration(onStartup instance){
-		plugin = instance;
-		gamemanager = plugin.getGameManager();
+public WorldGeneration(GameManager instance){
+		gamemanager = instance;
 	}
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
-	public boolean newMap(String MapName) {
+	public static boolean newMap(String MapName) {
 		if(MapName.startsWith(".")) return false; //Check that the map name is not "..", Could delete server
 		
 		File baseMap = new File("./BaseMap/BaseMap");
@@ -74,7 +72,7 @@ public WorldGeneration(onStartup instance){
 	
 	
 	
-	private void copyFile(File sourceFile, File destFile) throws IOException {
+	private static void copyFile(File sourceFile, File destFile) throws IOException {
 	    if(!destFile.exists()) {
 	        destFile.createNewFile();
 	    }
@@ -101,7 +99,7 @@ public WorldGeneration(onStartup instance){
 	    }
 	}
 	//Very dangerous... Do not give the wrong file :D 
-	private void deleteMap(File dir) {
+	private static void deleteMap(File dir) {
 		File[] files = dir.listFiles();
 		for(File d : files){
 			if(d.isDirectory()){
