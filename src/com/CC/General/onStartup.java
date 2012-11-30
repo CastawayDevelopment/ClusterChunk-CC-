@@ -39,9 +39,9 @@ import com.CC.MySQL.MySQL;
         {
             this.log = this.getLogger();
             getCommand("party").setExecutor(new PartyCommands(this));
-            gm = new GameManager();
+            gm = new GameManager(this);
             parties = new Storage();
-            ll = new LobbyListener(this, gm);
+            ll = new LobbyListener(this);
             worldgen = new WorldGeneration(gm);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
@@ -114,6 +114,10 @@ import com.CC.MySQL.MySQL;
         
         public UserManager getUserManager(){
         	return this.um;
+        }
+        
+        public WorldGeneration getWorldGenerator(){
+        	return this.worldgen;
         }
 	
         // INCOMPLETE, ITS JUST A PRESET

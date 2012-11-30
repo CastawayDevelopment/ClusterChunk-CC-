@@ -16,6 +16,6 @@ public class Create
 	public void create(Player player, String partyName) 
     {
 		player.sendMessage("Create workin");
-        plugin.getParties().addParty(partyName);
+        plugin.getParties().addParty(partyName, player);
 	}
 }
