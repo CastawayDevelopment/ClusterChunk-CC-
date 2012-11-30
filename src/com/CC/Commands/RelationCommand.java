@@ -6,6 +6,7 @@ package com.CC.Commands;
 
 import com.CC.Commands.relation.Foe;
 import com.CC.Commands.relation.Friend;
+import com.CC.Commands.relation.Relations;
 import com.CC.General.onStartup;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,12 +23,14 @@ public class RelationCommand implements CommandExecutor
 	private final onStartup plugin;
 	private final Foe enemy;
 	private final Friend friend;
+	private final Relations relations;
 
 	public RelationCommand(onStartup plugin)
 	{
 		this.plugin = plugin;
 		enemy = new Foe(plugin);
 		friend = new Friend(plugin);
+		relations = new Relations(plugin);
 	}
 
 	@Override
@@ -51,6 +54,15 @@ public class RelationCommand implements CommandExecutor
 				if (arg.length == 1)
 				{
 					enemy.add(player, arg[0]);
+					return true;
+				}
+				return false;
+			}
+			else if (cmd.getName().equalsIgnoreCase("relations"))
+			{
+				if (arg.length == 0)
+				{
+					relations.list(player);
 					return true;
 				}
 				return false;

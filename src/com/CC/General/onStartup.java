@@ -14,6 +14,7 @@ import com.CC.Commands.*;
 import com.CC.Party.Storage;
 import com.CC.WorldGeneration.WorldGeneration;
 import com.CC.MySQL.MySQL;
+import org.bukkit.command.CommandExecutor;
 
 	
  public class onStartup extends JavaPlugin implements Listener 
@@ -39,9 +40,13 @@ import com.CC.MySQL.MySQL;
         {
             this.log = this.getLogger();
             getCommand("party").setExecutor(new PartyCommands(this));
-            gm = new GameManager(this);
+	    CommandExecutor relationsCommand = new RelationCommand(this);
+	    getCommand("friend").setExecutor(relationsCommand);
+	    getCommand("enemy").setExecutor(relationsCommand);
+	    getCommand("relation").setExecutor(relationsCommand);
+            gm = new GameManager();
             parties = new Storage();
-            ll = new LobbyListener(this);
+            ll = new LobbyListener(this, gm);
             worldgen = new WorldGeneration(gm);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
@@ -114,10 +119,6 @@ import com.CC.MySQL.MySQL;
         
         public UserManager getUserManager(){
         	return this.um;
-        }
-        
-        public WorldGeneration getWorldGenerator(){
-        	return this.worldgen;
         }
 	
         // INCOMPLETE, ITS JUST A PRESET

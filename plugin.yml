@@ -6,3 +6,12 @@ commands:
     description: the party command
     usage: test
     permission: test.testietest
+  friend:
+    description: Adds friends
+    usage: /<command> [player]
+  enemy:
+    description: Adds enemies
+    usage: /<command> [enemy]
+  relations:
+    description: shows your relations whit other players
+    usage: /<command>
