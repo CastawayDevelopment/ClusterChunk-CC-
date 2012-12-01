@@ -12,6 +12,6 @@ commands:
   enemy:
     description: Adds enemies
     usage: /<command> [enemy]
-  relations:
+  relation:
     description: shows your relations whit other players
     usage: /<command>
