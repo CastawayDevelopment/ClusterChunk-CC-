@@ -62,11 +62,7 @@ public class Foe
 		// To fix case isues
 		player2 = p2.getName();
 
-		if (p2 == null)
-		{
-			player1.sendMessage(ChatColor.RED + "Your enemy need to be online");
-			return;
-		}
+
 		User user2 = this.plugin.getUserManager().getUser(p2);
 		if (user1 == null)
 		{
