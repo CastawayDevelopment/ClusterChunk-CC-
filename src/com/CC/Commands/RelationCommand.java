@@ -33,7 +33,7 @@ public class RelationCommand implements CommandExecutor
 		relations = new Relations(plugin);
 	}
 
-	@Override
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] arg)
 	{
 		if (sender instanceof Player)

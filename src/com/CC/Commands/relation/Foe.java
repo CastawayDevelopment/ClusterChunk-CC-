@@ -39,7 +39,7 @@ public class Foe
 			u1.getFriends().remove(u2.getPlayer().getName());
 			u2.getFriends().remove(u1.getPlayer().getName());
 			addToList(u2.getFriendsRequestsPending(), u1.getPlayer().getName());
-			u1.getPlayer().sendMessage(ChatColor.GREEN + u2.getPlayer().getName() + " was been removed from you're friend list!");
+			u1.getPlayer().sendMessage(ChatColor.GREEN + u2.getPlayer().getName() + " was been removed from your friends list!");
 		}
 	}
 

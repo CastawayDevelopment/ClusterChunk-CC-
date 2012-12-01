@@ -120,6 +120,10 @@ import org.bukkit.command.CommandExecutor;
         public UserManager getUserManager(){
         	return this.um;
         }
+        
+        public WorldGeneration getWorldGenerator(){
+        	return this.worldgen;
+        }
 	
         // INCOMPLETE, ITS JUST A PRESET
         private boolean createTables()
