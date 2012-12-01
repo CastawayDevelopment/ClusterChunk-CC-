@@ -40,13 +40,13 @@ import org.bukkit.command.CommandExecutor;
         {
             this.log = this.getLogger();
             getCommand("party").setExecutor(new PartyCommands(this));
-	    CommandExecutor relationsCommand = new RelationCommand(this);
-	    getCommand("friend").setExecutor(relationsCommand);
-	    getCommand("enemy").setExecutor(relationsCommand);
-	    getCommand("relation").setExecutor(relationsCommand);
+            CommandExecutor relationsCommand = new RelationCommand(this);
+            getCommand("friend").setExecutor(relationsCommand);
+            getCommand("enemy").setExecutor(relationsCommand);
+            getCommand("relation").setExecutor(relationsCommand);
             gm = new GameManager();
             parties = new Storage();
-            ll = new LobbyListener(this, gm);
+            ll = new LobbyListener(this);
             worldgen = new WorldGeneration(gm);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
@@ -122,11 +122,11 @@ import org.bukkit.command.CommandExecutor;
         }
 	
         // INCOMPLETE, ITS JUST A PRESET
-        private boolean createTables() throws SQLException
+        private boolean createTables()
         {
             String players = "CREATE TABLE players ( id INT NOT NULL AUTO_INCREMENT,"
                                                  + " PRIMARY KEY(id),"
-                                                 + " name VARCHAR(30) NOT NULL"
+                                                 + " name VARCHAR(16) NOT NULL"
                                                  + ");";
             String reputation = "CREATE TABLE reputation ( player_id INT NOT NULL,"
                                                        + " reputation FLOAT(4,2) NOT NULL"
@@ -142,14 +142,33 @@ import org.bukkit.command.CommandExecutor;
                                                  + " FOREIGN KEY(player_id)"
                                                  + "    REFERENCES players(id)"
                                                  + ");";
-            // Not sure about friends though
-            String friends = "CREATE TABLE friends ( player_id INT NOT NULL,"
-                                                 + " friends VARCHAR(500),"
+            // Nakama :3
+            String relation = "CREATE TABLE relation ( player_id INT NOT NULL,"
+                                                 + " rel_id INT NOT NULL,"
+                                                 + " isfoe BOOLEAN DEFAULT FALSE,"
                                                  + " FOREIGN KEY(player_id)"
+                                                 + "    REFERENCES players(id),"
+                                                 + " FOREIGN KEY(rel_id)"
                                                  + "    REFERENCES players(id)"
                                                  + ");";
+            if(!checkTable("players"))
+            {
+                createTable(players);
+            }
+            if(!checkTable("reputation"))
+            {
+                createTable(reputation);
+            }
+            if(!checkTable("stats"))
+            {
+                createTable(stats);
+            }
+            if(!checkTable("relation"))
+            {
+                createTable(relation);
+            }
             
-           return true; // Just so no errors are thrown while testing  
+            return  checkTable("players") && checkTable("reputation") && checkTable("stats") && checkTable("friends");
         }
  }
 	
