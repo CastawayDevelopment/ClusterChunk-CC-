@@ -117,12 +117,19 @@ import org.bukkit.command.CommandExecutor;
             return this.con;
         }
         
-        public UserManager getUserManager(){
+        public UserManager getUserManager()
+        {
         	return this.um;
         }
         
+<<<<<<< HEAD
         public WorldGeneration getWorldGenerator(){
         	return this.worldgen;
+=======
+        public WorldGeneration getWorldGenerator()
+        {	
+            return this.worldgen;
+>>>>>>> I fixed the MySQL
         }
 	
         // INCOMPLETE, ITS JUST A PRESET

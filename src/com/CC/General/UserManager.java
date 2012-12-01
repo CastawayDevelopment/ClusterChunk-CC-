@@ -121,9 +121,104 @@ public class UserManager
 	}
 	
     // Should be on onQuit and onDisable, just saying
+<<<<<<< HEAD
 	public void savePlayers(){
 		for(User p : players.values()){
 			/**
+=======
+	public void savePlayers()
+    {
+		for(User p : players.values())
+        {
+            savePlayer(p);
+		}
+	}
+    
+    /*
+    *  DO NOT USE THIS, UNFINISHED and some useless stuff to let me push it
+    **/
+    private void savePlayer(User user)
+    {
+        
+        // Initializing variables, setting reputation to 10 (as standard, might change)
+        
+        try
+        {
+            ResultSet players = main.getConnection().query("SELECT `id` FROM players WHERE name = '"+player+"'");
+            if(players.next())
+            {
+                // Update
+                int id = players.getInt("id"); // Might want to store this for faster processing later on
+                ResultSet rep = main.getConnection().query("SELECT `reputation` FROM `reputation` WHERE player_id = "+id+";");
+                if(rep.next())
+                {
+                    reputation = rep.getInt("reputation");
+                }
+                else
+                {
+                }
+                rep.close(); // Freeing the memory, just in case
+                ResultSet stats = main.getConnection().query("SELECT `points` AS p, `kills` AS k, `deaths` AS d, `onRed` AS r, `onBlue` AS b FROM `stats` WHERE player_id = "+id+";");
+                if(stats.next())
+                {
+                    points = stats.getInt("p");
+                    deaths = stats.getInt("d");
+                    kills = stats.getInt("k");
+                    red = stats.getInt("r");
+                    blue = stats.getInt("b");
+                }
+                stats.close();
+                ResultSet friends = main.getConnection().query("SELECT `rel_id` as fid, `isfoe` FROM `friends` "
+                                                              +"WHERE id = "+id+" INNER JOIN `friends` "
+                                                              +"ON friends.player_id = (SELECT `player_id` FROM `friends` WHERE `rel_id` = fid AND player_id = "+id+");");
+                if(friends.next())
+                {
+                    do
+                    {
+                        try
+                        {
+                            int fid = friends.getInt("fid");
+                            ResultSet friend = main.getConnection().query("SELECT `name` FROM `players` WHERE id = "+ifd+";");
+                            String name = friend.getString("name");
+                            if(friends.getBoolean("isfoe"))
+                            {
+                                enemies.add(name);
+                            }
+                            else
+                            {
+                                friends.add(name);
+                            }
+                        }
+                        catch(SQLException exc)
+                        {
+                            // Error,  but ignore it. You can log it if you want though
+                        }
+                        
+                    }while(friends.next());
+                }
+            }
+            else
+            {
+                // not found
+            }
+        }
+        catch(SQLException ex)
+        {
+            // log it. It failed!
+            // Actually, might not log it
+        }
+		user.changePoints(points);
+		user.changeReputation(reputation);
+		user.setDeaths(deaths);
+		user.setFriendsList(friends;
+		user.setFriendRequestsPendingList(/*Get from MySQL*/); // Remove this from User.java
+		user.setEnemiesList(enemies);
+		user.setKills(kills);
+		user.setTimeOnBlue(blue);
+		user.setTimesOnRed(red);
+        
+        /**
+>>>>>>> I fixed the MySQL
 			 * Make a chart for each User in MySQL containing the following information
 			 * The player -- Use p.getPlayer();
 			 * The LatestGame -- Use p.getLatestGame();
