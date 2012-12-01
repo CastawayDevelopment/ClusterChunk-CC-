@@ -53,6 +53,12 @@ public class Foe
 		User user1 = this.plugin.getUserManager().getUser(player1);
 		Player p2 = Bukkit.getPlayer(player2);
 
+                if(p2 == null)
+                {
+                    player1.sendMessage(ChatColor.RED + "This player is offline!");
+                    return;
+                }
+                
 		// To fix case isues
 		player2 = p2.getName();
 

@@ -135,7 +135,7 @@ import org.bukkit.command.CommandExecutor;
                                                  + " name VARCHAR(16) NOT NULL"
                                                  + ");";
             String reputation = "CREATE TABLE reputation ( player_id INT NOT NULL,"
-                                                       + " reputation FLOAT(4,2) NOT NULL"
+                                                       + " reputation FLOAT(4,2) NOT NULL,"
                                                        + " FOREIGN KEY(player_id)"
                                                        + "    REFERENCES players(id)"
                                                        + ");";      
