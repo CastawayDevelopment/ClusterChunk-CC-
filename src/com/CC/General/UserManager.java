@@ -102,19 +102,19 @@ public class UserManager
                     blue = stats.getInt("b");
                 }
                 stats.close();
-                ResultSet friends = main.getConnection().query("SELECT `rel_id` as fid, `isfoe` FROM `friends` "
+                ResultSet rfriends = main.getConnection().query("SELECT `rel_id` as fid, `isfoe` FROM `friends` "
                                                               +"WHERE id = "+id+" INNER JOIN `friends` "
                                                               +"ON friends.player_id = (SELECT `player_id` FROM `friends` WHERE `rel_id` = fid AND player_id = "+id+");");
-                if(friends.next())
+                if(rfriends.next())
                 {
                     do
                     {
                         try
                         {
-                            int fid = friends.getInt("fid");
-                            ResultSet friend = main.getConnection().query("SELECT `name` FROM `players` WHERE id = "+ifd+";");
+                            int fid = rfriends.getInt("fid");
+                            ResultSet friend = main.getConnection().query("SELECT `name` FROM `players` WHERE id = "+fid+";");
                             String name = friend.getString("name");
-                            if(friends.getBoolean("isfoe"))
+                            if(rfriends.getBoolean("isfoe"))
                             {
                                 enemies.add(name);
                             }
@@ -128,7 +128,7 @@ public class UserManager
                             // Error,  but ignore it. You can log it if you want though
                         }
                         
-                    }while(friends.next());
+                    }while(rfriends.next());
                 }
             }
             else
@@ -155,15 +155,15 @@ public class UserManager
     // Should be on onQuit and onDisable, just saying
 	public void savePlayers()
     {
-		for(User p : players.values())
+        for(User p : players.values())
         {
-            savePlayer(p);
-		}
-	}
+            //savePlayer(p);
+        }
+    }
     
     /*
     *  DO NOT USE THIS, UNFINISHED and some useless stuff to let me push it
-    **/
+    **//*
     private void savePlayer(User user)
     {
         // Initializing variables, setting reputation to 10 (as standard, might change)   
@@ -236,7 +236,7 @@ public class UserManager
 		user.changeReputation(reputation);
 		user.setDeaths(deaths);
 		user.setFriendsList(friends);
-		user.setFriendRequestsPendingList(/*Get from MySQL*/); // Remove this from User.java
+		user.setFriendRequestsPendingList(/*Get from MySQL/); // Remove this from User.java
 		user.setEnemiesList(enemies);
 		user.setKills(kills);
 		user.setTimeOnBlue(blue);
@@ -253,7 +253,7 @@ public class UserManager
 			 * The player's friends list -- Use p.getFriends();
 			 * The player's Times played on the blue team -- Use p.getTimesPlayedOnBlueTeam();
 			 * The player's Times player on the red team -- Use p.getTimesPlayedOnRedTeam();
-			 */
-	}
+			 /
+	}*/
 	
 }

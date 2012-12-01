@@ -44,7 +44,7 @@ import org.bukkit.command.CommandExecutor;
             getCommand("friend").setExecutor(relationsCommand);
             getCommand("enemy").setExecutor(relationsCommand);
             getCommand("relation").setExecutor(relationsCommand);
-            gm = new GameManager();
+            gm = new GameManager(this);
             parties = new Storage();
             ll = new LobbyListener(this);
             worldgen = new WorldGeneration(gm);
@@ -157,24 +157,25 @@ import org.bukkit.command.CommandExecutor;
                                                  + " FOREIGN KEY(rel_id)"
                                                  + "    REFERENCES players(id)"
                                                  + ");";
-            if(!checkTable("players"))
+            if(!getConnection().checkTable("players"))
             {
-                createTable(players);
+                getConnection().createTable(players);
             }
-            if(!checkTable("reputation"))
+            if(!getConnection().checkTable("reputation"))
             {
-                createTable(reputation);
+                getConnection().createTable(reputation);
             }
-            if(!checkTable("stats"))
+            if(!getConnection().checkTable("stats"))
             {
-                createTable(stats);
+                getConnection().createTable(stats);
             }
-            if(!checkTable("relation"))
+            if(!getConnection().checkTable("relation"))
             {
-                createTable(relation);
+                getConnection().createTable(relation);
             }
             
-            return  checkTable("players") && checkTable("reputation") && checkTable("stats") && checkTable("friends");
+            return  getConnection().checkTable("players") && getConnection().checkTable("reputation")
+                    && getConnection().checkTable("stats") && getConnection().checkTable("friends");
         }
  }
 	
