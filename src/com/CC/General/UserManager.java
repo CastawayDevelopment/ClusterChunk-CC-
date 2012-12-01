@@ -121,11 +121,6 @@ public class UserManager
 	}
 	
     // Should be on onQuit and onDisable, just saying
-<<<<<<< HEAD
-	public void savePlayers(){
-		for(User p : players.values()){
-			/**
-=======
 	public void savePlayers()
     {
 		for(User p : players.values())
@@ -139,9 +134,7 @@ public class UserManager
     **/
     private void savePlayer(User user)
     {
-        
-        // Initializing variables, setting reputation to 10 (as standard, might change)
-        
+        // Initializing variables, setting reputation to 10 (as standard, might change)   
         try
         {
             ResultSet players = main.getConnection().query("SELECT `id` FROM players WHERE name = '"+player+"'");
@@ -218,7 +211,6 @@ public class UserManager
 		user.setTimesOnRed(red);
         
         /**
->>>>>>> I fixed the MySQL
 			 * Make a chart for each User in MySQL containing the following information
 			 * The player -- Use p.getPlayer();
 			 * The LatestGame -- Use p.getLatestGame();
@@ -230,7 +222,6 @@ public class UserManager
 			 * The player's Times played on the blue team -- Use p.getTimesPlayedOnBlueTeam();
 			 * The player's Times player on the red team -- Use p.getTimesPlayedOnRedTeam();
 			 */
-		}
 	}
 	
 }
