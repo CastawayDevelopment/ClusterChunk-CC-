@@ -191,7 +191,8 @@ public class MySQL extends Database {
 		    else
 		    	return false;
 		} catch (SQLException e) {
-			this.writeError("Could not check if table \"" + table + "\" exists, SQLException: " + e.getMessage(), true);
+			// This error should not be logged
+                        //this.writeError("Could not check if table \"" + table + "\" exists, SQLException: " + e.getMessage(), true);
 			return false;
 		}
 	}
