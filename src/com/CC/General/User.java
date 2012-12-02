@@ -18,7 +18,6 @@ public class User
 	int timeOnBlue;
 	String latestGame;
 	ArrayList<String> friends;
-	ArrayList<String> friendsRequestsPending;
 	ArrayList<String> enemy;
 	
 	public User(Player p){
@@ -130,18 +129,6 @@ public class User
 		enemy.add(enemyName);
 	}
 	
-	
-	public ArrayList<String> getFriendsRequestsPending(){
-		return friendsRequestsPending;
-	}
-	//for Loading 
-	public void setFriendRequestsPendingList(ArrayList<String> friendsRequestsPendingList){
-		friendsRequestsPending = friendsRequestsPendingList;
-	}
-	
-	public void addRequestPending(String friendName){
-		friendsRequestsPending.add(friendName);
-	}
 	
 	
 	public Player getPlayer(){
