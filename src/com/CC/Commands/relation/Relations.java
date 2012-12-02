@@ -37,12 +37,8 @@ public class Relations
 		player.sendMessage(enemies.toArray(empty));
 		
 		List<String> friends = user.getFriends();
-		player.sendMessage(ChatColor.GREEN+"Friends: ("+friends.size()+")");
+		player.sendMessage(ChatColor.GREEN+"Friend Requests (Pending and approved: ("+friends.size()+")");
 		player.sendMessage(friends.toArray(empty));
-		
-		List<String> friendsPending = user.getFriendsRequestsPending();
-		player.sendMessage(ChatColor.GREEN+"Friends pending: ("+friendsPending.size()+")");
-		player.sendMessage(friendsPending.toArray(empty));
 
 
 	}
