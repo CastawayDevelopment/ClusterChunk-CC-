@@ -22,6 +22,8 @@ import org.bukkit.util.Vector;
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
 import com.CC.Arenas.Team;
+import com.CC.General.User;
+import com.CC.General.UserManager;
 import com.CC.General.onStartup;
 
 
@@ -32,11 +34,13 @@ public class LobbyListener implements Listener, Runnable
 	
 	private onStartup plugin;
 	private GameManager gamemanager;
+	private UserManager usermanager;
     
     public LobbyListener(onStartup instance) {
     	plugin = instance;
     	plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin,  this, 0, 80);
     	gamemanager = plugin.getGameManager();
+    	usermanager = plugin.getUserManager();
     	//System.out.println("LobbyListener created.");
 	}
 	
@@ -275,11 +279,15 @@ public class LobbyListener implements Listener, Runnable
 					game.addRedPlayer(p.getName());
 					quedplayers.remove(p);
 					p.teleport(game.getRedSpawn());
+					User player = usermanager.getUser(p);
+					player.addTimeOnRed();
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
 					quedplayers.remove(p);
 					p.teleport(game.getBlueSpawn());
+					User player = usermanager.getUser(p);
+					player.addTimeOnBlue();
 				}
 			}else if(gamemanager.getOpenGames().size() > 0 && !(gamemanager.getGames().keySet().size() < 20)){
 				Game game = gameToJoin();
@@ -287,11 +295,15 @@ public class LobbyListener implements Listener, Runnable
 					game.addRedPlayer(p.getName());
 					quedplayers.remove(p);
 					p.teleport(game.getRedSpawn());
+					User player = usermanager.getUser(p);
+					player.addTimeOnRed();
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
 					quedplayers.remove(p);
 					p.teleport(game.getBlueSpawn());
+					User player = usermanager.getUser(p);
+					player.addTimeOnBlue();
 				}
 			}else if (gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
 				ArrayList<Player> redTeam = redTeam();
@@ -309,8 +321,12 @@ public class LobbyListener implements Listener, Runnable
 				for(Player p : redTeam){
 					game.addRedPlayer(p.getName());
 					p.teleport(game.getRedSpawn());
+					User player = usermanager.getUser(p);
+					player.addTimeOnRed();
 				}
 				for(Player p : blueTeam){
+					User player = usermanager.getUser(p);
+					player.addTimeOnBlue();
 					game.addBluePlayer(p.getName());
 					p.teleport(game.getBlueSpawn());
 				}

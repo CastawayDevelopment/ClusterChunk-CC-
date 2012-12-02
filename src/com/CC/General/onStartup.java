@@ -47,7 +47,7 @@ import org.bukkit.command.CommandExecutor;
             gm = new GameManager(this);
             parties = new Storage();
             ll = new LobbyListener(this);
-            worldgen = new WorldGeneration(gm);
+            worldgen = new WorldGeneration(this);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
@@ -175,7 +175,7 @@ import org.bukkit.command.CommandExecutor;
             }
             
             return  getConnection().checkTable("players") && getConnection().checkTable("reputation")
-                    && getConnection().checkTable("stats") && getConnection().checkTable("friends");
+                    && getConnection().checkTable("stats") && getConnection().checkTable("relation");
         }
  }
 	
