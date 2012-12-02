@@ -281,6 +281,7 @@ public class LobbyListener implements Listener, Runnable
 					p.teleport(game.getRedSpawn());
 					User player = usermanager.getUser(p);
 					player.addTimeOnRed();
+					player.changeLatestGame(game.getName());
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
@@ -288,6 +289,7 @@ public class LobbyListener implements Listener, Runnable
 					p.teleport(game.getBlueSpawn());
 					User player = usermanager.getUser(p);
 					player.addTimeOnBlue();
+					player.changeLatestGame(game.getName());
 				}
 			}else if(gamemanager.getOpenGames().size() > 0 && !(gamemanager.getGames().keySet().size() < 20)){
 				Game game = gameToJoin();
@@ -297,6 +299,7 @@ public class LobbyListener implements Listener, Runnable
 					p.teleport(game.getRedSpawn());
 					User player = usermanager.getUser(p);
 					player.addTimeOnRed();
+					player.changeLatestGame(game.getName());
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
@@ -304,6 +307,7 @@ public class LobbyListener implements Listener, Runnable
 					p.teleport(game.getBlueSpawn());
 					User player = usermanager.getUser(p);
 					player.addTimeOnBlue();
+					player.changeLatestGame(game.getName());
 				}
 			}else if (gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
 				ArrayList<Player> redTeam = redTeam();
@@ -323,12 +327,14 @@ public class LobbyListener implements Listener, Runnable
 					p.teleport(game.getRedSpawn());
 					User player = usermanager.getUser(p);
 					player.addTimeOnRed();
+					player.changeLatestGame(game.getName());
 				}
 				for(Player p : blueTeam){
 					User player = usermanager.getUser(p);
 					player.addTimeOnBlue();
 					game.addBluePlayer(p.getName());
 					p.teleport(game.getBlueSpawn());
+					player.changeLatestGame(game.getName());
 				}
 			}
 		}

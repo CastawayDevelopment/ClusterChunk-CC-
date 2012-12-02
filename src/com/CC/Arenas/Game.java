@@ -11,17 +11,21 @@ import org.bukkit.entity.Player;
 public class Game
 {
 	
-    
+    String name;
     ArrayList<String> redTeam;
     ArrayList<String> blueTeam;
     boolean regenerated;
     private GameManager gm;
 	
-    public Game(GameManager instance)
+    public Game(GameManager instance, String name)
     {
     	gm = instance;
         redTeam = new ArrayList<String>();
         blueTeam = new ArrayList<String>();
+    }
+    
+    public String getName(){
+    	return this.name;
     }
     
     public ArrayList<String> getPlayers()

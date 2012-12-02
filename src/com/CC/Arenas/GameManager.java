@@ -37,7 +37,7 @@ public class GameManager
         {
             return false;
         }
-        Game g = new Game(this);
+        Game g = new Game(this, name);
         this.games.put(name, g);
         worldgen.newMap(name);
         return true;
