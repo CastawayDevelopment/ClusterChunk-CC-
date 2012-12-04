@@ -55,5 +55,18 @@ public class Storage {
     	}
     	
     }
+    //Can return null
+    public Party getParty(Player player){
+    	Party party = null;
+    	for(Party p : parties.values()){
+    		if(p.getMembers().contains(player.getName())){
+    			party = p;
+    		}
+    		
+    	}
+    	
+    	return party;
+    	
+    }
         
 }
