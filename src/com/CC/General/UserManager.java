@@ -166,6 +166,14 @@ public class UserManager
     **//*
     private void savePlayer(User user)
     {
+        int p = user.getPoints();
+        int rep = user.getReputation();
+        int d = user.getDeaths();
+        ArrayList<String> f = user.getFriends();
+        ArrayList<String> e = user.getEnemies();
+        int k = user.getKills();
+        int b = user.getTimesPlayedOnBlueTeam();
+        int r = user.getTimesPlayedOnRedTeam();
         // Initializing variables, setting reputation to 10 (as standard, might change)   
         try
         {
@@ -174,25 +182,25 @@ public class UserManager
             {
                 // Update
                 int id = players.getInt("id"); // Might want to store this for faster processing later on
-                ResultSet rep = main.getConnection().query("SELECT `reputation` FROM `reputation` WHERE player_id = "+id+";");
-                if(rep.next())
+                try
                 {
-                    reputation = rep.getInt("reputation");
+                    main.getConnection().query("UPDATE `reputation` SET `reputation` = "+rep+" WHERE player_id = "+id+";");
                 }
-                else
+                catch(SQLException ex)
                 {
+                    try
+                    {
+                        main.getConnection().query("INSERT INTO `reputation`(`player_id`, `reputation`) VALUES("+rep+", "+id+");");
+                    }
+                    catch(SQLException exc)
+                    {
+                         // Totally failed
+                         main.log.severe(exc.getMessage());
+                    }
                 }
-                rep.close(); // Freeing the memory, just in case
-                ResultSet stats = main.getConnection().query("SELECT `points` AS p, `kills` AS k, `deaths` AS d, `onRed` AS r, `onBlue` AS b FROM `stats` WHERE player_id = "+id+";");
-                if(stats.next())
-                {
-                    points = stats.getInt("p");
-                    deaths = stats.getInt("d");
-                    kills = stats.getInt("k");
-                    red = stats.getInt("r");
-                    blue = stats.getInt("b");
-                }
-                stats.close();
+                
+                
+                
                 ResultSet friends = main.getConnection().query("SELECT `rel_id` as fid, `isfoe` FROM `friends` "
                                                               +"WHERE id = "+id+" INNER JOIN `friends` "
                                                               +"ON friends.player_id = (SELECT `player_id` FROM `friends` WHERE `rel_id` = fid AND player_id = "+id+");");
@@ -224,7 +232,7 @@ public class UserManager
             }
             else
             {
-                // not found
+                // not found, insert
             }
         }
         catch(SQLException ex)
@@ -232,28 +240,6 @@ public class UserManager
             // log it. It failed!
             // Actually, might not log it
         }
-		user.changePoints(points);
-		user.changeReputation(reputation);
-		user.setDeaths(deaths);
-		user.setFriendsList(friends);
-		user.setFriendRequestsPendingList(/*Get from MySQL/); // Remove this from User.java
-		user.setEnemiesList(enemies);
-		user.setKills(kills);
-		user.setTimeOnBlue(blue);
-		user.setTimesOnRed(red);
-        
-        /**
-			 * Make a chart for each User in MySQL containing the following information
-			 * The player -- Use p.getPlayer();
-			 * The LatestGame -- Use p.getLatestGame();
-			 * The player's points -- Use p.getPoints();
-			 * The player's reputation -- Use p.getReputation();
-			 * The player's deaths -- Use p.getDeaths();
-			 * The player's kills -- Use p.getKills();
-			 * The player's friends list -- Use p.getFriends();
-			 * The player's Times played on the blue team -- Use p.getTimesPlayedOnBlueTeam();
-			 * The player's Times player on the red team -- Use p.getTimesPlayedOnRedTeam();
-			 /
-	}*/
-	
+	}
+	*/
 }
