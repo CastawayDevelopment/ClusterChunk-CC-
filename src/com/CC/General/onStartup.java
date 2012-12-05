@@ -21,8 +21,8 @@ import org.bukkit.command.CommandExecutor;
  {
 		 
 		 
-		public static boolean debugmode;
-	 	public LobbyListener ll;
+        public static boolean debugmode;
+        public LobbyListener ll;
         private GameManager gm;
         private Storage parties;
         private MySQL con;

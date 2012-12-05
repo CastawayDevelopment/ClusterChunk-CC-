@@ -1,11 +1,8 @@
 package com.CC.General;
 
 import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import com.CC.Arenas.Game;
 
 public class User 
 {
@@ -18,120 +15,141 @@ public class User
 	int timeOnBlue;
 	String latestGame;
 	ArrayList<String> friends;
-	ArrayList<String> enemy;
+	ArrayList<String> enemies;
 	
-	public User(Player p){
+	public User(Player p)
+        {
 		friends = new ArrayList<String>();
-		player = p.getName();
-		
+                enemies = new ArrayList<String>();
+		player = p.getName();	
 	}
 	
-	public int getPoints(){
+	public int getPoints()
+        {
 		return PlayerPoints;
 	}
+        
 	//For loading and Normal Use
-	public void changePoints(int points){
+	public void changePoints(int points)
+        {
 		PlayerPoints = points;
 	}
 	
-	public int getReputation(){
+	public int getReputation()
+        {
 		return Reputation;
 	}
 	
 	//For loading and normal use
-	public void changeReputation(int changedReputation){
+	public void changeReputation(int changedReputation)
+        {
 		Reputation = changedReputation;
 	}
 	
-	public int getKills(){
+	public int getKills()
+        {
 		return Kills;
 	}
+        
 	//For loading
-	public void setKills(int amount){
+	public void setKills(int amount)
+        {
 		Kills = amount;
 	}
 	
-	public void addKill(){
-		int temp = Kills + 1;
-		Kills = temp;
+	public void addKill()
+        {
+		Kills++;
 	}
 	
-	public int getDeaths(){
+	public int getDeaths()
+        {
 		return Deaths;
 	}
+        
 	//For loading 
-	public void setDeaths(int amount){
+	public void setDeaths(int amount)
+        {
 		Deaths = amount;
 	}
 	
-	public void addDeath(){
-		int temp = Deaths + 1;
-		Deaths = temp;
+	public void addDeath()
+        {
+		Deaths++;
 	}
 	
-	public int getTimesPlayedOnRedTeam(){
+	public int getTimesPlayedOnRedTeam()
+        {
 		return timeOnRed;
 	}
 	
 	public void addTimeOnRed(){
-		int temp = timeOnRed + 1;
-		timeOnRed = temp;
+		timeOnRed++;
 	}
 	//For loading 
-	public void setTimesOnRed(int times){
+	public void setTimesOnRed(int times)
+        {
 		timeOnRed = times;
 	}
 	
-	public int getTimesPlayedOnBlueTeam(){
+	public int getTimesPlayedOnBlueTeam()
+        {
 		return timeOnBlue;
 	}
 	
-	public void addTimeOnBlue(){
-		int temp = timeOnBlue + 1;
-		timeOnBlue = temp;
+	public void addTimeOnBlue()
+        {
+		timeOnBlue++;
 	}
 	//For loading 
 	public void setTimeOnBlue(int times){
 		timeOnBlue = times;
 	}
 	
-	public String getLatestGame(){
+	public String getLatestGame()
+        {
 		return latestGame;
 	}
 	//For loading normal use 
-	public void changeLatestGame(String game){
+	public void changeLatestGame(String game)
+        {
 		latestGame = game;
 	}
 	
 	
-	public ArrayList<String> getFriends(){
+	public ArrayList<String> getFriends()
+        {
 		return friends;
 	}
 	//for Loading 
-	public void setFriendsList(ArrayList<String> friendslist){
+	public void setFriendsList(ArrayList<String> friendslist)
+        {
 		friends = friendslist;
 	}
 	
-	public void addFriend(String friendName){
+	public void addFriend(String friendName)
+        {
 		friends.add(friendName);
 	}
 	
 	
-	public ArrayList<String> getEnemies(){
-		return enemy;
+	public ArrayList<String> getEnemies()
+        {
+		return enemies;
 	}
 	//for Loading 
-	public void setEnemiesList(ArrayList<String> enemyList){
-		enemy = enemyList;
+	public void setEnemiesList(ArrayList<String> enemyList)
+        {
+		enemies = enemyList;
 	}
 	
-	public void addEnemy(String enemyName){
-		enemy.add(enemyName);
+	public void addEnemy(String enemyName)
+        {
+		enemies.add(enemyName);
 	}
-	
-	
-	
-	public Player getPlayer(){
+        
+	public Player getPlayer()
+        {
 		return Bukkit.getServer().getPlayer(player);
 	}
 
