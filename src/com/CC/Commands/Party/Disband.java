@@ -16,7 +16,7 @@ public class Disband {
 		
 	}
 	
-	public void Disband(Player from){
+	public void Disbandparty(Player from){
 		if(partymanager.getParty(from) != null){
 			partymanager.disbandParty(from, partymanager.getParty(from));
 		}

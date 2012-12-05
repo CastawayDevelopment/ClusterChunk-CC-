@@ -19,6 +19,7 @@ public class PartyCommands implements CommandExecutor
     private StartBlue startBlue;
     private Join join;
     private Create create;
+    private Disband disband;
 
     public PartyCommands(onStartup plugin)
     {
@@ -29,6 +30,7 @@ public class PartyCommands implements CommandExecutor
         startBlue = new StartBlue(plugin);
         join = new Join(plugin);
         create = new Create(plugin);
+        disband = new Disband(plugin);
     }
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) { 
@@ -94,7 +96,10 @@ public class PartyCommands implements CommandExecutor
                     	String partyName = args[1];
                     	
                         create.create(player, partyName);
-                    } 
+                    }
+                    else if (args[0].equalsIgnoreCase("Disband")){
+                    	disband.Disbandparty(player);
+                    }
                     
                 }
 			}
