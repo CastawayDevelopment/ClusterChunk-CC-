@@ -43,6 +43,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
     		if(event.getDamager() instanceof Player){
     			User killer = usermanager.getUser((Player)event.getDamager());
     			killer.addKill();
+    			usermanager.updatePlayer((Player)event.getEntity(), "stats");
     		}
     	}
     }
@@ -53,6 +54,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 			User player = usermanager.getUser(peter);
 		if(gamemanager.isInGame(peter.getName())){
 			player.addDeath();
+			usermanager.updatePlayer(peter, "stats");
 			if(peter.getBedSpawnLocation() != null){
 					playergame = gamemanager.getGameByPlayer(peter);
 					Team playersteam = playergame.getTeam(peter);
@@ -145,11 +147,13 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 		int killedcurrentpoints = killedcurrent.getPoints();
 		int killercurrentpoints = killercurrent.getPoints();
 		if(killedcurrentpoints > 4){
-			killedcurrent.changePoints(killedcurrentpoints - killedcurrentpoints/killercurrentpoints);	
+			killedcurrent.changePoints(killedcurrentpoints - killedcurrentpoints/killercurrentpoints);
+			usermanager.updatePlayer(killed, "stats");
 		}
 		//A bit random but thats the way it should be :D 
 		int plusscore = (killedcurrentpoints/killercurrentpoints + 1)*killercurrentpoints/killedcurrentpoints + 3;
 		killercurrent.changePoints(killercurrentpoints + plusscore);
+		usermanager.updatePlayer(killer, "stats");
 		return 0;
 	}
 	
@@ -159,6 +163,9 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 	public void onJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		usermanager.createUser(player);
+		User user = new User(player);
+		user.addDeath();
+		usermanager.updatePlayer(player, "stats");
 	}
 	
 	
