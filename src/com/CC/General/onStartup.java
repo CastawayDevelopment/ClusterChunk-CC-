@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.CC.Lobby.LobbyListener;
+import com.CC.Listeners.*;
 import com.CC.Arenas.GameManager;
 import com.CC.Commands.*;
 import com.CC.Party.Storage;
@@ -23,6 +23,7 @@ import org.bukkit.command.CommandExecutor;
 		 
         public static boolean debugmode;
         public LobbyListener ll;
+        public PlayerAuthListener pal;
         private GameManager gm;
         private Storage parties;
         private MySQL con;
@@ -47,10 +48,12 @@ import org.bukkit.command.CommandExecutor;
             gm = new GameManager(this);
             parties = new Storage();
             ll = new LobbyListener(this);
+            pal = new PlayerAuthListener(this);
             worldgen = new WorldGeneration(this);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
+            pm.registerEvents(pal, this);
             getLogger().info("Plugin Is Enabled");
             getServer().getPluginManager().registerEvents(this,this);
             

@@ -1,0 +1,17 @@
+name: ClusterChunk
+main: com.CC.General.onStartup
+version: 1.2
+commands:
+  party:
+    description: the party command
+    usage: test
+    permission: test.testietest
+  friend:
+    description: Adds friends
+    usage: /<command> [player]
+  enemy:
+    description: Adds enemies
+    usage: /<command> [enemy]
+  relation:
+    description: shows your relations whit other players
+    usage: /<command>

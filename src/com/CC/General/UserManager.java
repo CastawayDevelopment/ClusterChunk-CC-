@@ -77,8 +77,10 @@ public class UserManager
 
             ArrayList<String> friends = new ArrayList<String>();
             ArrayList<String> enemies = new ArrayList<String>();
-
-             try
+            
+            boolean isNew = false;
+            
+            try
             {
                 ResultSet players = main.getConnection().query("SELECT `id` FROM players WHERE name = '"+player+"'");
                 if(players.next())
@@ -135,7 +137,7 @@ public class UserManager
                 }
                 else
                 {
-                    // not found
+                    isNew = true;
                 }
             }
             catch(SQLException ex)
@@ -152,6 +154,22 @@ public class UserManager
             user.setKills(kills);
             user.setTimeOnBlue(blue);
             user.setTimesOnRed(red);
+            if(isNew)
+            {
+                main.log.info("Uploading new player data to MySQL");
+                try
+                {
+                    main.getConnection().query("INSERT INTO players(`name`) VALUES ('"+player+"');");
+                }
+                catch(SQLException ex)
+                {
+                    main.log.info("Failed to add new player");
+                    return;
+                }
+                updatePlayer(user, "stats");
+                updatePlayer(user, "reputation");
+                updatePlayer(user, "relation");
+            }
 	}
 	
     // Should be on onQuit and onDisable, just saying
@@ -159,7 +177,7 @@ public class UserManager
     {
         for(User p : players.values())
         {
-            //savePlayer(p);
+            
         }
     }
     
@@ -247,7 +265,15 @@ public class UserManager
         
         public void updatePlayer(Player p, final String table)
         {
-            final User user = getUser(p);
+            User u = getUser(p);
+            if(u != null)
+            {
+                updatePlayer(u, table);
+            }
+        }
+        
+        public void updatePlayer(final User user, final String table)
+        {
             final MySQL con = main.getConnection();
             Bukkit.getScheduler().scheduleAsyncDelayedTask(main, new Runnable()
             {
@@ -256,7 +282,7 @@ public class UserManager
                 {
                     try
                     {
-                        ResultSet player = con.query("SELECY * FROM players WHERE name = '"+user.getPlayer().getName()+"'");
+                        ResultSet player = con.query("SELECT * FROM players WHERE name = '"+user.getPlayer().getName()+"'");
                         if(!player.next())
                         {
                             return;
@@ -267,7 +293,16 @@ public class UserManager
                         if(table.equals("reputation"))
                         {
                             int rep = user.getReputation();
-                            con.query("UPDATE `reputation` SET `reputation` = "+rep+" WHERE player_id = "+id+";");
+                            ResultSet repset = con.query("SELECT * FROM `reputation` WHERE `player_id` = "+id+";");
+                            if(repset.next())
+                            {
+                                con.query("UPDATE `reputation` SET `reputation` = "+rep+" WHERE player_id = "+id+";");
+                            }
+                            else
+                            {
+                                con.query("INSERT INTO `reputation`(`player_id`,`reputation`) VALUES("+id+", "+rep+");");
+                            }
+                            repset.close();
                         }
                         else if(table.equals("stats"))
                         {
@@ -276,7 +311,16 @@ public class UserManager
                             int d = user.getDeaths();
                             int r = user.getTimesPlayedOnRedTeam();
                             int b = user.getTimesPlayedOnBlueTeam();
-                            con.query("UPDATE `stats` SET points = "+p+", kills = "+k+", deaths = "+d+", onRed = "+r+", onBlue = "+b+" WHERE player_id = "+id+";");
+                            ResultSet statset = con.query("SELECT * FROM `stats` WHERE `player_id` = "+id+";");
+                            if(statset.next())
+                            {
+                                con.query("UPDATE `stats` SET points = "+p+", kills = "+k+", deaths = "+d+", onRed = "+r+", onBlue = "+b+" WHERE player_id = "+id+";");
+                            }
+                            else
+                            {
+                                con.query("INSERT INTO `stats`(`player_id`,`points`, `kills`, `deaths`, `onRed`, `onBlue`) VALUES("+id+","+p+","+k+","+d+","+r+","+b+");");   
+                            }
+                            statset.close();
                         }
                         else if(table.equals("relation"))
                         {
@@ -289,7 +333,8 @@ public class UserManager
                     }
                     catch(SQLException ex)
                     {
-                        // Exception. Should not happen...
+                        main.log.info("Failed to update "+table);
+                        ex.printStackTrace();
                     }
                 }
             }, 0L);
