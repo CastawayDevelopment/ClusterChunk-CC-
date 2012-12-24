@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class UserManager 
 {
@@ -275,7 +276,7 @@ public class UserManager
         public void updatePlayer(final User user, final String table)
         {
             final MySQL con = main.getConnection();
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(main, new Runnable()
+            new BukkitRunnable()
             {
                 @Override
                 public void run()
@@ -337,6 +338,6 @@ public class UserManager
                         ex.printStackTrace();
                     }
                 }
-            }, 0L);
+            }.runTaskLaterAsynchronously(main, 0L);
         }
 }
