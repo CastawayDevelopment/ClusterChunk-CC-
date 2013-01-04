@@ -13,6 +13,7 @@ import com.CC.Arenas.GameManager;
 import com.CC.Commands.*;
 import com.CC.Party.Storage;
 import com.CC.WorldGeneration.WorldGeneration;
+import com.CC.Messages.PlayerMessages;
 import com.CC.MySQL.MySQL;
 import org.bukkit.command.CommandExecutor;
 
@@ -30,6 +31,7 @@ import org.bukkit.command.CommandExecutor;
         public Logger log;
         private UserManager um;
         private WorldGeneration worldgen;
+        private PlayerMessages messages;
 		 
         public onStartup()
         {
@@ -40,16 +42,18 @@ import org.bukkit.command.CommandExecutor;
         public void onEnable() 
         {
             this.log = this.getLogger();
-            getCommand("party").setExecutor(new PartyCommands(this));
-            CommandExecutor relationsCommand = new RelationCommand(this);
-            getCommand("friend").setExecutor(relationsCommand);
-            getCommand("enemy").setExecutor(relationsCommand);
-            getCommand("relation").setExecutor(relationsCommand);
             gm = new GameManager(this);
             parties = new Storage();
             ll = new LobbyListener(this);
             pal = new PlayerAuthListener(this);
             worldgen = new WorldGeneration(this);
+            messages = new PlayerMessages();
+            getCommand("party").setExecutor(new PartyCommands(this));
+            CommandExecutor relationsCommand = new RelationCommand(this);
+            getCommand("friend").setExecutor(relationsCommand);
+            getCommand("enemy").setExecutor(relationsCommand);
+            getCommand("relation").setExecutor(relationsCommand);
+            getCommand("endgame").setExecutor(new StaffCommands(this));
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
@@ -179,6 +183,10 @@ import org.bukkit.command.CommandExecutor;
             
             return  getConnection().checkTable("players") && getConnection().checkTable("reputation")
                     && getConnection().checkTable("stats") && getConnection().checkTable("relation");
+        }
+        
+        public PlayerMessages getMessages(){
+        	return this.messages;
         }
  }
 	

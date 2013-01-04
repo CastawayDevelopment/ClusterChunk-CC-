@@ -30,6 +30,10 @@ public class GameManager
     {
         return this.games.get(name);
     }
+    public boolean isGame(String name)
+    {
+        return this.games.containsKey(name);
+    }
     
     public boolean createGame(String name)
     {
@@ -113,10 +117,41 @@ public class GameManager
     		
     	}
     }
+    
+    private boolean endGame(Game game, String reason){
+    	for(String p : game.getPlayers()){
+    		Player player = Bukkit.getPlayer(p);
+    		//Put in method to teleport to lobby world 
+    	}
+    	
+    		for(Player p : game.getBlueTeamPlayers()){
+    			p.sendMessage("Game has been ended by an administrator for the following reason" + reason);
+    		}
+    		for(Player p : game.getRedTeamPlayers()){
+    			p.sendMessage("Game has been ended by an administrator for the following reason" + reason);
+    		}
+    		return true;
+    		
+    	}
+    
+    
+    
+    
     //Also regenerates arena :D 
     public boolean endGame(String gameName, Team winningTeam){
     	if(!games.containsKey(gameName)) return false;
     		if(endGame(getGame(gameName), winningTeam)){
+    			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
+    			worldgen.newMap(gameName);
+    			return true;
+    		}else{
+    			return false;
+    	}
+    }
+    
+    public boolean endGame(String gameName, String reason){
+    	if(!games.containsKey(gameName)) return false;
+    		if(endGame(getGame(gameName), reason)){
     			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
     			worldgen.newMap(gameName);
     			return true;
