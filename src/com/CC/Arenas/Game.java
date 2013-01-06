@@ -217,6 +217,7 @@ public class Game
 		
 		if(b){
 			started = true;
+			timer(false);
 		}else{
 			gm.endGame(name, getWinningTeam());
 		}
