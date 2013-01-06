@@ -1,14 +1,16 @@
 package com.CC.Tags;
 
+import net.minecraft.server.v1_4_6.Packet20NamedEntitySpawn;
+import net.minecraft.server.v1_4_6.Packet29DestroyEntity;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.List;
+
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import net.minecraft.server.Packet20NamedEntitySpawn;
-import net.minecraft.server.Packet29DestroyEntity;
-import org.bukkit.craftbukkit.entity.CraftHumanEntity;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import com.CC.Arenas.Game;
 import com.CC.Arenas.Team;
@@ -72,8 +74,8 @@ public class TagUtil
             {
                 return;
             }
-            ((CraftPlayer)t).getHandle().netServerHandler.sendPacket(destroy);
-            ((CraftPlayer)t).getHandle().netServerHandler.sendPacket(create);
+            ((CraftPlayer)t).getHandle().playerConnection.sendPacket(destroy);
+            ((CraftPlayer)t).getHandle().playerConnection.sendPacket(create);
         }
     }
 

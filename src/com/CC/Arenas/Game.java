@@ -7,6 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.CC.General.onStartup;
 
 public class Game
 {
@@ -15,11 +18,21 @@ public class Game
     ArrayList<String> redTeam;
     ArrayList<String> blueTeam;
     boolean regenerated;
+    public boolean started;
     private GameManager gm;
+    int TimeofGame;
+    int WarningTime;
+    onStartup plugin;
 	
-    public Game(GameManager instance, String name)
+    public Game(String name, onStartup instance)
     {
-    	gm = instance;
+    	TimeofGame = plugin.getConfig().getInt("GameSettings.TimePerGame", 600);
+    	plugin.getConfig().set("GameSettings.TimePerGame", TimeofGame);
+    	WarningTime = plugin.getConfig().getInt("GameSettings.TimeBeforeGameStarts", 120);
+    	plugin.getConfig().set("GameSettings.TimeBeforeGameStarts", WarningTime);
+    	started = false;
+    	plugin = instance;
+    	gm = plugin.getGameManager();
         redTeam = new ArrayList<String>();
         blueTeam = new ArrayList<String>();
     }
@@ -130,22 +143,98 @@ public class Game
     
     
     public Location getRedSpawn(){
-    	return Bukkit.getServer().getWorld("lobby").getSpawnLocation(); //Just for now until the actual spawn locations are found;
+    	return new Location(Bukkit.getServer().getWorld(name), -866, 143, -762); //Just for now until the actual spawn locations are found;
     	/**
     	 * When the new spawn locations are found it will be World == Arena Name and than the location of the spawn for the current team
     	 */
     }
     public Location getBlueSpawn(){
-    	return Bukkit.getServer().getWorld("lobby").getSpawnLocation(); //Just for now until the actual spawn locations are found;
+    	return new Location(Bukkit.getServer().getWorld(name), -936, 143, -762); //Just for now until the actual spawn locations are found;
     	/**
     	 * When the new spawn locations are found it will be World == Arena Name and than the location of the spawn for the current team
     	 */
     }
     
+    public void timer(Boolean countdownorGamestart){
+    	if(countdownorGamestart){
+    		new BukkitRunnable() {
+    			int i = WarningTime;
+    			public void run() {
+    	    	
+    				if(i == WarningTime){
+    					for(String s : getPlayers()){
+    						Bukkit.getPlayer(s).sendMessage(ChatColor.GREEN + "" + WarningTime/60 + " minutes until the game begins");
+    					}
+    					i--;
+    				}else if(i <= 10){ 
+    	    	
+    					countDown(" until the game begins", true);
+    					this.cancel();
+    				}else{
+    					i--;
+    				}
+    	      	
+    			}
+    		}.runTaskTimer(plugin, 20, WarningTime*20);
+    	}else{
+    		new BukkitRunnable() {
+    			int i = TimeofGame;
+    			public void run() {
+    	    	
+    				if(i == TimeofGame/2){
+    					for(String s : getPlayers()){
+    						Bukkit.getPlayer(s).sendMessage(ChatColor.GREEN + "The game has reached half time there are " + TimeofGame/2 + " minutes left");
+    					}
+    					i--;
+    				}else if(i <= 10){ 
+    	    	
+    					countDown(" until the game ends", false);
+    					this.cancel();
+    				}else{
+    					i--;
+    				}
+    	      	
+    			}
+    		}.runTaskTimer(plugin, 20, WarningTime*20);
+    		
+    	}
+    	
+    }
+
+	public void countDown(final String string, Boolean b) {
+		
+		new BukkitRunnable(){
+			
+			int i = 10;
+			public void run(){
+				
+				for(String s : getPlayers()){
+					Bukkit.getPlayer(s).sendMessage(ChatColor.GREEN + "" + i + string);
+				}
+				i--;
+			}
+		}.runTaskTimer(plugin, 20, 200);
+		
+		if(b){
+			started = true;
+		}else{
+			gm.endGame(name, getWinningTeam());
+		}
     	
    }
+	
+	public Team getWinningTeam(){
+		if(getBlueTeamPlayers().size() > getRedTeamPlayers().size()){
+			return Team.BLUE;
+		}else if(getBlueTeamPlayers().size() < getRedTeamPlayers().size()){
+			return Team.RED;
+		}else{
+			return Team.NONE;
+		}
+	}
+	
     
-    
+}   
     
     
     

@@ -1,7 +1,5 @@
 package com.CC.Gameplay;
 
-import java.util.HashMap;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,14 +27,13 @@ private GameManager gamemanager;
 private onStartup plugin;
 private Game playergame;
 private UserManager usermanager;
-private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>();
     public GameMechanics(onStartup instance) {
     	plugin = instance;
     	gamemanager = plugin.getGameManager();
     	usermanager = plugin.getUserManager();
 	}
 	
-    
+    //Updates player's death
     @EventHandler
     public void onDeath(EntityDamageByEntityEvent event){
     	if(event.getEntity() instanceof Player){
@@ -47,7 +44,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
     		}
     	}
     }
-	
+	//DeathMessages, updates player's stats, and spectates dead player
 	@EventHandler
 	public void spectateOnDeath(PlayerDeathEvent event){
 			Player peter = event.getEntity();
@@ -83,7 +80,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 			}
 		}
 	}
-	
+	//Stops crafting of beds
 	@EventHandler
 	public void noCraftBed(CraftItemEvent event){
 		ItemStack result = event.getCurrentItem();
@@ -94,7 +91,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 			}
 		}
 	}
-	
+	//Stops building of Nether portals
 	@EventHandler(priority=EventPriority.LOWEST)
 	  public void onPlayerInteract(PlayerInteractEvent event)
 	  {
@@ -109,7 +106,9 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 	           
 	    
 	  }
-
+	
+	
+		//Stops building of Ender portals
 	  @EventHandler(priority=EventPriority.LOWEST)
 	  public void enderBlockInteract(PlayerInteractEvent event)
 	  {
@@ -125,7 +124,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 	      
 	    }
 	  }
-	  
+	  //Stops glass enclosed structures from being accessed 
 	  @EventHandler
 	  public void onBlockBreak(BlockBreakEvent event){
 		  Player peter = event.getPlayer();
@@ -140,7 +139,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 	  }
 	  
 	  
-	  //Game Scoring Mechanics 
+	  //Calculates the killer and killed's score
 	public int calculateScoreOnKill(Player killer, Player killed){
 		User killedcurrent = usermanager.getUser(killed);
 		User killercurrent = usermanager.getUser(killer);
@@ -150,7 +149,7 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 			killedcurrent.changePoints(killedcurrentpoints - killedcurrentpoints/killercurrentpoints);
 			usermanager.updatePlayer(killed, "stats");
 		}
-		//A bit random but thats the way it should be :D 
+		
 		int plusscore = (killedcurrentpoints/killercurrentpoints + 1)*killercurrentpoints/killedcurrentpoints + 3;
 		killercurrent.changePoints(killercurrentpoints + plusscore);
 		usermanager.updatePlayer(killer, "stats");
@@ -158,16 +157,48 @@ private HashMap<String, Integer> playertoscores = new HashMap<String, Integer>()
 	}
 	
 	
-	//Out side of game
+	//Updates player profile when said player joins
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		usermanager.createUser(player);
 		User user = new User(player);
-		user.addDeath();
 		usermanager.updatePlayer(player, "stats");
 	}
 	
+	
+	//Stop block breaking when the game is not started 
+	@EventHandler
+	public void blockBreak(BlockBreakEvent event){
+		if(gamemanager.isInGame(event.getPlayer())){
+			if(!gamemanager.getGameByPlayer(event.getPlayer()).started){
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	
+	//Stops friendly fire and pvp before the game starts
+	@EventHandler
+	public void playerHit(EntityDamageByEntityEvent event){
+		if(event.getEntity() instanceof Player){
+			if(event.getDamager() instanceof Player){
+				Player player = (Player)event.getEntity();
+				Player damager = (Player)event.getDamager();
+				if(gamemanager.isInGame(player) && gamemanager.isInGame(damager)){
+					if(gamemanager.getGameByPlayer(player).started){
+						if(gamemanager.getGameByPlayer(player).getTeam(player).equals(gamemanager.getGameByPlayer(damager).getTeam(damager))){
+							damager.sendMessage("You may not hurt your own teammate");
+							event.setCancelled(true);
+						}
+					}else{
+						damager.sendMessage(" You may not hurt other players until the game starts");
+						event.setCancelled(true);
+					}
+				}
+			}
+		}
+	}
 	
 	
 	

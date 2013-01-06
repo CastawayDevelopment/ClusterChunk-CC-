@@ -41,7 +41,7 @@ public class GameManager
         {
             return false;
         }
-        Game g = new Game(this, name);
+        Game g = new Game(name, plugin);
         this.games.put(name, g);
         worldgen.newMap(name);
         return true;
@@ -106,7 +106,7 @@ public class GameManager
     			p.sendMessage("Sorry you lost");
     		}
     		return true;
-    	}else{
+    	}else if(team.equals(Team.RED)){
     		for(Player p : game.getBlueTeamPlayers()){
     			p.sendMessage("Sorry you lost");
     		}
@@ -115,6 +115,11 @@ public class GameManager
     		}
     		return true;
     		
+    	}else{
+    		for(String s : game.getPlayers()){
+    			Bukkit.getPlayer(s).sendMessage(" The game has ended in a draw");
+    		}
+    		return true;
     	}
     }
     
@@ -183,6 +188,10 @@ public class GameManager
     
     public void removePlayerFromGame(String string){
     	players.remove(string);
+    }
+    
+    public void startGameCount(Game game){ 
+    	
     }
     
 }

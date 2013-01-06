@@ -310,6 +310,7 @@ public class LobbyListener implements Listener, Runnable
 					player.changeLatestGame(game.getName());
 					usermanager.updatePlayer(p, "stats");
 				}
+				gamemanager.startGameCount(game);
 			}else if (gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
 				ArrayList<Player> redTeam = redTeam();
 				ArrayList<Player> blueTeam = blueTeam();
@@ -339,8 +340,11 @@ public class LobbyListener implements Listener, Runnable
 					player.changeLatestGame(game.getName());
 					usermanager.updatePlayer(p, "stats");
 				}
+				gamemanager.startGameCount(game);
 			}
 		}
+		
+		
 	}
 }
 	
