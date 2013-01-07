@@ -21,9 +21,14 @@ public class GameManager
     public GameManager(onStartup instance)
     {
     	plugin = instance;
-    	worldgen = plugin.getWorldGenerator();
+    	
+    	//worldgen = plugin.getWorldGenerator();
         this.games = new HashMap<String, Game>();
         this.players =  new HashMap<String, String>();
+    }
+    
+    public void setWorldGenerator(WorldGeneration world){
+    	worldgen = world;
     }
     
     public Game getGame(String name)
@@ -43,8 +48,11 @@ public class GameManager
         }
         Game g = new Game(name, plugin);
         this.games.put(name, g);
-        worldgen.newMap(name);
         return true;
+    }
+    
+    public void createMap(String name, Game g){
+    	worldgen.newMap(name, g);
     }
     
     public boolean removeGame(String name)
@@ -147,7 +155,7 @@ public class GameManager
     	if(!games.containsKey(gameName)) return false;
     		if(endGame(getGame(gameName), winningTeam)){
     			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
-    			worldgen.newMap(gameName);
+    			worldgen.newMap(gameName, getGame(gameName));
     			return true;
     		}else{
     			return false;
@@ -158,7 +166,7 @@ public class GameManager
     	if(!games.containsKey(gameName)) return false;
     		if(endGame(getGame(gameName), reason)){
     			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
-    			worldgen.newMap(gameName);
+    			worldgen.newMap(gameName, getGame(gameName));
     			return true;
     		}else{
     			return false;

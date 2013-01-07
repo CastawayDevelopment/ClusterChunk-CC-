@@ -275,7 +275,7 @@ public class LobbyListener implements Listener, Runnable
 				for(Player p : redTeam()){
 					game.addRedPlayer(p.getName());
 					quedplayers.remove(p);
-					p.teleport(game.getRedSpawn());
+					p.teleport(game.getRedSpawn(game.getName()));
 					User player = usermanager.getUser(p);
 					player.addTimeOnRed();
 					player.changeLatestGame(game.getName());
@@ -284,7 +284,7 @@ public class LobbyListener implements Listener, Runnable
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
 					quedplayers.remove(p);
-					p.teleport(game.getBlueSpawn());
+					p.teleport(game.getBlueSpawn(game.getName()));
 					User player = usermanager.getUser(p);
 					player.addTimeOnBlue();
 					player.changeLatestGame(game.getName());
@@ -295,22 +295,26 @@ public class LobbyListener implements Listener, Runnable
 				for(Player p : redTeam()){
 					game.addRedPlayer(p.getName());
 					quedplayers.remove(p);
-					p.teleport(game.getRedSpawn());
+					p.teleport(game.getRedSpawn(game.getName()));
 					User player = usermanager.getUser(p);
 					player.addTimeOnRed();
 					player.changeLatestGame(game.getName());
 					usermanager.updatePlayer(p, "stats");
+					//System.out.println("Adding " + p.getName() + " to red");
 				}
 				for(Player p : blueTeam()){
 					game.addBluePlayer(p.getName());
 					quedplayers.remove(p);
-					p.teleport(game.getBlueSpawn());
+					p.teleport(game.getBlueSpawn(game.getName()));
 					User player = usermanager.getUser(p);
 					player.addTimeOnBlue();
 					player.changeLatestGame(game.getName());
 					usermanager.updatePlayer(p, "stats");
+					//System.out.println("Adding " + p.getName() + " to blue");
 				}
+				//System.out.println(game.getPlayers());
 				gamemanager.startGameCount(game);
+				//If there are no open games and there aren't already 20 games
 			}else if (gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
 				ArrayList<Player> redTeam = redTeam();
 				ArrayList<Player> blueTeam = blueTeam();
@@ -326,20 +330,22 @@ public class LobbyListener implements Listener, Runnable
 				Game game = gamemanager.getGame(arenaName);
 				for(Player p : redTeam){
 					game.addRedPlayer(p.getName());
-					p.teleport(game.getRedSpawn());
 					User player = usermanager.getUser(p);
 					player.addTimeOnRed();
 					player.changeLatestGame(game.getName());
 					usermanager.updatePlayer(p, "stats");
+					//System.out.println("Adding " + p.getName() + " to red");
 				}
 				for(Player p : blueTeam){
 					User player = usermanager.getUser(p);
 					player.addTimeOnBlue();
 					game.addBluePlayer(p.getName());
-					p.teleport(game.getBlueSpawn());
 					player.changeLatestGame(game.getName());
 					usermanager.updatePlayer(p, "stats");
+					//System.out.println("Adding " + p.getName() + " to blue");
 				}
+				gamemanager.createMap(arenaName, game);
+				//System.out.println(game.getPlayers());
 				gamemanager.startGameCount(game);
 			}
 		}

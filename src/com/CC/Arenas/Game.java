@@ -26,12 +26,10 @@ public class Game
 	
     public Game(String name, onStartup instance)
     {
-    	TimeofGame = plugin.getConfig().getInt("GameSettings.TimePerGame", 600);
-    	plugin.getConfig().set("GameSettings.TimePerGame", TimeofGame);
-    	WarningTime = plugin.getConfig().getInt("GameSettings.TimeBeforeGameStarts", 120);
-    	plugin.getConfig().set("GameSettings.TimeBeforeGameStarts", WarningTime);
-    	started = false;
     	plugin = instance;
+    	TimeofGame = plugin.getGameTime();
+    	WarningTime = plugin.getWarningTime();
+    	started = false;
     	gm = plugin.getGameManager();
         redTeam = new ArrayList<String>();
         blueTeam = new ArrayList<String>();
@@ -128,32 +126,38 @@ public class Game
     }
     
     public void addRedPlayer(String playername){
-    	redTeam.add(playername);
     	Player player = Bukkit.getServer().getPlayer(playername);
+    	redTeam.add(playername);
     	player.sendMessage(ChatColor.RED + "You have succesfully join the red team!");
     	gm.playerJoinGame(playername);
     }
     
     public void addBluePlayer(String playername){
-    	blueTeam.add(playername);
     	Player player = Bukkit.getServer().getPlayer(playername);
+    	blueTeam.add(playername);
     	player.sendMessage(ChatColor.BLUE + "You have succesfully join the blue team!");
     	gm.playerJoinGame(playername);
     }
     
     
-    public Location getRedSpawn(){
-    	return new Location(Bukkit.getServer().getWorld(name), -866, 143, -762); //Just for now until the actual spawn locations are found;
+    public Location getRedSpawn(String WorldName){
+    	
+    		return new Location(Bukkit.getServer().getWorld(WorldName), -866, 143, -762); 
+    	}
+    	 //Just for now until the actual spawn locations are found;
     	/**
     	 * When the new spawn locations are found it will be World == Arena Name and than the location of the spawn for the current team
     	 */
-    }
-    public Location getBlueSpawn(){
-    	return new Location(Bukkit.getServer().getWorld(name), -936, 143, -762); //Just for now until the actual spawn locations are found;
+    
+    public Location getBlueSpawn(String WorldName){
+    	
+    		return new Location(Bukkit.getServer().getWorld(WorldName), -936, 143, -762); 
+    	}
+    	 //Just for now until the actual spawn locations are found;
     	/**
     	 * When the new spawn locations are found it will be World == Arena Name and than the location of the spawn for the current team
     	 */
-    }
+    
     
     public void timer(Boolean countdownorGamestart){
     	if(countdownorGamestart){
@@ -163,7 +167,7 @@ public class Game
     	    	
     				if(i == WarningTime){
     					for(String s : getPlayers()){
-    						Bukkit.getPlayer(s).sendMessage(ChatColor.GREEN + "" + WarningTime/60 + " minutes until the game begins");
+    						plugin.getServer().getPlayer(s).sendMessage(ChatColor.GREEN + "" + WarningTime/60 + " minutes until the game begins");
     					}
     					i--;
     				}else if(i <= 10){ 
@@ -183,7 +187,7 @@ public class Game
     	    	
     				if(i == TimeofGame/2){
     					for(String s : getPlayers()){
-    						Bukkit.getPlayer(s).sendMessage(ChatColor.GREEN + "The game has reached half time there are " + TimeofGame/2 + " minutes left");
+    						plugin.getServer().getPlayer(s).sendMessage(ChatColor.GREEN + "The game has reached half time there are " + TimeofGame/2 + " minutes left");
     					}
     					i--;
     				}else if(i <= 10){ 

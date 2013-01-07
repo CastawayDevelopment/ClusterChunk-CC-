@@ -32,6 +32,8 @@ import org.bukkit.command.CommandExecutor;
         private UserManager um;
         private WorldGeneration worldgen;
         private PlayerMessages messages;
+        int TimeofGame;
+        int WarningTime;
 		 
         public onStartup()
         {
@@ -42,12 +44,16 @@ import org.bukkit.command.CommandExecutor;
         public void onEnable() 
         {
             this.log = this.getLogger();
-            gm = new GameManager(this);
             parties = new Storage();
-            ll = new LobbyListener(this);
+            um = new UserManager(this);
             pal = new PlayerAuthListener(this);
-            worldgen = new WorldGeneration(this);
             messages = new PlayerMessages();
+            //gm needs to be made before worldgen
+            gm = new GameManager(this);
+            //also worldgen needs to be made before gm
+            worldgen = new WorldGeneration(this);
+            gm.setWorldGenerator(worldgen);
+            ll = new LobbyListener(this);
             getCommand("party").setExecutor(new PartyCommands(this));
             CommandExecutor relationsCommand = new RelationCommand(this);
             getCommand("friend").setExecutor(relationsCommand);
@@ -69,6 +75,11 @@ import org.bukkit.command.CommandExecutor;
             String database = getConfig().getString("mysql.database");
             String username = getConfig().getString("mysql.username");
             String password = getConfig().getString("mysql.password");
+            TimeofGame = getConfig().getInt("GameSettings.TimePerGame", 600);
+        	getConfig().set("GameSettings.TimePerGame", TimeofGame);
+        	WarningTime = getConfig().getInt("GameSettings.TimeBeforeGameStarts", 120);
+        	getConfig().set("GameSettings.TimeBeforeGameStarts", WarningTime);
+        	saveConfig();
             
             // Establishing the MySQL connection            
             con = new MySQL(log, "[CC]", host, port, database, username, password);
@@ -95,7 +106,7 @@ import org.bukkit.command.CommandExecutor;
                 return;
             }
             
-            um = new UserManager(this);
+            
         }
 
         @Override
@@ -187,6 +198,14 @@ import org.bukkit.command.CommandExecutor;
         
         public PlayerMessages getMessages(){
         	return this.messages;
+        }
+        
+        public int getGameTime(){
+        	return this.TimeofGame;
+        }
+        
+        public int getWarningTime(){
+        	return this.WarningTime;
         }
  }
 	

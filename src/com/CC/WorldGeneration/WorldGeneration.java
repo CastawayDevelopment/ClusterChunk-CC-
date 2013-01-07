@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel;
 
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
 
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
@@ -23,7 +24,7 @@ public WorldGeneration(onStartup instance){
 	}
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
-	public boolean newMap(String MapName) {
+	public boolean newMap(String MapName, Game game) {
 		if(MapName.startsWith(".")) return false; //Check that the map name is not "..", Could delete server
 		
 		File baseMap = new File("./BaseMap/BaseMap");
@@ -62,9 +63,25 @@ public WorldGeneration(onStartup instance){
 				e.printStackTrace();
 			}
 		}
-		Bukkit.getServer().createWorld(new WorldCreator(MapName));
-		Game game = gamemanager.getGame(MapName);
+		//System.out.println("New World Creator1");
+		WorldCreator sdfsd = WorldCreator.name(MapName);
+		//S/ystem.out.println("Creating world1");
+		sdfsd.createWorld();
+		//System.out.println("World created1");
 		game.setRegenerated(true);
+		//System.out.println("Blue start");
+		for(Player p : game.getBlueTeamPlayers()){
+			//System.out.println(p.getName());
+			p.teleport(game.getBlueSpawn(MapName));
+			
+		}
+		//System.out.println("Blue end");
+		//System.out.println("Red start");
+		for(Player p : game.getRedTeamPlayers()){
+			//System.out.println(p.getName());
+			p.teleport(game.getRedSpawn(MapName));
+		}
+		//System.out.println("Red end");
 		return true;
 		}
 	
