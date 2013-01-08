@@ -1,9 +1,8 @@
 package com.CC.Commands.Party;
 
-import org.bukkit.entity.Player;
-
 import com.CC.General.onStartup;
 import com.CC.Party.Storage;
+import org.bukkit.entity.Player;
 
 public class Disband {
 	

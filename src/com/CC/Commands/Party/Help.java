@@ -1,9 +1,8 @@
 package com.CC.Commands.Party;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.CC.General.onStartup;
+import static org.bukkit.ChatColor.*;
+import org.bukkit.entity.Player;
 
 public class Help 
 {
@@ -15,29 +14,19 @@ public class Help
     }
 
 	public void help(Player player){
-		
-		ChatColor black = ChatColor.BLACK;
-		ChatColor dgray = ChatColor.DARK_GRAY;
-		ChatColor purple = ChatColor.DARK_PURPLE;
-		ChatColor aqua = ChatColor.AQUA;
-		ChatColor daqua = ChatColor.DARK_AQUA;
-		ChatColor dred = ChatColor.DARK_RED;
-		ChatColor red = ChatColor.RED;
-		ChatColor gold = ChatColor.GOLD;
-		ChatColor gray = ChatColor.GRAY;
-		
+            
 		player.sendMessage("");
-		player.sendMessage(dgray + "===========" + dred + "[" + daqua + "Party Commands" + dred + "]" + dgray + "===========");
+		player.sendMessage(new StringBuilder(DARK_GRAY.toString()).append("===========").append(DARK_RED).append("[").append(DARK_AQUA).append("Party Commands").append(DARK_RED).append("]").append(DARK_GRAY).append("===========").toString());
 		player.sendMessage("");
-		player.sendMessage("/Party Create <party name>" + " - " + "Create a party with the specified name");
-		player.sendMessage("/Party Help" + " - " + "Take a guess <3");
-		player.sendMessage("/Party Invite <player name>" + " - " + "Invite a player to your closed party");
-		player.sendMessage("/Party Join" + " - " + "Join a party you were invited to");
-		player.sendMessage("/Party Leave" + " - " + "Leave the party you are currently in");
-		player.sendMessage("/Party Start <red/blue>" + " - " + "Start a match with your party on red or blue team");
-		player.sendMessage("/Party Status" + " - " + "Get the status of your party");
+		player.sendMessage(new StringBuilder("/Party Create <party name>").append(" - ").append("Create a party with the specified name").toString());
+		player.sendMessage(new StringBuilder("/Party Help").append(" - ").append("Take a guess <3").toString());
+		player.sendMessage(new StringBuilder("/Party Invite <player name>").append(" - ").append("Invite a player to your closed party").toString());
+		player.sendMessage(new StringBuilder("/Party Join").append(" - ").append("Join a party you were invited to").toString());
+		player.sendMessage(new StringBuilder("/Party Leave").append(" - ").append("Leave the party you are currently in").toString());
+		player.sendMessage(new StringBuilder("/Party Start <red/blue>").append(" - ").append("Start a match with your party on red or blue team").toString());
+		player.sendMessage(new StringBuilder("/Party Status").append(" - ").append("Get the status of your party").toString());
 		player.sendMessage("");
-		player.sendMessage(dgray + "===========" + dred + "[" + daqua + "Party Commands" + dred + "]" + dgray + "===========");
+		player.sendMessage(new StringBuilder(DARK_GRAY.toString()).append("===========").append(DARK_RED).append("[").append(DARK_AQUA).append("Party Commands").append(DARK_RED).append("]").append(DARK_GRAY).append("===========").toString());
 		player.sendMessage("");
 		
 	}
