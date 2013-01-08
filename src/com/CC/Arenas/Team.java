@@ -6,6 +6,6 @@ package com.CC.Arenas;
 public enum Team 
 {
         NONE,
-		RED,
+        RED,
         BLUE;  
 }

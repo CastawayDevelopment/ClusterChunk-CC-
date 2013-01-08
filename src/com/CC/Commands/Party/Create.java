@@ -1,9 +1,8 @@
 package com.CC.Commands.Party;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.CC.General.onStartup;
+import static org.bukkit.ChatColor.*;
+import org.bukkit.entity.Player;
 
 public class Create 
 {
@@ -18,9 +17,9 @@ public class Create
     {
         plugin.getParties().addParty(partyName, player);
         if(plugin.getParties().getParty(partyName) != null){
-        	player.sendMessage(ChatColor.GREEN + "You have succesfully created the party " + ChatColor.DARK_GREEN + partyName);
+        	player.sendMessage(new StringBuilder(GREEN.toString()).append("You have succesfully created the party ").append(DARK_GREEN).append(partyName).toString());
         }else{
-        	player.sendMessage(ChatColor.RED + "A party with that name already exists. Please choose another.");
+        	player.sendMessage(new StringBuilder(RED.toString()).append("A party with that name already exists. Please choose another.").toString());
         }
         
 	}
