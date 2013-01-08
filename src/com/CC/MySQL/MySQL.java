@@ -52,7 +52,7 @@ public class MySQL extends Database {
 	public Connection open() throws SQLException {
 		if (initialize()) {
 			String url = "";
-			url = "jdbc:mysql://" + this.hostname + ":" + this.portnmbr + "/" + this.database/* + "?autoReconnect=true"*/;
+			url = new StringBuilder("jdbc:mysql://").append(this.hostname).append(":").append(this.portnmbr).append("/").append(this.database).toString()/* + "?autoReconnect=true"*/;
 			this.connection = DriverManager.getConnection(url, this.username, this.password);
 			return this.connection;
 		} else {

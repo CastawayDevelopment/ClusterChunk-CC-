@@ -132,7 +132,7 @@ public abstract class Database {
 				connection.close();
 				return true;
 			} catch (SQLException e) {
-				this.writeError("Could not close connection, SQLException: " + e.getMessage(), true);
+				this.writeError(new StringBuilder("Could not close connection, SQLException: ").append(e.getMessage()).toString(), true);
 				return false;
 			}
 		} else {
