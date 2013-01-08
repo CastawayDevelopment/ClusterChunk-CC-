@@ -13,9 +13,9 @@ public class StartRed
         this.plugin = p;
     }
 
-	public void start(Player player)
+    public void start(Player player)
     {
-		player.sendMessage("StartRed workin");
-		//Check for open games
-	}
+        player.sendMessage("StartRed workin");
+        //Check for open games
+    }
 }

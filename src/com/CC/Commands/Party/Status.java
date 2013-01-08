@@ -13,9 +13,9 @@ public class Status
         this.plugin = p;
     }
     
-	public void status(Player player)
+    public void status(Player player)
     {
         player.sendMessage("Status workin");	
         // Same as leave, them call the getStatus()
-	}
+    }
 }
