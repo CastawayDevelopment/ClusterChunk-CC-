@@ -1,9 +1,8 @@
 package com.CC.Arenas;
 
 import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -94,7 +93,7 @@ public class SpectatorListener implements Listener{
 					if(player instanceof Player){
 						if(spectators.contains(player.getName())){
 							event.setCancelled(true);
-							((Player) player).sendMessage(ChatColor.GRAY + "You cannot use your inventory while spectating");
+							((Player) player).sendMessage(new StringBuilder(GRAY.toString()).append("You cannot use your inventory while spectating").toString());
 						}
 					}
 					

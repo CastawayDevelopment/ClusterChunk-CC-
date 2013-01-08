@@ -1,10 +1,9 @@
 package com.CC.Arenas;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -128,14 +127,14 @@ public class Game
     public void addRedPlayer(String playername){
     	Player player = Bukkit.getServer().getPlayer(playername);
     	redTeam.add(playername);
-    	player.sendMessage(ChatColor.RED + "You have succesfully join the red team!");
+    	player.sendMessage(new StringBuilder(RED.toString()).append("You have succesfully join the red team!").toString());
     	gm.playerJoinGame(playername);
     }
     
     public void addBluePlayer(String playername){
     	Player player = Bukkit.getServer().getPlayer(playername);
     	blueTeam.add(playername);
-    	player.sendMessage(ChatColor.BLUE + "You have succesfully join the blue team!");
+    	player.sendMessage(new StringBuilder(BLUE.toString()).append("You have succesfully join the blue team!").toString());
     	gm.playerJoinGame(playername);
     }
     
@@ -167,7 +166,11 @@ public class Game
     	    	
     				if(i == WarningTime){
     					for(String s : getPlayers()){
-    						plugin.getServer().getPlayer(s).sendMessage(ChatColor.GREEN + "" + WarningTime/60 + " minutes until the game begins");
+                                                Player p = plugin.getServer().getPlayer(s);
+                                                if(p != null)
+                                                {
+                                                    p.sendMessage(new StringBuilder(GREEN.toString()).append(WarningTime/60).append(" minutes until the game begins").toString());
+                                                }
     					}
     					i--;
     				}else if(i <= 10){ 
@@ -187,7 +190,7 @@ public class Game
     	    	
     				if(i == TimeofGame/2){
     					for(String s : getPlayers()){
-    						plugin.getServer().getPlayer(s).sendMessage(ChatColor.GREEN + "The game has reached half time there are " + TimeofGame/2 + " minutes left");
+    						plugin.getServer().getPlayer(s).sendMessage(new StringBuilder(GREEN.toString()).append("The game has reached half time there are ").append(TimeofGame/2).append(" minutes left").toString());
     					}
     					i--;
     				}else if(i <= 10){ 
@@ -213,7 +216,7 @@ public class Game
 			public void run(){
 				
 				for(String s : getPlayers()){
-					Bukkit.getPlayer(s).sendMessage(ChatColor.GREEN + "" + i + string);
+					Bukkit.getPlayer(s).sendMessage(new StringBuilder(GREEN.toString()).append(i).append(string).toString());
 				}
 				i--;
 			}

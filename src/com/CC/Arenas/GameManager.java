@@ -1,14 +1,12 @@
 package com.CC.Arenas;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.CC.General.onStartup;
 import com.CC.WorldGeneration.WorldGeneration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.bukkit.Bukkit;
+import static org.bukkit.ChatColor.*;
+import org.bukkit.entity.Player;
 
 public class GameManager
 {
@@ -138,10 +136,10 @@ public class GameManager
     	}
     	
     		for(Player p : game.getBlueTeamPlayers()){
-    			p.sendMessage("Game has been ended by an administrator for the following reason" + reason);
+    			p.sendMessage(new StringBuilder("Game has been ended by an administrator for the following reason").append(reason).toString());
     		}
     		for(Player p : game.getRedTeamPlayers()){
-    			p.sendMessage("Game has been ended by an administrator for the following reason" + reason);
+    			p.sendMessage(new StringBuilder("Game has been ended by an administrator for the following reason").append(reason).toString());
     		}
     		return true;
     		
@@ -154,7 +152,7 @@ public class GameManager
     public boolean endGame(String gameName, Team winningTeam){
     	if(!games.containsKey(gameName)) return false;
     		if(endGame(getGame(gameName), winningTeam)){
-    			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
+    			Bukkit.getServer().broadcastMessage(new StringBuilder(GRAY.toString()).append(gameName).append(gameName).append(GREEN).append(" is being regenerated. You may experience lag").toString());
     			worldgen.newMap(gameName, getGame(gameName));
     			return true;
     		}else{
@@ -165,7 +163,7 @@ public class GameManager
     public boolean endGame(String gameName, String reason){
     	if(!games.containsKey(gameName)) return false;
     		if(endGame(getGame(gameName), reason)){
-    			Bukkit.getServer().broadcastMessage(ChatColor.GRAY+ gameName + ChatColor.GREEN + " is being regenerated. You may experience lag");
+    			Bukkit.getServer().broadcastMessage(new StringBuilder(GRAY.toString()).append(gameName).append(GREEN).append(" is being regenerated. You may experience lag").toString());
     			worldgen.newMap(gameName, getGame(gameName));
     			return true;
     		}else{
