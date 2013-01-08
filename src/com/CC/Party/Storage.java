@@ -3,7 +3,7 @@ package com.CC.Party;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
  
 public class Storage {
@@ -42,16 +42,16 @@ public class Storage {
     
     public void disbandParty(Player from, Party party){
     	if(from.equals(party.getLeader())){
-    		from.sendMessage(ChatColor.GREEN + "You have succesfully disbanded your faction");
+    		from.sendMessage(new StringBuilder(GREEN.toString()).append("You have succesfully disbanded your faction").toString());
     		for(String s : party.getMembers()){
     			if(Bukkit.getServer().getPlayer(s) != null){
     				Player p = Bukkit.getServer().getPlayer(s);
-    				p.sendMessage(ChatColor.RED + "Your faction has been disbanded");
+    				p.sendMessage(new StringBuilder(RED.toString()).append("Your faction has been disbanded").toString());
     			}
     		}
     		removeParty(party.getName());
     	}else{
-    		from.sendMessage(ChatColor.RED + "You cannot disband this faction!");
+    		from.sendMessage(new StringBuilder(RED.toString()).append("You cannot disband this faction!").toString());
     	}
     	
     }

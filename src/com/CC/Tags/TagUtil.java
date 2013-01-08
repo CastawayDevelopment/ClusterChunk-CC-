@@ -1,19 +1,15 @@
 package com.CC.Tags;
 
+import com.CC.Arenas.Game;
+import com.CC.Arenas.Team;
+import java.util.List;
 import net.minecraft.server.v1_4_6.Packet20NamedEntitySpawn;
 import net.minecraft.server.v1_4_6.Packet29DestroyEntity;
-
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
-import java.util.List;
-
+import static org.bukkit.ChatColor.*;
 import org.bukkit.craftbukkit.v1_4_6.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-
-import com.CC.Arenas.Game;
-import com.CC.Arenas.Team;
 
 public class TagUtil
 {
@@ -35,11 +31,11 @@ public class TagUtil
             String name = p.getName();
             if(g.getTeam(p) == Team.RED)
             {
-                name = ChatColor.RED + name; // For red
+                name = RED + name; // For red
             }
             else if(g.getTeam(p) == Team.BLUE)
             {
-                name = ChatColor.BLUE + name; // For blue
+                name = BLUE + name; // For blue
             }
             else
             {
