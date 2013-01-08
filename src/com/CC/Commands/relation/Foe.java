@@ -8,7 +8,7 @@ import com.CC.General.User;
 import com.CC.General.onStartup;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
 /**
@@ -37,7 +37,7 @@ public class Foe
 		if (u1.getFriends().contains(u2.getPlayer().getName()))
 		{
 			u1.getFriends().remove(u2.getPlayer().getName());
-			u1.getPlayer().sendMessage(ChatColor.GREEN + u2.getPlayer().getName() + " was been removed from your friends list!");
+			u1.getPlayer().sendMessage(new StringBuilder(GREEN.toString()).append(u2.getPlayer().getName()).append(" was been removed from your friends list!").toString());
 		}
 	}
 
@@ -45,7 +45,7 @@ public class Foe
 	{
 		if (player1.getName().equalsIgnoreCase(player2))
 		{
-			player1.sendMessage(ChatColor.RED + "Cant add you're self to your own enemy list");
+			player1.sendMessage(new StringBuilder(RED.toString()).append("Cant add you're self to your own enemy list").toString());
 			return;
 		}
 		User user1 = this.plugin.getUserManager().getUser(player1);
@@ -53,7 +53,7 @@ public class Foe
 
                 if(p2 == null)
                 {
-                    player1.sendMessage(ChatColor.RED + "This player is offline!");
+                    player1.sendMessage(new StringBuilder(RED.toString()).append("This player is offline!").toString());
                     return;
                 }
                 
@@ -64,7 +64,7 @@ public class Foe
 		User user2 = this.plugin.getUserManager().getUser(p2);
 		if (user1 == null)
 		{
-			player1.sendMessage(ChatColor.RED + "Something went at accessing the enemy list of the player you specified");
+			player1.sendMessage(new StringBuilder(RED.toString()).append("Something went at accessing the enemy list of the player you specified").toString());
 			return;
 		}
 		if (user2 != null)
@@ -75,6 +75,6 @@ public class Foe
 			removeFriendBindings(user1, user2);
 		}
 		addToList(user1.getEnemies(), player2);
-		player1.sendMessage(ChatColor.GREEN + "Added enemy: " + player2);
+		player1.sendMessage(new StringBuilder(GREEN.toString()).append("Added enemy: ").append(player2).toString());
 	}
 }

@@ -1,6 +1,6 @@
 package com.CC.Commands;
 
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +42,7 @@ public class StaffCommands implements CommandExecutor
 		{
 			if(args.length == 0)
 			{
-				player.sendMessage(ChatColor.GREEN + "Correct Usage: /endgame <Game> <Reason> || /endgame <Game> <Reason>");
+				player.sendMessage(new StringBuilder(GREEN.toString()).append("Correct Usage: /endgame <Game> <Reason> || /endgame <Game> <Reason>").toString());
 				return false;
 			}
 			else if(args.length == 1)
@@ -54,7 +54,7 @@ public class StaffCommands implements CommandExecutor
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + "The game you have specified does not exist");
+					player.sendMessage(new StringBuilder(RED.toString()).append("The game you have specified does not exist").toString());
 					return false;
 				}
 			}
@@ -68,7 +68,7 @@ public class StaffCommands implements CommandExecutor
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + "The game you have specified does not exist");
+					player.sendMessage(new StringBuilder(RED.toString()).append("The game you have specified does not exist").toString());
 					return false;
 				}
 				
@@ -78,14 +78,16 @@ public class StaffCommands implements CommandExecutor
 		
 	}
 	
-	public String glue(String[] array, String glue) {
-		String glued = "";
-	for(int i = 1; i < array.length;i++) {
-		glued += array[i];
-	if(i != array.length-1)
-		glued += glue;
-		}
-		return glued;
-		}
+	public String glue(String[] array, String glue) 
+        {
+            StringBuilder glued = new StringBuilder();
+            for(int i = 1; i < array.length;i++) 
+            {
+		glued.append(array[i]);
+                if(i != array.length-1)
+		glued.append(glue);
+            }
+            return glued.toString();
+        }
 
 }
