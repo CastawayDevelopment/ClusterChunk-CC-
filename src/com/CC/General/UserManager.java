@@ -1,11 +1,11 @@
 package com.CC.General;
 
 import com.CC.MySQL.MySQL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.sql.SQLException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -83,12 +83,16 @@ public class UserManager
             
             try
             {
-                ResultSet players = main.getConnection().query("SELECT `id` FROM players WHERE name = '"+player+"'");
+                PreparedStatement _players = main.getConnection().prepare("SELECT `id` FROM players WHERE name = ?;");
+                _players.setString(1, player);
+                ResultSet players = _players.executeQuery();
                 if(players.next())
                 {
                     // Update
                     int id = players.getInt("id"); // Might want to store this for faster processing later on
-                    ResultSet rep = main.getConnection().query("SELECT `reputation` FROM `reputation` WHERE player_id = "+id+";");
+                    PreparedStatement _rep = main.getConnection().prepare("SELECT `reputation` FROM `reputation` WHERE player_id = ?;");
+                    _rep.setInt(1, id);
+                    ResultSet rep = _rep.executeQuery();
                     if(rep.next())
                     {
                         reputation = rep.getInt("reputation");
@@ -97,7 +101,9 @@ public class UserManager
                     {
                     }
                     rep.close(); // Freeing the memory, just in case
-                    ResultSet stats = main.getConnection().query("SELECT `points` AS p, `kills` AS k, `deaths` AS d, `onRed` AS r, `onBlue` AS b FROM `stats` WHERE player_id = "+id+";");
+                    PreparedStatement _stats = main.getConnection().prepare("SELECT `points` AS p, `kills` AS k, `deaths` AS d, `onRed` AS r, `onBlue` AS b FROM `stats` WHERE player_id = ?;");
+                    _stats.setInt(1, id);
+                    ResultSet stats = _stats.executeQuery();
                     if(stats.next())
                     {
                         points = stats.getInt("p");
@@ -107,9 +113,16 @@ public class UserManager
                         blue = stats.getInt("b");
                     }
                     stats.close();
-                    ResultSet rfriends = main.getConnection().query("SELECT `rel_id` as fid, `isfoe` FROM `friends` "
-                                                                  +"WHERE id = "+id+" INNER JOIN `friends` "
-                                                                  +"ON friends.player_id = (SELECT `player_id` FROM `friends` WHERE `rel_id` = fid AND player_id = "+id+");");
+                    
+                    String friends_q = new StringBuilder("SELECT `rel_id` as fid, `isfoe` FROM `friends` ")
+                                        .append("WHERE id = ? INNER JOIN `friends` ")
+                                        .append("ON friends.player_id = (SELECT `player_id` FROM `friends` WHERE `rel_id` = fid AND player_id = ?);").toString();
+                    
+                    PreparedStatement _rfriends = main.getConnection().prepare(friends_q);
+                    _rfriends.setInt(1, id);
+                    _rfriends.setInt(2, id);
+                    
+                    ResultSet rfriends = _rfriends.executeQuery();
                     if(rfriends.next())
                     {
                         do
@@ -117,7 +130,9 @@ public class UserManager
                             try
                             {
                                 int fid = rfriends.getInt("fid");
-                                ResultSet friend = main.getConnection().query("SELECT `name` FROM `players` WHERE id = "+fid+";");
+                                PreparedStatement _friend = main.getConnection().prepare("SELECT `name` FROM `players` WHERE id = ?;");
+                                _friend.setInt(1, fid);
+                                ResultSet friend = _friend.executeQuery();
                                 String name = friend.getString("name");
                                 if(rfriends.getBoolean("isfoe"))
                                 {
@@ -160,7 +175,9 @@ public class UserManager
                 main.log.info("Uploading new player data to MySQL");
                 try
                 {
-                    main.getConnection().query("INSERT INTO players(`name`) VALUES ('"+player+"');");
+                    PreparedStatement stmt = main.getConnection().prepare("INSERT INTO players(`name`) VALUES (?)");
+                    stmt.setString(1, player);
+                    stmt.executeUpdate();
                 }
                 catch(SQLException ex)
                 {
@@ -283,7 +300,9 @@ public class UserManager
                 {
                     try
                     {
-                        ResultSet player = con.query("SELECT * FROM players WHERE name = '"+user.getPlayer().getName()+"'");
+                        PreparedStatement _player = con.prepare("SELECT * FROM players WHERE name = ?");
+                        _player.setString(1, user.getPlayer().getName());
+                        ResultSet player = _player.executeQuery();
                         if(!player.next())
                         {
                             return;
@@ -294,14 +313,14 @@ public class UserManager
                         if(table.equals("reputation"))
                         {
                             int rep = user.getReputation();
-                            ResultSet repset = con.query("SELECT * FROM `reputation` WHERE `player_id` = "+id+";");
+                            ResultSet repset = con.query(new StringBuilder("SELECT * FROM `reputation` WHERE `player_id` = ").append(id).append(";").toString());
                             if(repset.next())
                             {
-                                con.query("UPDATE `reputation` SET `reputation` = "+rep+" WHERE player_id = "+id+";");
+                                con.query(new StringBuilder("UPDATE `reputation` SET `reputation` = ").append(rep).append(" WHERE player_id = ").append(id).append(";").toString());
                             }
                             else
                             {
-                                con.query("INSERT INTO `reputation`(`player_id`,`reputation`) VALUES("+id+", "+rep+");");
+                                con.query(new StringBuilder("INSERT INTO `reputation`(`player_id`,`reputation`) VALUES(").append(id).append(", ").append(rep).append(");").toString());
                             }
                             repset.close();
                         }
@@ -312,14 +331,14 @@ public class UserManager
                             int d = user.getDeaths();
                             int r = user.getTimesPlayedOnRedTeam();
                             int b = user.getTimesPlayedOnBlueTeam();
-                            ResultSet statset = con.query("SELECT * FROM `stats` WHERE `player_id` = "+id+";");
+                            ResultSet statset = con.query(new StringBuilder("SELECT * FROM `stats` WHERE `player_id` = ").append(id).append(";").toString());
                             if(statset.next())
                             {
-                                con.query("UPDATE `stats` SET points = "+p+", kills = "+k+", deaths = "+d+", onRed = "+r+", onBlue = "+b+" WHERE player_id = "+id+";");
+                                con.query(new StringBuilder("UPDATE `stats` SET points = ").append(p).append(", kills = ").append(k).append(", deaths = ").append(d).append(", onRed = ").append(r).append(", onBlue = ").append(b).append(" WHERE player_id = ").append(id).append(";").toString());
                             }
                             else
                             {
-                                con.query("INSERT INTO `stats`(`player_id`,`points`, `kills`, `deaths`, `onRed`, `onBlue`) VALUES("+id+","+p+","+k+","+d+","+r+","+b+");");   
+                                con.query(new StringBuilder("INSERT INTO `stats`(`player_id`,`points`, `kills`, `deaths`, `onRed`, `onBlue`) VALUES(").append(id).append(",").append(p).append(",").append(k).append(",").append(d).append(",").append(r).append(",").append(b).append(");").toString());   
                             }
                             statset.close();
                         }

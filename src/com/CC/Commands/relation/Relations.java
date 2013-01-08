@@ -7,7 +7,7 @@ package com.CC.Commands.relation;
 import com.CC.General.User;
 import com.CC.General.onStartup;
 import java.util.List;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
 /**
@@ -29,15 +29,15 @@ public class Relations
 		User user = this.plugin.getUserManager().getUser(player);
 		if (user == null)
 		{
-			player.sendMessage(ChatColor.RED + "Unable to fetch the user data");
+			player.sendMessage(new StringBuilder(RED.toString()).append("Unable to fetch the user data").toString());
 			return;
 		}
 		List<String> enemies = user.getEnemies();
-		player.sendMessage(ChatColor.GREEN+"Enemies: ("+enemies.size()+")");
+		player.sendMessage(new StringBuilder(GREEN.toString()).append("Enemies: (").append(enemies.size()).append(")").toString());
 		player.sendMessage(enemies.toArray(empty));
 		
 		List<String> friends = user.getFriends();
-		player.sendMessage(ChatColor.GREEN+"Friend Requests (Pending and approved: ("+friends.size()+")");
+		player.sendMessage(new StringBuilder(GREEN.toString()).append("Friend Requests (Pending and approved: (").append(friends.size()).append(")").toString());
 		player.sendMessage(friends.toArray(empty));
 
 

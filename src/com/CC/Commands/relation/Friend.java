@@ -8,7 +8,7 @@ import com.CC.General.User;
 import com.CC.General.onStartup;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
 /**
@@ -28,7 +28,7 @@ public class Friend
 	{
 		if (player1.getName().equalsIgnoreCase(player2))
 		{
-			player1.sendMessage(ChatColor.RED + "Cant add yourself to your own friends list");
+			player1.sendMessage(new StringBuilder(RED.toString()).append("Cant add yourself to your own friends list").toString());
 			return;
 		}
 		User user1 = this.plugin.getUserManager().getUser(player1);
@@ -36,7 +36,7 @@ public class Friend
 
 		if (p2 == null)
 		{
-			player1.sendMessage(ChatColor.RED + "This player is offline!");
+			player1.sendMessage(new StringBuilder(RED.toString()).append("This player is offline!").toString());
 			return;
 		}
 
@@ -46,7 +46,7 @@ public class Friend
 		User user2 = this.plugin.getUserManager().getUser(p2);
 		if (user1 == null || user2 == null)
 		{
-			player1.sendMessage(ChatColor.RED + "Something went wrong while accessing the friend list of the player you specified");
+			player1.sendMessage(new StringBuilder(RED.toString()).append("Something went wrong while accessing the friend list of the player you specified").toString());
 			return;
 		}
 
@@ -61,21 +61,21 @@ public class Friend
 				/*
 				 * Other player is already on your friend list
 				 */
-				player1.sendMessage(ChatColor.RED + player2 + " is already on your friends list");
+				player1.sendMessage(new StringBuilder(RED.toString()).append(player2).append(" is already on your friends list").toString());
 			}
 			else
 			{
 				if (user2.getEnemies().contains(playerName))
 				{
-					player1.sendMessage(ChatColor.RED + "Unable to send friend request because youre on his enemy list, however, he is removed from your list!");
+					player1.sendMessage(new StringBuilder(RED.toString()).append("Unable to send friend request because youre on his enemy list, however, he is removed from your list!").toString());
 				}
 				else
 				{
-					player1.sendMessage(ChatColor.GREEN + "You resended you're friend request to " + player2 + "!");
+					player1.sendMessage(new StringBuilder(GREEN.toString()).append("You resended you're friend request to ").append(player2).append("!").toString());
 					/*
 					 * Resend friend request
 					 */
-					p2.sendMessage(ChatColor.GOLD + playerName + " has sent you a friend request, do /friend " + playerName + " to accept it");
+					p2.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has sent you a friend request, do /friend ").append(playerName).append(" to accept it").toString());
 				}
 			}
 
@@ -86,8 +86,8 @@ public class Friend
 			 * New friend request
 			 */
 			addToList(user1.getFriends(), player2);
-			player1.sendMessage(ChatColor.GREEN + "You has sended a friend request to " + player2 + "!");
-			p2.sendMessage(ChatColor.GOLD + playerName + " has send you're a friend request, do /friend " + playerName + " to accept it");
+			player1.sendMessage(new StringBuilder(GREEN.toString()).append("You has sended a friend request to ").append(player2).append("!").toString());
+			p2.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has send you're a friend request, do /friend ").append(playerName).append(" to accept it").toString());
 
 		}
 	}
