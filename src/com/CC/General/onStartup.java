@@ -1,21 +1,18 @@
 package com.CC.General;
 
-import java.util.logging.Logger;
+import com.CC.Arenas.GameManager;
+import com.CC.Commands.*;
+import com.CC.Listeners.*;
+import com.CC.Messages.PlayerMessages;
+import com.CC.MySQL.MySQL;
+import com.CC.Party.Storage;
+import com.CC.WorldGeneration.WorldGeneration;
 import java.sql.SQLException;
-
-import org.bukkit.Bukkit;
+import java.util.logging.Logger;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.CC.Listeners.*;
-import com.CC.Arenas.GameManager;
-import com.CC.Commands.*;
-import com.CC.Party.Storage;
-import com.CC.WorldGeneration.WorldGeneration;
-import com.CC.Messages.PlayerMessages;
-import com.CC.MySQL.MySQL;
-import org.bukkit.command.CommandExecutor;
 
 	
  public class onStartup extends JavaPlugin implements Listener 
@@ -148,33 +145,33 @@ import org.bukkit.command.CommandExecutor;
         // INCOMPLETE, ITS JUST A PRESET
         private boolean createTables()
         {
-            String players = "CREATE TABLE players ( id INT NOT NULL AUTO_INCREMENT,"
-                                                 + " PRIMARY KEY(id),"
-                                                 + " name VARCHAR(16) NOT NULL"
-                                                 + ");";
-            String reputation = "CREATE TABLE reputation ( player_id INT NOT NULL,"
-                                                       + " reputation FLOAT(4,2) NOT NULL,"
-                                                       + " FOREIGN KEY(player_id)"
-                                                       + "    REFERENCES players(id)"
-                                                       + ");";      
-            String stats = "CREATE TABLE stats     ( player_id INT NOT NULL,"
-                                                 + " points INT DEFAULT 0,"
-                                                 + " kills INT DEFAULT 0,"
-                                                 + " deaths INT DEFAULT 0,"
-                                                 + " onRed INT DEFAULT 0,"
-                                                 + " onBlue INT DEFAULT 0,"
-                                                 + " FOREIGN KEY(player_id)"
-                                                 + "    REFERENCES players(id)"
-                                                 + ");";
+            String players = new StringBuilder("CREATE TABLE players ( id INT NOT NULL AUTO_INCREMENT,")
+                                                 .append(" PRIMARY KEY(id),")
+                                                 .append(" name VARCHAR(16) NOT NULL")
+                                                 .append(");").toString();
+            String reputation = new StringBuilder("CREATE TABLE reputation ( player_id INT NOT NULL,")
+                                                 .append(" reputation FLOAT(4,2) NOT NULL,")
+                                                 .append(" FOREIGN KEY(player_id)")
+                                                 .append("    REFERENCES players(id)")
+                                                 .append(");").toString();      
+            String stats = new StringBuilder("CREATE TABLE stats     ( player_id INT NOT NULL,")
+                                                 .append(" points INT DEFAULT 0,")
+                                                 .append(" kills INT DEFAULT 0,")
+                                                 .append(" deaths INT DEFAULT 0,")
+                                                 .append(" onRed INT DEFAULT 0,")
+                                                 .append(" onBlue INT DEFAULT 0,")
+                                                 .append(" FOREIGN KEY(player_id)")
+                                                 .append("    REFERENCES players(id)")
+                                                 .append(");").toString();
             // Nakama :3
-            String relation = "CREATE TABLE relation ( player_id INT NOT NULL,"
-                                                 + " rel_id INT NOT NULL,"
-                                                 + " isfoe BOOLEAN DEFAULT FALSE,"
-                                                 + " FOREIGN KEY(player_id)"
-                                                 + "    REFERENCES players(id),"
-                                                 + " FOREIGN KEY(rel_id)"
-                                                 + "    REFERENCES players(id)"
-                                                 + ");";
+            String relation = new StringBuilder("CREATE TABLE relation ( player_id INT NOT NULL,")
+                                                 .append(" rel_id INT NOT NULL,")
+                                                 .append(" isfoe BOOLEAN DEFAULT FALSE,")
+                                                 .append(" FOREIGN KEY(player_id)")
+                                                 .append("    REFERENCES players(id),")
+                                                 .append(" FOREIGN KEY(rel_id)")
+                                                 .append("    REFERENCES players(id)")
+                                                 .append(");").toString();
             if(!getConnection().checkTable("players"))
             {
                 getConnection().createTable(players);

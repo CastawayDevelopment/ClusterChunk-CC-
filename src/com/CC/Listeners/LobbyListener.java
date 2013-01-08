@@ -1,9 +1,14 @@
 package com.CC.Listeners;
 
+import com.CC.Arenas.Game;
+import com.CC.Arenas.GameManager;
+import com.CC.Arenas.Team;
+import com.CC.General.User;
+import com.CC.General.UserManager;
+import com.CC.General.onStartup;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,13 +20,6 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.CC.Arenas.Game;
-import com.CC.Arenas.GameManager;
-import com.CC.Arenas.Team;
-import com.CC.General.User;
-import com.CC.General.UserManager;
-import com.CC.General.onStartup;
 
 
 public class LobbyListener implements Listener, Runnable
@@ -35,7 +33,7 @@ public class LobbyListener implements Listener, Runnable
     
     public LobbyListener(onStartup instance) {
     	plugin = instance;
-    	plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin,  this, 0, 80);
+    	plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,  this, 0, 80);
     	gamemanager = plugin.getGameManager();
     	usermanager = plugin.getUserManager();
     	//System.out.println("LobbyListener created.");
@@ -59,7 +57,7 @@ public class LobbyListener implements Listener, Runnable
                 {
 					//player.sendMessage("Step 3");
 						quedplayers.remove(player);
-						player.sendMessage(ChatColor.BOLD + "You've been removed from the waiting list");
+						player.sendMessage(new StringBuilder(BOLD.toString()).append("You've been removed from the waiting list").toString());
 						player.getInventory().setHelmet(null);
                 }
             }
@@ -78,7 +76,7 @@ public class LobbyListener implements Listener, Runnable
                         if(block.getData() == blue)
                         {
                         	//player.sendMessage("Step 4");
-                            player.sendMessage(ChatColor.BLUE + "You have been added to the blue team waiting list");
+                            player.sendMessage(new StringBuilder(BLUE.toString()).append("You have been added to the blue team waiting list").toString());
                             quedplayers.put(player, Team.BLUE);
                             player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
                             //System.out.println("" + quedplayers);
@@ -87,7 +85,7 @@ public class LobbyListener implements Listener, Runnable
                         {
                         	if(quedplayers.containsKey(player)) return; //This didn't even work :P
                         	//player.sendMessage("Step 4");
-                            player.sendMessage(ChatColor.RED + "You have been added to the red team waiting list");
+                            player.sendMessage(new StringBuilder(RED.toString()).append("You have been added to the red team waiting list").toString());
                             quedplayers.put(player, Team.RED);
                             player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
                             //System.out.println("" + quedplayers);
@@ -96,7 +94,7 @@ public class LobbyListener implements Listener, Runnable
                         {
                         	if(randomTeam(player) == Team.BLUE){
                         		if(quedplayers.containsKey(player)) return;
-                        		player.sendMessage(ChatColor.BLUE + "You have been added to the blue team waiting list");
+                        		player.sendMessage(new StringBuilder(BLUE.toString()).append("You have been added to the blue team waiting list").toString());
                         		quedplayers.put(player, Team.BLUE);
                         		player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
                         		//System.out.println("1" + quedplayers);
@@ -104,7 +102,7 @@ public class LobbyListener implements Listener, Runnable
                         	else
                         	{
                         		if(quedplayers.containsKey(player)) return;
-                        		player.sendMessage(ChatColor.RED + "You have been added to the red team waiting list");
+                        		player.sendMessage(new StringBuilder(RED.toString()).append("You have been added to the red team waiting list").toString());
                                 quedplayers.put(player, Team.RED);
                                 player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
                                // System.out.println("1" + quedplayers);
