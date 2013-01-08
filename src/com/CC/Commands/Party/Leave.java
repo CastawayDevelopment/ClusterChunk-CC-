@@ -14,10 +14,10 @@ public class Leave
         this.plugin = p;
     }
 
-	public void leave(Player player)
+    public void leave(Player player)
     {
-		player.sendMessage("Leave workin");
+        player.sendMessage("Leave workin");
         // Let him leave, needs command
         // Might loop him, or have a general HashMap with players in parties for faster search
-	}
+    }
 }

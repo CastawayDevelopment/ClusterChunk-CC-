@@ -13,9 +13,9 @@ public class StartBlue
         this.plugin = p;
     }
 
-	public void start(Player player)
+    public void start(Player player)
     {
-		player.sendMessage("StartBlue workin");
-		//Check for open games
-	}
+        player.sendMessage("StartBlue workin");
+        //Check for open games
+    }
 }

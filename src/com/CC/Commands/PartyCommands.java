@@ -102,17 +102,14 @@ public class PartyCommands implements CommandExecutor
                     }
                     
                 }
-			}
-			
-			
-			// instance of check because NOT all senders are players. Simply typecasting to player would break on console cmd.
-		}
+            }		
+            // instance of check because NOT all senders are players. Simply typecasting to player would break on console cmd.
+        }
         else
         {
-			// Tho, wtf is happening here? not much ;D
-		}
-		return false;
-	}
-	
+            // Tho, wtf is happening here? not much ;D
+        }
+        return false;
+    }	
 }
 
