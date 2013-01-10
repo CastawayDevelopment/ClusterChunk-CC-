@@ -206,8 +206,8 @@ public void startGameTimer() {
             sendMessageAll(ChatColor.GREEN + "Halftime! " + TimeofGame/60/2 + " minutes until the game ends!");
         }
        
-        if(count == TimeofGame/4){
-        	sendMessageAll(ChatColor.GREEN + "" + TimeofGame/60/4 + " minutes until the game ends!");
+        if(count/60 == 2){
+        	sendMessageAll(ChatColor.GREEN + "2 minutes until the game ends!");
         }
 
         if(count == 30 || count == 20 || (count < 11 && count > 1)){
