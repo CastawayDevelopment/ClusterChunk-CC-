@@ -219,7 +219,9 @@ public void startGameTimer() {
         }
 
         if(count == 0){
-        	sendMessageAll("The game has ended");
+        	sendMessageAll(ChatColor.RED + "The game has ended");
+        	gm.teleportToSpawn(getRedTeamPlayers());
+        	gm.teleportToSpawn(getBlueTeamPlayers());
         	started = false;
         	gm.endGame(name, getWinningTeam());
             Bukkit.getScheduler().cancelTask(GameTimer);

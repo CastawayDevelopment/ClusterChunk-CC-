@@ -5,6 +5,9 @@ import com.CC.WorldGeneration.WorldGeneration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
@@ -105,26 +108,16 @@ public class GameManager
     		//Put in method to teleport to lobby world 
     	}
     	if(team.equals(Team.BLUE)){
-    		for(Player p : game.getBlueTeamPlayers()){
-    			p.sendMessage("Congratulations ! Your team has won ");
-    		}
-    		for(Player p : game.getRedTeamPlayers()){
-    			p.sendMessage("Sorry you lost");
-    		}
+    		game.sendMessageRed(ChatColor.RED + "Sorry you have lost");
+    		game.sendMessageBlue(ChatColor.GREEN + "Congratulations! You have won");
     		return true;
     	}else if(team.equals(Team.RED)){
-    		for(Player p : game.getBlueTeamPlayers()){
-    			p.sendMessage("Sorry you lost");
-    		}
-    		for(Player p : game.getRedTeamPlayers()){
-    			p.sendMessage("Congratulations ! Your team has won");
-    		}
+    		game.sendMessageBlue(ChatColor.RED + "Sorry you have lost");
+    		game.sendMessageRed(ChatColor.GREEN + "Congratulations! You have won");
     		return true;
     		
     	}else{
-    		for(String s : game.getPlayers()){
-    			Bukkit.getPlayer(s).sendMessage(" The game has ended in a draw");
-    		}
+    		game.sendMessageAll(ChatColor.GRAY + "The game has ended in a draw");
     		return true;
     	}
     }
@@ -198,6 +191,12 @@ public class GameManager
     
     public void startGameCount(Game game){ 
     	game.startGameCountdown();
+    }
+    
+    public void teleportToSpawn(ArrayList<Player> players){
+    	for(Player p : players){
+    		p.teleport(new Location(Bukkit.getWorld("lobby"), 330, 231, 332));
+    	}
     }
     
 }
