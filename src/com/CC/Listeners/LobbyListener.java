@@ -9,6 +9,8 @@ import com.CC.General.onStartup;
 import java.util.ArrayList;
 import java.util.HashMap;
 import static org.bukkit.ChatColor.*;
+
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -344,7 +346,7 @@ public class LobbyListener implements Listener, Runnable
 				}
 				gamemanager.createMap(arenaName, game);
 				//System.out.println(game.getPlayers());
-				gamemanager.startGameCount(game);
+				
 			}
 		}
 		

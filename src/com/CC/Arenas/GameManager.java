@@ -197,7 +197,7 @@ public class GameManager
     }
     
     public void startGameCount(Game game){ 
-    	game.timer(true);
+    	game.startGameCountdown();
     }
     
 }

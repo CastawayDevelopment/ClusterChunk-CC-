@@ -81,6 +81,7 @@ public WorldGeneration(onStartup instance){
 			//System.out.println(p.getName());
 			p.teleport(game.getRedSpawn(MapName));
 		}
+		gamemanager.startGameCount(game);
 		//System.out.println("Red end");
 		return true;
 		}

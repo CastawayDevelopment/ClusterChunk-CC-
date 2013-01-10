@@ -3,6 +3,8 @@ package com.CC.Arenas;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import static org.bukkit.ChatColor.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -22,6 +24,8 @@ public class Game
     int TimeofGame;
     int WarningTime;
     onStartup plugin;
+    public int Countdown;
+    public int GameTimer;
 	
     public Game(String name, onStartup instance)
     {
@@ -158,78 +162,79 @@ public class Game
     	 */
     
     
-    public void timer(Boolean countdownorGamestart){
-    	if(countdownorGamestart){
-    		new BukkitRunnable() {
-    			int i = WarningTime;
-    			public void run() {
-    	    	
-    				if(i == WarningTime){
-    					for(String s : getPlayers()){
-                                                Player p = plugin.getServer().getPlayer(s);
-                                                if(p != null)
-                                                {
-                                                    p.sendMessage(new StringBuilder(GREEN.toString()).append(WarningTime/60).append(" minutes until the game begins").toString());
-                                                }
-    					}
-    					i--;
-    				}else if(i <= 10){ 
-    	    	
-    					countDown(" until the game begins", true);
-    					this.cancel();
-    				}else{
-    					i--;
-    				}
-    	      	
-    			}
-    		}.runTaskTimer(plugin, 20, WarningTime*20);
-    	}else{
-    		new BukkitRunnable() {
-    			int i = TimeofGame;
-    			public void run() {
-    	    	
-    				if(i == TimeofGame/2){
-    					for(String s : getPlayers()){
-    						plugin.getServer().getPlayer(s).sendMessage(new StringBuilder(GREEN.toString()).append("The game has reached half time there are ").append(TimeofGame/2).append(" minutes left").toString());
-    					}
-    					i--;
-    				}else if(i <= 10){ 
-    	    	
-    					countDown(" until the game ends", false);
-    					this.cancel();
-    				}else{
-    					i--;
-    				}
-    	      	
-    			}
-    		}.runTaskTimer(plugin, 20, WarningTime*20);
-    		
-    	}
-    	
-    }
+    
+    public void startGameCountdown() {
+    	Countdown = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    	int count = WarningTime;
+        public void run() {
+            
+           
+            if(count == WarningTime){
+                sendMessageAll(ChatColor.GREEN + "" + WarningTime/60 + " minutes until the game starts!");
+            }
+           
+            if(count == WarningTime/2){
+            	sendMessageAll(ChatColor.GREEN + "" + WarningTime/60/2 + " minute until the game starts!");
+            }
+   
+            if(count == 30 || count == 20 || (count < 11 && count > 1)){
+            	sendMessageAll(ChatColor.GREEN + "" + count + " seconds until game starts!");
+            }
+            
+            if(count == 1){
+            	sendMessageAll(ChatColor.GREEN + "" + count + " second until game starts!");
+            }
+   
+            if(count == 0){
+            	sendMessageAll(ChatColor.GREEN + "The game has now started!");
+            	started = true;
+            	startGameTimer();
+                Bukkit.getScheduler().cancelTask(Countdown);
+            }
+            count--;
+        }
+    }, 0L, 20L);
+}
 
-	public void countDown(final String string, Boolean b) {
-		
-		new BukkitRunnable(){
-			
-			int i = 10;
-			public void run(){
-				
-				for(String s : getPlayers()){
-					Bukkit.getPlayer(s).sendMessage(new StringBuilder(GREEN.toString()).append(i).append(string).toString());
-				}
-				i--;
-			}
-		}.runTaskTimer(plugin, 20, 200);
-		
-		if(b){
-			started = true;
-			timer(false);
-		}else{
-			gm.endGame(name, getWinningTeam());
-		}
+public void startGameTimer() {
+	GameTimer = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+	int count = TimeofGame;
+    public void run() {
+        
+       
+        if(count == TimeofGame/2){
+            sendMessageAll(ChatColor.GREEN + "Halftime! " + TimeofGame/60/2 + " minutes until the game ends!");
+        }
+       
+        if(count == TimeofGame/4){
+        	sendMessageAll(ChatColor.GREEN + "" + TimeofGame/60/4 + " minutes until the game ends!");
+        }
+
+        if(count == 30 || count == 20 || (count < 11 && count > 1)){
+        	sendMessageAll(ChatColor.GREEN + "" + count + " seconds until game ends!");
+        }
+        
+        if(count == 1){
+        	sendMessageAll(ChatColor.GREEN + "" + count + " second until game ends!");
+        }
+
+        if(count == 0){
+        	sendMessageAll("The game has ended");
+        	started = false;
+        	gm.endGame(name, getWinningTeam());
+            Bukkit.getScheduler().cancelTask(GameTimer);
+        }
+        count--;
+    }
+}, 0L, 20L);
+}
+    
     	
-   }
+
+
+    	 
+    	
+        
 	
 	public Team getWinningTeam(){
 		if(getBlueTeamPlayers().size() > getRedTeamPlayers().size()){
@@ -238,6 +243,29 @@ public class Game
 			return Team.RED;
 		}else{
 			return Team.NONE;
+		}
+	}
+	
+	public void sendMessageAll(String string){
+		System.out.println(" sendMessage All");
+		
+		for(String s : getPlayers()){
+			if(Bukkit.getPlayer(s) == null){
+				System.out.println("Player " + s + " is null");
+				continue;
+			}
+			Bukkit.getPlayer(s).sendMessage(string);	
+		}		
+	}
+	
+	public void sendMessageBlue(String string){
+		for(Player p : getBlueTeamPlayers()){
+			p.sendMessage(string);
+		}
+	}
+	public void sendMessageRed(String string){
+		for(Player p : getRedTeamPlayers()){
+			p.sendMessage(string);
 		}
 	}
 	
