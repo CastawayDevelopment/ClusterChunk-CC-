@@ -252,7 +252,9 @@ public void startGameTimer() {
 		System.out.println(" sendMessage All");
 		
 		for(String s : getPlayers()){
-			if(Bukkit.getPlayer(s) == null){
+			//System.out.println(plugin.getServer());
+			//System.out.println(Bukkit.getServer());
+			if(plugin.getServer().getPlayer(s) == null){
 				System.out.println("Player " + s + " is null");
 				continue;
 			}

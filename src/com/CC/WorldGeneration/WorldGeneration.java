@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
@@ -17,6 +19,7 @@ import com.CC.General.onStartup;
 public class WorldGeneration {
 	private onStartup plugin;
 	private GameManager gamemanager;
+	public int Runnable;
 
 public WorldGeneration(onStartup instance){
 		plugin = instance;
@@ -24,7 +27,7 @@ public WorldGeneration(onStartup instance){
 	}
 	//Make sure there is the default world located at /BaseMap/BaseMap
 	
-	public boolean newMap(String MapName, Game game) {
+	public boolean newMap(String MapName, final Game game) {
 		if(MapName.startsWith(".")) return false; //Check that the map name is not "..", Could delete server
 		
 		File baseMap = new File("./BaseMap/BaseMap");
@@ -70,18 +73,8 @@ public WorldGeneration(onStartup instance){
 		//System.out.println("World created1");
 		game.setRegenerated(true);
 		//System.out.println("Blue start");
-		for(Player p : game.getBlueTeamPlayers()){
-			//System.out.println(p.getName());
-			p.teleport(game.getBlueSpawn(MapName));
-			
-		}
-		//System.out.println("Blue end");
-		//System.out.println("Red start");
-		for(Player p : game.getRedTeamPlayers()){
-			//System.out.println(p.getName());
-			p.teleport(game.getRedSpawn(MapName));
-		}
-		gamemanager.startGameCount(game);
+		
+		loadedWorldDelay(game, MapName);
 		//System.out.println("Red end");
 		return true;
 		}
@@ -127,6 +120,34 @@ public WorldGeneration(onStartup instance){
 			}
 			d.delete();
 		}
+	}
+	
+	private void loadedWorldDelay(final Game game, final String MapName){
+		Runnable = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+
+			public void run() {
+				if(!game.getRedSpawn(MapName).getChunk().isLoaded() || !game.getBlueSpawn(MapName).getChunk().isLoaded()){
+					
+				}else{
+					for(Player p : game.getBlueTeamPlayers()){
+						//System.out.println(p.getName());
+						p.teleport(game.getBlueSpawn(MapName));
+						
+					}
+					//System.out.println("Blue end");
+					//System.out.println("Red start");
+					for(Player p : game.getRedTeamPlayers()){
+						//System.out.println(p.getName());
+						p.teleport(game.getRedSpawn(MapName));
+					}
+				
+						gamemanager.startGameCount(game);
+						Bukkit.getScheduler().cancelTask(Runnable);
+				}
+				
+			}
+		
+		}, 0L, 40L);
 	}
 	
 	
