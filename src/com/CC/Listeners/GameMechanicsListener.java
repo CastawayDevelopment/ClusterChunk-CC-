@@ -18,6 +18,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GameMechanicsListener implements Listener{
@@ -197,6 +198,14 @@ private UserManager usermanager;
 				}
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onLeave(PlayerQuitEvent event){
+		if(gamemanager.isInGame(event.getPlayer())){
+			gamemanager.getGameByPlayer(event.getPlayer()).removePlayer(event.getPlayer());
+		}
+		
 	}
 	
 	

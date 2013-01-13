@@ -29,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
         private UserManager um;
         private WorldGeneration worldgen;
         private PlayerMessages messages;
+        private GameMechanicsListener gml;
         int TimeofGame;
         int WarningTime;
 		 
@@ -51,6 +52,7 @@ import org.bukkit.plugin.java.JavaPlugin;
             worldgen = new WorldGeneration(this);
             gm.setWorldGenerator(worldgen);
             ll = new LobbyListener(this);
+            gml = new GameMechanicsListener(this);
             getCommand("party").setExecutor(new PartyCommands(this));
             CommandExecutor relationsCommand = new RelationCommand(this);
             getCommand("friend").setExecutor(relationsCommand);
@@ -61,9 +63,9 @@ import org.bukkit.plugin.java.JavaPlugin;
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
             pm.registerEvents(pal, this);
+            pm.registerEvents(this, this);
+            pm.registerEvents(gml, this);
             getLogger().info("Plugin Is Enabled");
-            getServer().getPluginManager().registerEvents(this,this);
-            
             // Config :P. Not sure if correct, I usually use the not-by-bukkit-implemented-way
             getConfig().options().copyDefaults(true);
             saveConfig();
