@@ -132,14 +132,14 @@ public class Game
     	Player player = Bukkit.getServer().getPlayer(playername);
     	redTeam.add(playername);
     	player.sendMessage(new StringBuilder(RED.toString()).append("You have succesfully join the red team!").toString());
-    	gm.playerJoinGame(playername);
+    	gm.playerJoinGame(playername, this.name);
     }
     
     public void addBluePlayer(String playername){
     	Player player = Bukkit.getServer().getPlayer(playername);
     	blueTeam.add(playername);
     	player.sendMessage(new StringBuilder(BLUE.toString()).append("You have succesfully join the blue team!").toString());
-    	gm.playerJoinGame(playername);
+    	gm.playerJoinGame(playername, this.name);
     }
     
     

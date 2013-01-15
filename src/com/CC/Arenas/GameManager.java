@@ -170,7 +170,7 @@ public class GameManager
     public ArrayList<Game> getOpenGames(){
     	ArrayList<Game> opengames = new ArrayList<Game>();
     	for(Game g : games.values()){
-    		if(g.getPlayers().size() == 0){
+    		if(g.getPlayers().isEmpty()){
     			if(g.regenerated){
     				opengames.add(g);
     				g.setRegenerated(false);
@@ -184,8 +184,8 @@ public class GameManager
     	return games;
     }
     
-    public void playerJoinGame(String string){
-    	players.put(string, string);
+    public void playerJoinGame(String string, String name){
+    	players.put(string, name);
     }
     
     public void removePlayerFromGame(String string){
