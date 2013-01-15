@@ -95,13 +95,14 @@ public class GameManager
     }
     
     public boolean isInGame(String string){
-    	if(players.containsKey(string)){ 
+    	if(players.containsKey(string))
+        { 
+            if(games.containsKey(players.get(string)))
+            {
     		return true;
-    	}else{
-    		return false;
+            }
     	}
-    	
-        
+        return false;
     }
     
     private boolean endGame(Game game, Team team){
