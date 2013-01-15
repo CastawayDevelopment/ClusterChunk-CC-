@@ -9,6 +9,7 @@ import com.CC.Party.Storage;
 import com.CC.WorldGeneration.WorldGeneration;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -101,7 +102,7 @@ import org.bukkit.plugin.java.JavaPlugin;
                 log.info("Exception thrown: "+ex.getMessage());
                 log.info("Disabling plugin...");
                 // Our plugin is MySQL dependant right :3?
-                //Bukkit.getPluginManager().disablePlugin(this); NOT :D 
+                Bukkit.getPluginManager().disablePlugin(this);
                 return;
             }
             

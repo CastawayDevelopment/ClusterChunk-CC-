@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class User 
+public class User
 {
 	String player;
 	int PlayerPoints;
@@ -17,6 +17,11 @@ public class User
 	ArrayList<String> friends;
 	ArrayList<String> enemies;
 	
+        private User()
+        {
+            // Empty private constructor for cloning
+        }
+        
 	public User(Player p)
         {
 		friends = new ArrayList<String>();
@@ -152,5 +157,20 @@ public class User
         {
 		return Bukkit.getServer().getPlayer(player);
 	}
-
+        
+        @Override
+        public User clone()
+        {
+            User clone = new User();
+            clone.changePoints(this.getPoints());
+            clone.changeReputation(this.getReputation());
+            clone.setKills(this.getKills());
+            clone.setDeaths(this.getDeaths());
+            clone.setTimesOnRed(this.getTimesPlayedOnRedTeam());
+            clone.setTimeOnBlue(this.getTimesPlayedOnBlueTeam());
+            clone.changeLatestGame(this.getLatestGame());
+            clone.setFriendsList(this.getFriends());
+            clone.setEnemiesList(this.getEnemies());
+            return clone;
+        }
 }
