@@ -84,12 +84,14 @@ public class GameManager
     }
     
     public boolean isInGame(Player peter){
-    	if(players.containsKey(peter.getName())) { 
+    	if(players.containsKey(peter.getName())) 
+        {
+            if(games.containsKey(players.get(peter.getName())))
+            {
     		return true;
-    	}else{
-    		return false;
+            }
     	}
-        
+        return false;
     }
     
     public boolean isInGame(String string){
