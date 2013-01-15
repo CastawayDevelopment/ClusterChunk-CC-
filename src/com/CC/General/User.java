@@ -17,9 +17,11 @@ public class User
 	ArrayList<String> friends;
 	ArrayList<String> enemies;
 	
-        private User()
+        private User(String name)
         {
-            // Empty private constructor for cloning
+            friends = new ArrayList<String>();
+            enemies = new ArrayList<String>();
+            player = name;
         }
         
 	public User(Player p)
@@ -161,7 +163,7 @@ public class User
         @Override
         public User clone()
         {
-            User clone = new User();
+            User clone = new User(this.player);
             clone.changePoints(this.getPoints());
             clone.changeReputation(this.getReputation());
             clone.setKills(this.getKills());
