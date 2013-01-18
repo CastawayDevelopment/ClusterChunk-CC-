@@ -1,5 +1,5 @@
 package com.CC.Commands;
-
+//Commands need to be updated
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
