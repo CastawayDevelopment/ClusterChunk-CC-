@@ -2,4 +2,4 @@ ClusterChunk
 ============
 
 ClusterChunk Plugin - Map by Three_Two
-TEST FOR FIRE :D
+Coded by Castaway Development Team
