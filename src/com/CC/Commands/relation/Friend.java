@@ -28,7 +28,7 @@ public class Friend
 	{
 		if (player1.getName().equalsIgnoreCase(player2))
 		{
-			player1.sendMessage(new StringBuilder(RED.toString()).append("Cant add yourself to your own friends list").toString());
+			player1.sendMessage(new StringBuilder(RED.toString()).append("You can't add yourself to your own friends list").toString());
 			return;
 		}
 		User user1 = this.plugin.getUserManager().getUser(player1);
@@ -67,11 +67,11 @@ public class Friend
 			{
 				if (user2.getEnemies().contains(playerName))
 				{
-					player1.sendMessage(new StringBuilder(RED.toString()).append("Unable to send friend request because youre on his enemy list, however, he is removed from your list!").toString());
+					player1.sendMessage(new StringBuilder(RED.toString()).append("Unable to send friend request because you're on his/her enemy list, however, they are removed from your list!").toString());
 				}
 				else
 				{
-					player1.sendMessage(new StringBuilder(GREEN.toString()).append("You resended you're friend request to ").append(player2).append("!").toString());
+					player1.sendMessage(new StringBuilder(GREEN.toString()).append("You have resent your friend request to ").append(player2).append("!").toString());
 					/*
 					 * Resend friend request
 					 */
