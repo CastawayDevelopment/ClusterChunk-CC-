@@ -86,8 +86,8 @@ public class Friend
 			 * New friend request
 			 */
 			addToList(user1.getFriends(), player2);
-			player1.sendMessage(new StringBuilder(GREEN.toString()).append("You has sended a friend request to ").append(player2).append("!").toString());
-			p2.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has send you're a friend request, do /friend ").append(playerName).append(" to accept it").toString());
+			player1.sendMessage(new StringBuilder(GREEN.toString()).append("You have sent a friend request to ").append(player2).append("!").toString());
+			p2.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has sent you a friend request, do /friend ").append(playerName).append(" to accept it").toString());
 
 		}
 	}
