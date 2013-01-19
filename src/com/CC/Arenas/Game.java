@@ -18,7 +18,7 @@ public class Game
     String name;
     ArrayList<String> redTeam;
     ArrayList<String> blueTeam;
-    boolean regenerated;
+    public boolean regenerated;
     public boolean started;
     private GameManager gm;
     int TimeofGame;
@@ -27,9 +27,10 @@ public class Game
     public int Countdown;
     public int GameTimer;
 	
-    public Game(String name, onStartup instance)
+    public Game(String gameName, onStartup instance)
     {
     	plugin = instance;
+    	this.name = gameName;
     	TimeofGame = plugin.getGameTime();
     	WarningTime = plugin.getWarningTime();
     	started = false;

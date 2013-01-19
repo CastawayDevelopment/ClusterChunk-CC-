@@ -1,5 +1,6 @@
 package com.CC.Commands.Staff;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.CC.Arenas.Game;
@@ -22,10 +23,15 @@ private PlayerMessages messages;
 	}
 	
 	public boolean endGame(Player sender, Game game, String reason){
-		System.out.println(reason);
+	
 		if(sender.hasPermission("ClusterChunk.Admin.endGame") || sender.hasPermission("ClusterChunk.Admin.*")){
+			if(!game.started){
+				sender.sendMessage(ChatColor.RED + "The game you are trying to end is not started");
+				return false;
+			}
 			gamemanager.endGame(game.getName(), reason);
 			sender.sendMessage(messages.gameEndedSuccessfully());
+			game.started = false;
 			return true;
 		}else{
 			sender.sendMessage(messages.noPermissionCommand(sender));

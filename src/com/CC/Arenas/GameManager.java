@@ -111,31 +111,57 @@ public class GameManager
     		//Put in method to teleport to lobby world 
     	}
     	if(team.equals(Team.BLUE)){
+    		teleportToSpawn(game.getBlueTeamPlayers());
+    		teleportToSpawn(game.getRedTeamPlayers());
     		game.sendMessageRed(ChatColor.RED + "Sorry you have lost");
     		game.sendMessageBlue(ChatColor.GREEN + "Congratulations! You have won");
+    		for(Player p : game.getBlueTeamPlayers()){
+    			game.removePlayer(p);
+    		}
+    		for(Player p : game.getRedTeamPlayers()){
+    			game.removePlayer(p);
+    		}
+    		
     		return true;
     	}else if(team.equals(Team.RED)){
+    		teleportToSpawn(game.getBlueTeamPlayers());
+    		teleportToSpawn(game.getRedTeamPlayers());
     		game.sendMessageBlue(ChatColor.RED + "Sorry you have lost");
     		game.sendMessageRed(ChatColor.GREEN + "Congratulations! You have won");
+    		for(Player p : game.getBlueTeamPlayers()){
+    			game.removePlayer(p);
+    		}
+    		for(Player p : game.getRedTeamPlayers()){
+    			game.removePlayer(p);
+    		}
     		return true;
     		
     	}else{
+    		teleportToSpawn(game.getBlueTeamPlayers());
+    		teleportToSpawn(game.getRedTeamPlayers());
     		game.sendMessageAll(ChatColor.GRAY + "The game has ended in a draw");
+    		for(Player p : game.getBlueTeamPlayers()){
+    			game.removePlayer(p);
+    		}
+    		for(Player p : game.getRedTeamPlayers()){
+    			game.removePlayer(p);
+    		}
     		return true;
     	}
     }
     
     private boolean endGame(Game game, String reason){
-    	for(String p : game.getPlayers()){
-    		Player player = Bukkit.getPlayer(p);
-    		//Put in method to teleport to lobby world 
-    	}
     	
+    		teleportToSpawn(game.getBlueTeamPlayers());
+    		teleportToSpawn(game.getRedTeamPlayers());
     		for(Player p : game.getBlueTeamPlayers()){
-    			p.sendMessage(new StringBuilder("Game has been ended by an administrator for the following reason").append(reason).toString());
+    			game.removePlayer(p);
+    			p.sendMessage(new StringBuilder("Game has been ended by an administrator for the following reason: ").append(reason).toString());
     		}
+    		
     		for(Player p : game.getRedTeamPlayers()){
-    			p.sendMessage(new StringBuilder("Game has been ended by an administrator for the following reason").append(reason).toString());
+    			game.removePlayer(p);
+    			p.sendMessage(new StringBuilder("Game has been ended by an administrator for the following reason: ").append(reason).toString());
     		}
     		return true;
     		

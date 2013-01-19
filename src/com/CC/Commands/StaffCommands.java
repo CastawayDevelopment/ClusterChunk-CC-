@@ -49,7 +49,7 @@ public class StaffCommands implements CommandExecutor
 			{
 				if(gamemanager.isGame(args[0]))
 				{
-					return endgame.endGame(player, gamemanager.getGame(args[0]), "No specified reason");
+					return endgame.endGame(player, gamemanager.getGame(args[0]), " No specified reason");
 					
 				}
 				else
