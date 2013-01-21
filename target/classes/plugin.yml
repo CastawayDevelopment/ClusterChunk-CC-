@@ -19,3 +19,5 @@ commands:
     description: Only for Staff Members
   rep:
     description: Check your friend's reputation
+  kick: 
+    description: Kicks a player 

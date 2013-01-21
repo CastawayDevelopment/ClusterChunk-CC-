@@ -31,6 +31,7 @@ import org.bukkit.plugin.java.JavaPlugin;
         private WorldGeneration worldgen;
         private PlayerMessages messages;
         private GameMechanicsListener gml;
+        private StaffCommands sc;
         int TimeofGame;
         int WarningTime;
 		 
@@ -54,12 +55,14 @@ import org.bukkit.plugin.java.JavaPlugin;
             gm.setWorldGenerator(worldgen);
             ll = new LobbyListener(this);
             gml = new GameMechanicsListener(this);
+            sc = new StaffCommands(this);
             getCommand("party").setExecutor(new PartyCommands(this));
             CommandExecutor relationsCommand = new RelationCommand(this);
             getCommand("friend").setExecutor(relationsCommand);
             getCommand("enemy").setExecutor(relationsCommand);
             getCommand("relation").setExecutor(relationsCommand);
-            getCommand("endgame").setExecutor(new StaffCommands(this));
+            getCommand("endgame").setExecutor(sc);
+            getCommand("rep").setExecutor(sc);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);
@@ -117,6 +120,7 @@ import org.bukkit.plugin.java.JavaPlugin;
                 con.close();
                 con = null; // removing any reference just in case
             }
+            
             getLogger().info("Plugin Is Disabled");	
         }	 
         

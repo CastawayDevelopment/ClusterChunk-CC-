@@ -100,10 +100,6 @@ public class StaffCommands implements CommandExecutor
 			}
 			else if(args.length == 2)
 			{
-				player.sendMessage("Correct Usage: /rep <player>");
-			}
-			else if(args.length == 3)
-			{
 				if(player.hasPermission("ClusterChunk.Admin"))
 				{
 					if(args[0].equalsIgnoreCase("add"))
@@ -117,6 +113,7 @@ public class StaffCommands implements CommandExecutor
 								{
 									user.changeReputation(old + Integer.parseInt(args[2]));
 									player.sendMessage(args[1] + "'s reputation is now " + user.getReputation());
+									um.updatePlayer(user, "stats");
 								}
 								else
 								{
@@ -146,6 +143,7 @@ public class StaffCommands implements CommandExecutor
 								{
 									user.changeReputation(old + Integer.parseInt(args[2]));
 									player.sendMessage(args[1] + "'s reputation is now " + user.getReputation());
+									um.updatePlayer(user, "stats");
 								}
 								else
 								{

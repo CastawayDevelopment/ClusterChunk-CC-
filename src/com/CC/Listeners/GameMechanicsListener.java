@@ -134,7 +134,7 @@ private UserManager usermanager;
 				  peter.sendMessage(new StringBuilder(RED.toString()).append("Glass inclosed structures are off limits!").toString());
 				  event.setCancelled(true);
 			  }
-		  }else{
+		  }else if(!peter.hasPermission("ClusterChunk.Admin")){
 			  event.setCancelled(true);
 		  }
 	  }
@@ -173,6 +173,7 @@ private UserManager usermanager;
 	public void blockBreak(BlockBreakEvent event){
 		if(gamemanager.isInGame(event.getPlayer())){
 			if(!gamemanager.getGameByPlayer(event.getPlayer()).started){
+				if(!event.getPlayer().hasPermission("ClusterChunk.Admin"))
 				event.setCancelled(true);
 			}
 		}

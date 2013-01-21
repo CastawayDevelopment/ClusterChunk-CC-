@@ -14,7 +14,7 @@ public class UserManager
 {
     
         private onStartup main;
-	HashMap<String, User> players;
+        HashMap<String, User> players;
 	
 	public UserManager(onStartup main)
         {
@@ -49,6 +49,12 @@ public class UserManager
 			loadPlayer(s);
 		}
 		
+	}
+	
+	public void unloadPlayers(){
+		for(int i = 0; i <= players.size(); i++){
+			players.remove(players.get(i));
+		}
 	}
 	
 	private void loadPlayer(String player)
