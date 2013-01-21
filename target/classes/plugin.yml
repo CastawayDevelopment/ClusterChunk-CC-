@@ -17,3 +17,5 @@ commands:
     usage: /<command>
   endgame:
     description: Only for Staff Members
+  rep:
+    description: Check your friend's reputation

@@ -100,10 +100,16 @@ public class Game
     	if(team.equals(Team.BLUE)){
     		blueTeam.remove(string);
     		gm.removePlayerFromGame(string);
+    		if(blueTeam.size() == 0){
+    			gm.endGame(this.name, Team.RED);
+    		}
     		return true;
     	}else if (team.equals(Team.RED)){
     		redTeam.remove(string);
     		gm.removePlayerFromGame(string);
+    		if(redTeam.size() == 0){
+    			gm.endGame(this.name, Team.BLUE);
+    		}
     		return true;
     	}
     	return false;
@@ -111,17 +117,7 @@ public class Game
     }
     
     public boolean removePlayer(Player player){
-    	Team team = getTeam(player.getName());
-    	if(team.equals(Team.BLUE)){
-    		blueTeam.remove(player.getName());
-    		gm.removePlayerFromGame(player.getName());
-    		return true;
-    	}else if (team.equals(Team.RED)){
-    		redTeam.remove(player.getName());
-    		gm.removePlayerFromGame(player.getName());
-    		return true;
-    	}
-    	return false;
+    	return removePlayer(player.getName());
     	
     	}
     

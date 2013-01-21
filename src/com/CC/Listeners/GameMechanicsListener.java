@@ -18,6 +18,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -206,6 +207,13 @@ private UserManager usermanager;
 			gamemanager.getGameByPlayer(event.getPlayer()).removePlayer(event.getPlayer());
 		}
 		
+	}
+	
+	@EventHandler
+	public void onKick(PlayerKickEvent event){
+		if(gamemanager.isInGame(event.getPlayer())){
+			gamemanager.getGameByPlayer(event.getPlayer()).removePlayer(event.getPlayer());
+		}
 	}
 	
 	
