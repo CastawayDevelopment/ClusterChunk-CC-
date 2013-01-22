@@ -32,13 +32,13 @@ public class Foe
             if (user.getFriends().contains(targetPlayer.getName()))
             {
                 user.getFriends().remove(targetPlayer.getName());
-                userPlayer.sendMessage(new StringBuilder(RED.toString()).append(targetPlayer.getName()).append(" was been removed from your friends list!").toString());
+                userPlayer.sendMessage(new StringBuilder(RED.toString()).append(targetPlayer.getName()).append(" has been removed from your friends list!").toString());
             }
             
             if (target.getFriends().contains(userPlayer.getName()))
             {
                 target.getFriends().remove(userPlayer.getName());
-                targetPlayer.sendMessage(new StringBuilder(RED.toString()).append(userPlayer.getName()).append(" was been removed from your friends list!").toString());
+                targetPlayer.sendMessage(new StringBuilder(RED.toString()).append(userPlayer.getName()).append(" has been removed from your friends list!").toString());
             }
 	}
 
@@ -47,7 +47,7 @@ public class Foe
                 String playerName = player.getName();
 		if (playerName.equalsIgnoreCase(targetName))
 		{
-			player.sendMessage(new StringBuilder(RED.toString()).append("Cant add you're self to your own enemy list").toString());
+			player.sendMessage(new StringBuilder(RED.toString()).append("Cant add yourself to your own enemy list").toString());
 			return;
 		}
 		User user = this.plugin.getUserManager().getUser(player);
@@ -73,7 +73,7 @@ public class Foe
                 
 		if (user == null)
 		{
-			player.sendMessage(new StringBuilder(RED.toString()).append("Something went at accessing the enemy list of the player you specified").toString());
+			player.sendMessage(new StringBuilder(RED.toString()).append("Something went wrong while accessing the enemy list of the player you specified").toString());
 			return;
 		}
 		if (target != null)
