@@ -98,7 +98,7 @@ public class StaffCommands implements CommandExecutor
 					player.sendMessage(ChatColor.RED + "The player you have specified does not exist");
 				}
 			}
-			else if(args.length == 2)
+			else if(args.length == 3)
 			{
 				if(player.hasPermission("ClusterChunk.Admin"))
 				{
@@ -113,7 +113,8 @@ public class StaffCommands implements CommandExecutor
 								{
 									user.changeReputation(old + Integer.parseInt(args[2]));
 									player.sendMessage(args[1] + "'s reputation is now " + user.getReputation());
-									um.updatePlayer(user, "stats");
+									um.updatePlayer(user, "reputation");
+									Bukkit.getPlayer(args[1]).sendMessage(ChatColor.GRAY + player.getName() + " has added " + ChatColor.DARK_GRAY +  args[2] + ChatColor.GRAY + " to your reputation");
 								}
 								else
 								{
@@ -141,9 +142,10 @@ public class StaffCommands implements CommandExecutor
 								int old = user.getReputation();
 								if(old - Integer.parseInt(args[2]) >= 0)
 								{
-									user.changeReputation(old + Integer.parseInt(args[2]));
+									user.changeReputation(old - Integer.parseInt(args[2]));
 									player.sendMessage(args[1] + "'s reputation is now " + user.getReputation());
-									um.updatePlayer(user, "stats");
+									um.updatePlayer(user, "reputation");
+									Bukkit.getPlayer(args[1]).sendMessage(ChatColor.GRAY + player.getName() + " has removed " + ChatColor.DARK_GRAY + args[2] + ChatColor.GRAY + " from your reputation");
 								}
 								else
 								{
