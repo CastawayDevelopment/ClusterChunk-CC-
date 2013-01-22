@@ -63,6 +63,7 @@ import org.bukkit.plugin.java.JavaPlugin;
             getCommand("relation").setExecutor(relationsCommand);
             getCommand("endgame").setExecutor(sc);
             getCommand("rep").setExecutor(sc);
+            getCommand("kick").setExecutor(sc);
             PluginManager pm = getServer().getPluginManager();
             //System.out.println("Registering LobbyListener");
             pm.registerEvents(ll, this);

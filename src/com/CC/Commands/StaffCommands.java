@@ -175,7 +175,7 @@ public class StaffCommands implements CommandExecutor
 		{
 			if(player.hasPermission("ClusterChunk.Admin"))
 			{
-				if(args.length == 0 )
+				if(args.length == 0)
 				{
 					player.sendMessage("Correct Usage: /kick <player> <reason>(optional)");
 				}
