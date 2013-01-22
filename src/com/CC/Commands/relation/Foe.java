@@ -24,57 +24,66 @@ public class Foe
 		this.plugin = plugin;
 	}
 
-	private <T> void addToList(List<T> list, T value)
+	private void removeFriendBindings(User user, User target)
 	{
-		if (!list.contains(value))
-		{
-			list.add(value);
-		}
+            Player userPlayer = user.getPlayer();
+            Player targetPlayer = target.getPlayer();
+            
+            if (user.getFriends().contains(targetPlayer.getName()))
+            {
+                user.getFriends().remove(targetPlayer.getName());
+                userPlayer.sendMessage(new StringBuilder(RED.toString()).append(targetPlayer.getName()).append(" was been removed from your friends list!").toString());
+            }
+            
+            if (target.getFriends().contains(userPlayer.getName()))
+            {
+                target.getFriends().remove(userPlayer.getName());
+                targetPlayer.sendMessage(new StringBuilder(RED.toString()).append(userPlayer.getName()).append(" was been removed from your friends list!").toString());
+            }
 	}
 
-	private void removeFriendBindings(User u1, User u2)
+	public void add(Player player, String targetName)
 	{
-		if (u1.getFriends().contains(u2.getPlayer().getName()))
+                String playerName = player.getName();
+		if (playerName.equalsIgnoreCase(targetName))
 		{
-			u1.getFriends().remove(u2.getPlayer().getName());
-			u1.getPlayer().sendMessage(new StringBuilder(GREEN.toString()).append(u2.getPlayer().getName()).append(" was been removed from your friends list!").toString());
-		}
-	}
-
-	public void add(Player player1, String player2)
-	{
-		if (player1.getName().equalsIgnoreCase(player2))
-		{
-			player1.sendMessage(new StringBuilder(RED.toString()).append("Cant add you're self to your own enemy list").toString());
+			player.sendMessage(new StringBuilder(RED.toString()).append("Cant add you're self to your own enemy list").toString());
 			return;
 		}
-		User user1 = this.plugin.getUserManager().getUser(player1);
-		Player p2 = Bukkit.getPlayer(player2);
+		User user = this.plugin.getUserManager().getUser(player);
+		Player targetPlayer = Bukkit.getPlayer(targetName);
 
-                if(p2 == null)
+                if(targetPlayer == null)
                 {
-                    player1.sendMessage(new StringBuilder(RED.toString()).append("This player is offline!").toString());
+                    player.sendMessage(new StringBuilder(RED.toString()).append("This player is offline!").toString());
                     return;
                 }
                 
 		// To fix case isues
-		player2 = p2.getName();
+		targetName = targetPlayer.getName();
 
-
-		User user2 = this.plugin.getUserManager().getUser(p2);
-		if (user1 == null)
+		User target = this.plugin.getUserManager().getUser(targetPlayer);
+                
+                // Sanity check for already enemied players
+                if(user.getEnemies().contains(targetName) && target.getEnemies().contains(playerName))
+                {
+                    player.sendMessage(new StringBuilder(RED.toString()).append("You are already enemies. Fight to your hearts content").toString());
+                    return;
+                }
+                
+		if (user == null)
 		{
-			player1.sendMessage(new StringBuilder(RED.toString()).append("Something went at accessing the enemy list of the player you specified").toString());
+			player.sendMessage(new StringBuilder(RED.toString()).append("Something went at accessing the enemy list of the player you specified").toString());
 			return;
 		}
-		if (user2 != null)
+		if (target != null)
 		{
-			/*
-			 * Makes you able to add enemies even if the other player dont have its own User object, without NPE thrown here
-			 */
-			removeFriendBindings(user1, user2);
+			// Remove any friendly status
+			removeFriendBindings(user, target);
 		}
-		addToList(user1.getEnemies(), player2);
-		player1.sendMessage(new StringBuilder(GREEN.toString()).append("Added enemy: ").append(player2).toString());
+		user.addEnemy(targetName);
+                target.addEnemy(playerName);
+		player.sendMessage(new StringBuilder(RED.toString()).append("Player ").append(targetName).append("is now your enemy").toString());
+		targetPlayer.sendMessage(new StringBuilder(RED.toString()).append("Player ").append(playerName).append("has declared you his/her enemy").toString());
 	}
 }

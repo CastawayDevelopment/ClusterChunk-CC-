@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  *
@@ -35,6 +36,13 @@ public class PlayerAuthListener implements Listener
             p.add(player.getName());
             main.getUserManager().loadPlayers(p);
         }
+    }
+    
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event)
+    {
+        // TODO: remove the player from the invite HashMap
+        // Might be left undone
     }
 
 }

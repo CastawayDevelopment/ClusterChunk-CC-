@@ -7,96 +7,107 @@ package com.CC.Commands.relation;
 import com.CC.General.User;
 import com.CC.General.onStartup;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * 
- * @author Fernando
+ * @author Fernando & DarkSeraphim
  */
 public class Friend
 {
 	private final onStartup plugin;
 
+        private final ConcurrentHashMap<String, CopyOnWriteArrayList<String>> requests = new ConcurrentHashMap<String, CopyOnWriteArrayList<String>>();
+        
 	public Friend(onStartup plugin)
 	{
 		this.plugin = plugin;
 	}
 
-	public void add(Player player1, String player2)
+	public void add(Player player, final String targetName)
 	{
-		if (player1.getName().equalsIgnoreCase(player2))
-		{
-			player1.sendMessage(new StringBuilder(RED.toString()).append("You can't add yourself to your own friends list").toString());
-			return;
-		}
-		User user1 = this.plugin.getUserManager().getUser(player1);
-		Player p2 = Bukkit.getPlayer(player2);
+            if (player.getName().equalsIgnoreCase(targetName))
+            {
+                    player.sendMessage(new StringBuilder(RED.toString()).append("You can't add yourself to your own friends list").toString());
+                    return;
+            }
+            User user = this.plugin.getUserManager().getUser(player);
+            Player targetPlayer = Bukkit.getPlayer(targetName);
 
-		if (p2 == null)
-		{
-			player1.sendMessage(new StringBuilder(RED.toString()).append("This player is offline!").toString());
-			return;
-		}
+            if (targetPlayer == null)
+            {
+                    player.sendMessage(new StringBuilder(RED.toString()).append("This player is offline!").toString());
+                    return;
+            }
 
-		// To fix case isues
-		player2 = p2.getName();
+            // To fix case isues. Might be added later in case we switch to Bukkit.matchPlayer(String)
+            //targetName = targetPlayer.getName();
+            String playerName = player.getName();
 
-		User user2 = this.plugin.getUserManager().getUser(p2);
-		if (user1 == null || user2 == null)
-		{
-			player1.sendMessage(new StringBuilder(RED.toString()).append("Something went wrong while accessing the friend list of the player you specified").toString());
-			return;
-		}
+            User target = this.plugin.getUserManager().getUser(targetPlayer);
+            if (user == null || target == null)
+            {
+                    player.sendMessage(new StringBuilder(RED.toString()).append("Something went wrong while accessing the friend list of the player you specified").toString());
+                    return;
+            }
 
-		// Remove the enemy binding to fix bugs
-		user1.getEnemies().remove(player2);
+            // No sudden friends
+            if(user.getEnemies().contains(targetName) || target.getEnemies().contains(playerName))
+            {
+                player.sendMessage(new StringBuilder(RED.toString()).append("You cannot just friend your enemies like that. First make up!").toString());
+                return;
+            }
+            
+            if(user.getFriends().contains(targetName) && target.getFriends().contains(playerName))
+            {
+                // Other player is already on your friend list
+                player.sendMessage(new StringBuilder(RED.toString()).append(targetName).append(" is already your friend").toString());
+            }
+            
+            final List<String> curReq = getOpenRequests(playerName);
+            List<String> curReqOther = getOpenRequests(targetName);
+            
 
-		String playerName = player1.getName();
-		if (user1.getFriends().contains(playerName))
-		{
-			if (user2.getFriends().contains(playerName))
-			{
-				/*
-				 * Other player is already on your friend list
-				 */
-				player1.sendMessage(new StringBuilder(RED.toString()).append(player2).append(" is already on your friends list").toString());
-			}
-			else
-			{
-				if (user2.getEnemies().contains(playerName))
-				{
-					player1.sendMessage(new StringBuilder(RED.toString()).append("Unable to send friend request because you're on his/her enemy list, however, they are removed from your list!").toString());
-				}
-				else
-				{
-					player1.sendMessage(new StringBuilder(GREEN.toString()).append("You have resent your friend request to ").append(player2).append("!").toString());
-					/*
-					 * Resend friend request
-					 */
-					p2.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has sent you a friend request, do /friend ").append(playerName).append(" to accept it").toString());
-				}
-			}
-
-		}
-		else
-		{
-			/*
-			 * New friend request
-			 */
-			addToList(user1.getFriends(), player2);
-			player1.sendMessage(new StringBuilder(GREEN.toString()).append("You have sent a friend request to ").append(player2).append("!").toString());
-			p2.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has sent you a friend request, do /friend ").append(playerName).append(" to accept it").toString());
-
-		}
+            if (curReqOther.contains(playerName))
+            {
+                // Resend friend request
+                targetPlayer.sendMessage(new StringBuilder(GREEN.toString()).append(playerName).append(" has accepted your friend request").toString());
+                targetPlayer.sendMessage(new StringBuilder(GREEN.toString()).append("You accepted ").append(targetName).append("'s friend request").toString());
+                user.addFriend(targetName);
+                target.addFriend(playerName);
+            }
+            else
+            {
+                //New friend request
+                curReq.add(targetName);
+                player.sendMessage(new StringBuilder(GREEN.toString()).append("You have sent a friend request to ").append(targetName).append("!").toString());
+                targetPlayer.sendMessage(new StringBuilder(GOLD.toString()).append(playerName).append(" has sent you a friend request, do /friend ").append(playerName).append(" to accept it").toString());
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        curReq.remove(targetName);
+                    }
+                                                  // min  sec  tick
+                }.runTaskLaterAsynchronously(plugin,  02 * 60 * 20L);
+            }
 	}
-
-	private <T> void addToList(List<T> list, T value)
-	{
-		if (!list.contains(value))
-		{
-			list.add(value);
-		}
-	}
+        
+        /*
+         * Anyone?
+         */
+        public List<String> getOpenRequests(String player)
+        {
+            if(!this.requests.containsKey(player))
+            {
+                this.requests.put(player, new CopyOnWriteArrayList<String>());
+            }
+            return this.requests.get(player);
+        }
 }
