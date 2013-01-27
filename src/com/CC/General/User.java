@@ -30,6 +30,11 @@ public class User
                 enemies = new ArrayList<String>();
 		player = p.getName();	
 	}
+        
+        public String getName()
+        {
+                return this.player;
+        }
 	
 	public int getPoints()
         {

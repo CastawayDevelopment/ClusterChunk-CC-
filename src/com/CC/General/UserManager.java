@@ -229,7 +229,7 @@ public class UserManager
                 try
                 {
                     PreparedStatement _player = con.prepare("SELECT * FROM players WHERE name = ?");
-                    _player.setString(1, user.getPlayer().getName());
+                    _player.setString(1, user.getName());
                     ResultSet player = _player.executeQuery();
                     if(!player.next())
                     {
@@ -254,18 +254,75 @@ public class UserManager
                     }
                     else if(table.equals("relation"))
                     {
-                        /*
-                        for(String friend : user.getFriends())
-                        {
-                            int relid = 0;
-                            int userid = 0;
-                            con.query(new StringBuilder("REPLACE `relation` SET rel_id = ").append(relid).append(", player_id = ").append(userid).toString());
-                        }
+                        ArrayList<String> friends = (ArrayList<String>) user.getFriends().clone();
+                        ArrayList<String> enemies = (ArrayList<String>) user.getEnemies().clone();
+                        PreparedStatement _cur = con.prepare("SELECT `rel_id`, `isfoe` FROM `relation` WHERE player_id = ?");
+                        _cur.setInt(1, id);
+                        ResultSet cur = _cur.executeQuery();
+                        int rel_id;
+                        String relname;
+                        boolean isfoe;
+                        PreparedStatement _relupdate = con.prepare("UPDATE `relation` SET isfoe = ? WHERE (player_id = ? AND rel_id = ?) OR (rel_id = ? AND player_id = ?)");
+                        PreparedStatement _reldel = con.prepare("DELETE FROM `relation` WHERE (player_id = ? AND rel_id = ?) OR (rel_id = ? AND player_id = ?)");
+                        PreparedStatement _relinsert = con.prepare("INSERT INTO `relation`(`player_id`, `rel_id`, `isfoe`) VALUES(?, ?, ?)");
+                        PreparedStatement _getname = con.prepare("SELECT name FROM `players` WHERE id = ?");
+                        PreparedStatement _getid = con.prepare("SELECT id FROM `players` WHERE name = ?");
                         
-                        for(String enemy : user.getEnemies())
+                        while(cur.next())
                         {
-                            
-                        }*/
+                            rel_id = cur.getInt(0);
+                            _getname.setInt(0, rel_id);
+                            ResultSet getname = _getname.executeQuery();
+                            if(!getname.next())
+                            {
+                                continue;
+                            }
+                            relname = getname.getString(0);
+                            isfoe = cur.getBoolean(1);
+                            if((friends.contains(relname) && isfoe) || (enemies.contains(relname) && !isfoe))
+                            {
+                                // Update both
+                                _relupdate.setBoolean(0, !isfoe);
+                                _relupdate.setInt(1, id);
+                                _relupdate.setInt(2, rel_id);
+                                _relupdate.setInt(3, id);
+                                _relupdate.setInt(4, rel_id);
+                                _relupdate.executeUpdate();
+                                friends.remove(relname);
+                                enemies.remove(relname);
+                            }
+                            else
+                            {
+                                // Apparently, neither friends or enemies
+                                _reldel.setInt(1, id);
+                                _reldel.setInt(2, rel_id);
+                                _reldel.setInt(3, id);
+                                _reldel.setInt(4, rel_id);
+                                _reldel.executeUpdate();
+                            }
+                        }
+                        ArrayList<String> relations = new ArrayList<String>();
+                        relations.addAll(friends);
+                        relations.addAll(enemies);
+                        for(String rel : relations)
+                        {
+                            _getid.setString(0, rel);
+                            ResultSet getid = _getid.executeQuery();
+                            if(!getid.next())
+                            {
+                                continue;
+                            }
+                            rel_id = getid.getInt(0);
+                            isfoe = enemies.contains(rel);
+                            _relinsert.setInt(0, id);
+                            _relinsert.setInt(1, rel_id);
+                            _relinsert.setBoolean(2, isfoe);
+                            _relinsert.executeUpdate();
+                            _relinsert.setInt(0, rel_id);
+                            _relinsert.setInt(1, id);
+                            _relinsert.setBoolean(2, isfoe);
+                            _relinsert.executeUpdate();
+                        }
                     }
                     else
                     {

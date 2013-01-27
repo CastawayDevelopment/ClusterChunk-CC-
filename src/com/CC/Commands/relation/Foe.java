@@ -6,7 +6,6 @@ package com.CC.Commands.relation;
 
 import com.CC.General.User;
 import com.CC.General.onStartup;
-import java.util.List;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;

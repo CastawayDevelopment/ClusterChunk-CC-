@@ -1,13 +1,10 @@
 package com.CC.Commands;
-//Commands need to be updated
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.entity.Player;
-
-import com.CC.Party.*;
 import com.CC.Commands.Party.*;
 import com.CC.General.onStartup;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class PartyCommands implements CommandExecutor
 {
@@ -17,9 +14,10 @@ public class PartyCommands implements CommandExecutor
     private Status status;
     private StartRed startRed;
     private StartBlue startBlue;
-    private Join join;
     private Create create;
     private Disband disband;
+    private AcceptInvite accept;
+    private Invite invite;
 
     public PartyCommands(onStartup plugin)
     {
@@ -28,18 +26,20 @@ public class PartyCommands implements CommandExecutor
         status = new Status(plugin);
         startRed = new StartRed(plugin);
         startBlue = new StartBlue(plugin);
-        join = new Join(plugin);
         create = new Create(plugin);
         disband = new Disband(plugin);
+        accept = new AcceptInvite(plugin);
+        invite = new Invite(plugin);
     }
 
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) { 
-		if(sender instanceof Player) 
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
+    {
+        if(sender instanceof Player) 
         {
-			Player player = (Player)sender;
-			if (cmd.getName().equalsIgnoreCase("party")) 
+            Player player = (Player)sender;
+            if (cmd.getName().equalsIgnoreCase("party")) 
             {
-				if (args.length == 1)
+                if (args.length == 1)
                 {
                     if (args[0].equalsIgnoreCase("help")) 
                     {
@@ -67,28 +67,16 @@ public class PartyCommands implements CommandExecutor
                     if (args[0].equalsIgnoreCase("start"))
                     {
 
-                        if (args.length == 2 && args[1].equalsIgnoreCase("red"))
+                        if (args[1].equalsIgnoreCase("red"))
                         {
                         	
                             startRed.start(player);
                         }
-                        else if (args.length == 2 && args[1].equalsIgnoreCase("blue"))
+                        else if (args[1].equalsIgnoreCase("blue"))
                         {
                         	
                             startBlue.start(player);
                         }
-                    }
-                   
-                    else if (args[0].equalsIgnoreCase("join"))
-                    {
-                    	if (args.length == 2)
-                    	{
-                    		
-                    		String partyName = args[1];
-                    		partyName.toLowerCase();
-                    		
-                            join.join(player, partyName);
-                    	}
                     }
                     else if (args[0].equalsIgnoreCase("create"))
                     {
@@ -97,8 +85,9 @@ public class PartyCommands implements CommandExecutor
                     	
                         create.create(player, partyName);
                     }
-                    else if (args[0].equalsIgnoreCase("Disband")){
-                    	disband.Disbandparty(player);
+                    else if (args[0].equalsIgnoreCase("Disband"))
+                    {
+                    	disband.disbandParty(player);
                     }
                     
                 }

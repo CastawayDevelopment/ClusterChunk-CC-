@@ -1,13 +1,13 @@
-So in this file, i will talk about the comands.
-Firstoff weneed to adjust the partycommands.java and the help.java.
-Secondlyweneedto add the insides/code ofthe cmmandswhich i will do soon.
-Thirdly the status command will be sortof like the fllowing:
+So in this file, i will talk about the commands.
+First off we need to adjust the partycommands.java and the help.java.
+Secondly we need to add the insides/code of the commands which i will do soon.
+Thirdly the status command will be sort of like the following:
 ============[Party Stats]============
 Players: -/4  ?, ?, ?, ?
 Leader: ?
-Que'd: Yes<red/blue (versus ?)>/no
+Queued: Yes<red/blue (versus ?)>/no
 Pending Invites: ?, ?, ?
 ============[Party Stats]============
-Fourtholywe needto add the versus andgetallthat working
+Fourthly need to add the versus and get all that working
 Fifthly the invites.
 To be edited..
