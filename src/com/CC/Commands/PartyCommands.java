@@ -18,6 +18,8 @@ public class PartyCommands implements CommandExecutor
     private Disband disband;
     private AcceptInvite accept;
     private Invite invite;
+    private Changeleader change;
+    private Versus versus;
 
     public PartyCommands(onStartup plugin)
     {
@@ -30,6 +32,9 @@ public class PartyCommands implements CommandExecutor
         disband = new Disband(plugin);
         accept = new AcceptInvite(plugin);
         invite = new Invite(plugin);
+        change = new Changeleader(plugin);
+        versus = new Versus(plugin);
+        
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
@@ -50,6 +55,10 @@ public class PartyCommands implements CommandExecutor
                     {
 
                         leave.leave(player);
+                    }
+                    else if (args[0].equalsIgnoreCase("accept")){
+                    	
+                    	accept.accept(player);
                     }
                     else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status"))
                     {
@@ -89,7 +98,9 @@ public class PartyCommands implements CommandExecutor
                     {
                     	disband.disbandParty(player);
                     }
-                    
+                    else if (args[0].equalsIgnoreCase("change")){
+                    	change.change(player);
+                    }
                 }
             }		
             // instance of check because NOT all senders are players. Simply typecasting to player would break on console cmd.

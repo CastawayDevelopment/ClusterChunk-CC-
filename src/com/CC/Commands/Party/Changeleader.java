@@ -22,4 +22,10 @@ public class Changeleader {
 		}
 	}
 
+	public void change(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 }

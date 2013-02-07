@@ -1,5 +1,7 @@
 package com.CC.Commands.Party;
 
+import org.bukkit.entity.Player;
+
 import com.CC.General.onStartup;
 import sun.net.www.content.text.plain;
 
@@ -16,5 +18,10 @@ public class AcceptInvite
     {
         return false;
     }
+
+	public void accept(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }
