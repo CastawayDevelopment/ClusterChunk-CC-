@@ -12,6 +12,7 @@ public class Party {
     private ArrayList<String> Members = new ArrayList<String>(); // Including the leader
     private ArrayList<String> Invited = new ArrayList<String>();
     private boolean Open;
+    private boolean ingame;
  
     public void setName(String string){
     	PartyName = string;
@@ -19,6 +20,14 @@ public class Party {
     
     public String getName(){
     	return this.PartyName;
+    }
+    
+    public boolean inGame(){
+    	return this.ingame;
+    }
+    
+    public void setInGame(boolean bo){
+    	this.ingame = bo;
     }
     
     /**

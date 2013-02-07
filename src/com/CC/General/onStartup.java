@@ -130,6 +130,11 @@ import org.bukkit.plugin.java.JavaPlugin;
             return this.gm;
         }
         
+        public LobbyListener getLobbies()
+        {
+        	return this.ll;
+        }
+        
         public Storage getParties()
         {
             return this.parties;

@@ -25,8 +25,8 @@ public class Status
         			+ party.getMembers().get(0) + ", " + party.getMembers().get(1) + ", " 
         			+ party.getMembers().get(2) + ", " + party.getMembers().get(3) + "");
         	player.sendMessage(ChatColor.GREEN + "Leader: " + party.getLeader().getName());
-        	player.sendMessage("Queued information");
         	player.sendMessage("Pending invites");
-        }
+        	player.sendMessage(ChatColor.GREEN + "======================================");
+        }                                                                                 
     }
 }

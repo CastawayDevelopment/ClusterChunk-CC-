@@ -6,11 +6,14 @@ import com.CC.Arenas.Team;
 import com.CC.General.User;
 import com.CC.General.UserManager;
 import com.CC.General.onStartup;
+import com.CC.Party.Party;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import static org.bukkit.ChatColor.*;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,12 +43,19 @@ public class LobbyListener implements Listener, Runnable
     	usermanager = plugin.getUserManager();
     	//System.out.println("LobbyListener created.");
 	}
+    
+    public boolean inLobby(Player s){
+    	return quedplayers.containsKey(s);
+    }
 	
 	@EventHandler
 	public void onQueue(PlayerMoveEvent event)
     {
-		//System.out.println("onQueue called.");
+		
 		Player player = event.getPlayer();
+		if(plugin.getParties().getParty(player) != null) return;
+			
+		
 	if(gamemanager.isInGame(player)) return;
 		
 
@@ -203,7 +213,7 @@ public class LobbyListener implements Listener, Runnable
     			red = newnumber;
     		}
     	}
-    	if(blue >= 1 && red >=1){
+    	if(blue >= 4 && red >=4){
     		return true;
     	}else{
     		return false;
@@ -216,7 +226,7 @@ public class LobbyListener implements Listener, Runnable
     	ArrayList<Player> remove = new ArrayList<Player>();
     	ArrayList<Player> players = new ArrayList<Player>();
     	for(Player p : quedplayers.keySet()){
-    		if(!(i >= 1)){
+    		if(!(i >= 4)){
     			if(!quedplayers.get(p).equals(Team.RED)) 
     			{
     			players.add(p);
@@ -234,7 +244,7 @@ public class LobbyListener implements Listener, Runnable
     	ArrayList<Player> remove = new ArrayList<Player>();
     	ArrayList<Player> players = new ArrayList<Player>();
     	for(Player p : quedplayers.keySet()){
-    		if(!(i >= 1)){
+    		if(!(i >= 4)){
     			if(!quedplayers.get(p).equals(Team.BLUE)) 
     			{
     			players.add(p);
@@ -263,6 +273,26 @@ public class LobbyListener implements Listener, Runnable
     			quedplayers.remove(p);
     		}
     	}
+    }
+    
+    public int getRedTeam(){
+    	int amount = 0;
+    	for(int i = 0; i <= quedplayers.size(); i++){
+    		if(quedplayers.get(i).equals(Team.RED)){
+    			amount++;
+    		}
+    	}
+    	return amount;
+    }
+    
+    public int getBlueTeam(){
+    	int amount = 0;
+    	for(int i = 0; i <= quedplayers.size(); i++){
+    		if(quedplayers.get(i).equals(Team.BLUE)){
+    			amount++;
+    		}
+    	}
+    	return amount;
     }
     
 //Currently this will not stop regenerating worlds till a certain amount because the players are not teleported
@@ -352,7 +382,83 @@ public class LobbyListener implements Listener, Runnable
 		
 		
 	}
-}
+	
+	public String startGameParty(Party party, Team team){
+		if(gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
+			if(party.inGame()){
+				return ChatColor.RED + "You are already in a game";
+			}
+			if(team.equals(Team.RED)){
+				if(getBlueTeam() >= 4){
+					ArrayList<Player> redTeam = redTeam();
+					ArrayList<String> blueTeam = party.getMembers();
+					for(Player p : blueTeam()){
+						quedplayers.remove(p);
+					}
+						int amount = gamemanager.getGames().size() + 1;
+						String arenaName = "Arena" + amount;
+						gamemanager.createGame(arenaName);
+						Game game = gamemanager.getGame(arenaName);
+						for(Player p : redTeam){
+							game.addRedPlayer(p.getName());
+							User player = usermanager.getUser(p);
+							player.addTimeOnRed();
+							player.changeLatestGame(game.getName());
+							usermanager.updatePlayer(p, "stats");
+							//System.out.println("Adding " + p.getName() + " to red");
+						}
+						for(String p : blueTeam){
+							User player = usermanager.getUser(p);
+							player.addTimeOnBlue();
+							game.addBluePlayer(p);
+							player.changeLatestGame(game.getName());
+							usermanager.updatePlayer(p, "stats");
+							//System.out.println("Adding " + p.getName() + " to blue");
+						}
+						gamemanager.createMap(arenaName, game);
+						return ChatColor.GREEN + "Successfully joined a game";
+					}else{
+						return ChatColor.RED + "There are not enough players on the other team";
+					}
+				}else{
+					if(getBlueTeam() >= 4){
+						ArrayList<Player> blueTeam = blueTeam();
+						ArrayList<String> redTeam = party.getMembers();
+						for(Player p : blueTeam()){
+							quedplayers.remove(p);
+						}
+							int amount = gamemanager.getGames().size() + 1;
+							String arenaName = "Arena" + amount;
+							gamemanager.createGame(arenaName);
+							Game game = gamemanager.getGame(arenaName);
+							for(String p : redTeam){
+								game.addRedPlayer(p);
+								User player = usermanager.getUser(p);
+								player.addTimeOnRed();
+								player.changeLatestGame(game.getName());
+								usermanager.updatePlayer(p, "stats");
+								//System.out.println("Adding " + p.getName() + " to red");
+							}
+							for(Player p : blueTeam){
+								User player = usermanager.getUser(p);
+								player.addTimeOnBlue();
+								game.addBluePlayer(p.getName());
+								player.changeLatestGame(game.getName());
+								usermanager.updatePlayer(p, "stats");
+								//System.out.println("Adding " + p.getName() + " to blue");
+							}
+							gamemanager.createMap(arenaName, game);
+							return ChatColor.GREEN + "Successfully joined a game";
+						}else{
+							return ChatColor.RED + "There are not enough players on the other team";
+						}
+				}
+			}else{
+				return ChatColor.RED + "There are no current games open";
+			}
+		}
+	}
+
 	
 
 

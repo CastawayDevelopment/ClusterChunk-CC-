@@ -41,6 +41,14 @@ public class UserManager
 		}
 	}
 	
+	public User getUser(String s){
+		if(players.containsKey(s)){
+			return this.players.get(s);
+		}else{
+			return null;
+		}
+	}
+	
 	public void loadPlayers(ArrayList<String> playerNames)
         {
 		//Get all of the PlayerNames from MySQL DataBase
@@ -211,6 +219,15 @@ public class UserManager
     public void updatePlayer(Player p, final String table)
     {
         User u = getUser(p);
+        if(u != null)
+        {
+            updatePlayer(u, table);
+        }
+    }
+    
+    public void updatePlayer(String s, final String table)
+    {
+        User u = getUser(s);
         if(u != null)
         {
             updatePlayer(u, table);
