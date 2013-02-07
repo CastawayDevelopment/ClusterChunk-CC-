@@ -1,9 +1,9 @@
 package com.CC.Commands.Party;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.CC.General.onStartup;
-import com.CC.Party.Party;
 
 public class Leave 
 {
@@ -16,8 +16,11 @@ public class Leave
 
     public void leave(Player player)
     {
-        player.sendMessage("Leave workin");
-        // Let him leave, needs command
-        // Might loop him, or have a general HashMap with players in parties for faster search
+        if(plugin.getParties().getParty(player) != null){
+        	plugin.getParties().getParty(player).playerQuit(player);
+        }else{
+        	player.sendMessage(ChatColor.RED + "You are not currently in a party");
+        }
+        
     }
 }
