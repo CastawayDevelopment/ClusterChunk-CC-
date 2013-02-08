@@ -3,11 +3,12 @@ package com.CC.Commands.Party;
 import org.bukkit.entity.Player;
 
 import com.CC.General.onStartup;
-import sun.net.www.content.text.plain;
+import com.CC.Commands.Party.Invite;
 
 public class AcceptInvite 
 {
     private onStartup plugin;
+    
     
     public AcceptInvite(onStartup plugin)
     {
@@ -19,8 +20,9 @@ public class AcceptInvite
         return false;
     }
 
-	public void accept(Player player) {
-		// TODO Auto-generated method stub
+	public void accept(Player from, Player invited) {
+		
+		
 		
 	}
     

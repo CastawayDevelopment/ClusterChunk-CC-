@@ -17,7 +17,11 @@ public class Invite
     public void invitePlayer(Player from, Player invited){
     	if(plugin.getParties().getParty(from) != null){
     		plugin.getParties().getParty(from).invitePlayer(from, invited);
-    		
+    			invited.sendMessage(from + " has requested that you join his/her party.");
+    			invited.sendMessage("To join " + from + "'s party, type" + ChatColor.RED + " /party accept" + ChatColor.WHITE + " withing the next 20 seconds.");
+    			
+    			
+    			
     	}else{
     		from.sendMessage(ChatColor.RED + "You are not currently in a party");
     		
