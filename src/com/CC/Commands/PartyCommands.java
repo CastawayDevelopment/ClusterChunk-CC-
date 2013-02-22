@@ -1,6 +1,9 @@
 package com.CC.Commands;
 import com.CC.Commands.Party.*;
 import com.CC.General.onStartup;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +23,7 @@ public class PartyCommands implements CommandExecutor
     private Invite invite;
     private Changeleader change;
     private Versus versus;
+    private Remove remove;
 
     public PartyCommands(onStartup plugin)
     {
@@ -34,6 +38,8 @@ public class PartyCommands implements CommandExecutor
         invite = new Invite(plugin);
         change = new Changeleader(plugin);
         versus = new Versus(plugin);
+        remove = new Remove(plugin);
+        
         
     }
 
@@ -56,7 +62,7 @@ public class PartyCommands implements CommandExecutor
 
                         leave.leave(player);
                     }
-                    else if (args[0].equalsIgnoreCase("accept")){
+                    else if (args[0].equalsIgnoreCase("acceptinvite")){
                     	
                     	accept.accept(player);
                     }
@@ -94,12 +100,41 @@ public class PartyCommands implements CommandExecutor
                     	
                         create.create(player, partyName);
                     }
-                    else if (args[0].equalsIgnoreCase("Disband"))
+                    else if (args[0].equalsIgnoreCase("disband"))
                     {
                     	disband.disbandParty(player);
                     }
-                    else if (args[0].equalsIgnoreCase("change")){
-                    	change.change(player);
+                    else if (args[0].equalsIgnoreCase("changeleader")){
+                    	if(Bukkit.getPlayer(args[1]) != null)
+                    	{
+                    		change.ChangePartyLeader(player, Bukkit.getPlayer(args[1]));
+                    	}
+                    	else
+                    	{
+                    		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
+                    	}
+                    	
+                    }
+                    else if(args[0].equalsIgnoreCase("invite"))
+                    {
+                    	if(Bukkit.getPlayer(args[1]) != null)
+                    	{
+                    		invite.invitePlayer(player, Bukkit.getPlayer(args[1]));
+                    	}
+                    	else
+                    	{
+                    		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
+                    	}
+                    }
+                    else if(args[0].equalsIgnoreCase("remove")){
+                    	if(Bukkit.getPlayer(args[1]) != null)
+                    	{
+                    		remove.removePlayer(player, Bukkit.getPlayer(args[1]));
+                    	}
+                    	else
+                    	{
+                    		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
+                    	}
                     }
                 }
             }		
