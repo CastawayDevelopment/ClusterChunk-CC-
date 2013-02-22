@@ -3,7 +3,7 @@ package com.CC.Commands.Party;
 import org.bukkit.entity.Player;
 
 import com.CC.General.onStartup;
-import com.CC.Commands.Party.Invite;
+import com.CC.Commands.Party.Invite.*;
 
 public class AcceptInvite 
 {
@@ -20,7 +20,8 @@ public class AcceptInvite
     }
 
 	public void accept(Player from, Player invited) {
-		if(Invited.containsKey(invited)){
+		plugin.getParties().getParty(from).addMember(invited);
+			
 			
 			
 			
@@ -32,4 +33,4 @@ public class AcceptInvite
 		
 	}
     
-}
+
