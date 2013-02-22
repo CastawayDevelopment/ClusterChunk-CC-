@@ -1,16 +1,21 @@
 package com.CC.Party;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
+import com.CC.General.onStartup;
+
 public class Party {
 	
     private String PartyName;
+    private onStartup plugin;
     private String PartyStatus;
     private String Leader;
     private ArrayList<String> Members = new ArrayList<String>(); // Including the leader
-    private ArrayList<String> Invited = new ArrayList<String>();
+    public HashMap<String, String> Invited = new HashMap<String, String>();
     private boolean Open;
     private boolean ingame;
  
@@ -46,7 +51,7 @@ public class Party {
     }
     
     public boolean addMember(Player added){
-    	if(Invited.contains(added.getName())){
+    	if(Invited.containsKey(added.getName())){
     		if(!Open){
     			added.sendMessage(new StringBuilder(GRAY.toString()).append("Sorry ").append(added).append(", but the party you are trying to join is currently closed").toString());
     			added.sendMessage(new StringBuilder(GRAY.toString()).append("This is due to the fact that the party you are trying to join has 4 members already").toString());
@@ -108,12 +113,12 @@ public class Party {
     public boolean invitePlayer(Player from, Player invited){
     if(from.getName().equals(Leader)){
     	if(Members.size() < 4){
-    		if(Invited.contains(invited.getName())){
+    		if(Invited.containsKey(invited.getName())){
     			from.sendMessage(new StringBuilder(GRAY.toString()).append("You have already invited ").append(DARK_GRAY).append(invited.getName()).toString());
     			return false;
     		}else{
     			invited.sendMessage(new StringBuilder("You have been invited to ").append(PartyName).toString());
-    			Invited.add(invited.getName());
+    			Invited.put(invited.getName(), PartyName);
     			return true;
     		}
     	}else{

@@ -1,5 +1,7 @@
 package com.CC.Commands.Party;
 
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -8,6 +10,7 @@ import com.CC.Listeners.LobbyListener.*;
 
 public class Invite 
 {
+	
     private onStartup plugin;
     
     public Invite(onStartup p)
@@ -16,10 +19,9 @@ public class Invite
     }
 
     public void invitePlayer(Player from, Player invited){
-    	if(plugin.getParties().getParty(from) != null && inLobby(invited) == false){
+    	if(plugin.getParties().getParty(from) != null && plugin.getLobbies().inLobby(invited) == false && plugin.getGameManager().isInGame(invited) == false ){
     		plugin.getParties().getParty(from).invitePlayer(from, invited);
-    			invited.sendMessage(from + " has requested that you join his/her party.");
-    			invited.sendMessage("To join " + from + "'s party, type" + ChatColor.RED + " /party accept" + ChatColor.WHITE + " withing the next 20 seconds.");
+    			invited.sendMessage("To join " + from + "'s party, type" + ChatColor.RED + " /party accept" + ChatColor.WHITE + "or" + ChatColor.RED + "/party DENY");
     			
     			
     			

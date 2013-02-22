@@ -9,7 +9,6 @@ public class AcceptInvite
 {
     private onStartup plugin;
     
-    
     public AcceptInvite(onStartup plugin)
     {
         this.plugin = plugin;
@@ -21,6 +20,13 @@ public class AcceptInvite
     }
 
 	public void accept(Player from, Player invited) {
+		if(Invited.containsKey(invited)){
+			
+			
+			
+			
+			
+		}
 		
 		
 		
