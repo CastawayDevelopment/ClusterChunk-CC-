@@ -62,10 +62,7 @@ public class PartyCommands implements CommandExecutor
 
                         leave.leave(player);
                     }
-                    else if (args[0].equalsIgnoreCase("acceptinvite")){
-                    	
-                    	accept.accept(player);
-                    }
+                    
                     else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status"))
                     {
 
@@ -135,6 +132,10 @@ public class PartyCommands implements CommandExecutor
                     	{
                     		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
                     	}
+                    }
+                    else if(args[0].equalsIgnoreCase("acceptinvite"))
+                    {
+                    	accept.accept(args[1], player);
                     }
                 }
             }		

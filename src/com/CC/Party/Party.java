@@ -120,7 +120,7 @@ public class Party {
     			return false;
     		}else{
     			invited.sendMessage(new StringBuilder("You have been invited to ").append(PartyName).toString());
-    			invited.sendMessage(ChatColor.GREEN + "To join " + ChatColor.DARK_GREEN + plugin.getParties().getParty(from).getName() + ChatColor.GREEN +", type" + ChatColor.DARK_GREEN + " /party accept" + ChatColor.GREEN + "or" + ChatColor.RED + "/party DENY");
+    			invited.sendMessage(ChatColor.GREEN + "To join " + ChatColor.DARK_GREEN + plugin.getParties().getParty(from).getName() + ChatColor.GREEN +", type" + ChatColor.DARK_GREEN + " /party accept " + PartyName);
     			Invited.put(invited.getName(), PartyName);
     			return true;
     		}

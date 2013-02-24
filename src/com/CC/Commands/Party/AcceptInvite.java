@@ -1,5 +1,6 @@
 package com.CC.Commands.Party;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.CC.General.onStartup;
@@ -19,8 +20,14 @@ public class AcceptInvite
         return false;
     }
 
-	public void accept(Player from, Player invited) {
-		plugin.getParties().getParty(from).addMember(invited);
+	public void accept(String partyName, Player invited) {
+		
+		try{
+			plugin.getParties().getParty(partyName).addMember(invited);
+		}catch(Exception e){
+			invited.sendMessage(ChatColor.RED + "The party you are trying to join does not exist");
+		}
+		
 			
 			
 			
