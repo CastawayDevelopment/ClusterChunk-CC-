@@ -18,15 +18,26 @@ public class Invite
     }
 
     public void invitePlayer(Player from, Player invited){
-    	if(plugin.getParties().getParty(from) != null && plugin.getLobbies().inLobby(invited) == false && plugin.getGameManager().isInGame(invited) == false ){
-    		plugin.getParties().getParty(from).invitePlayer(from, invited);
-    			invited.sendMessage("To join " + from + "'s party, type" + ChatColor.RED + " /party accept" + ChatColor.WHITE + "or" + ChatColor.RED + "/party DENY");
-    			
-    			
-    			
-    	}else{
+    	if(plugin.getParties().getParty(from) == null){
     		from.sendMessage(ChatColor.RED + "You are not currently in a party");
-    		
+    		return;
     	}
+    	if(plugin.getLobbies().inLobby(invited)){
+    		from.sendMessage(ChatColor.RED + "Sorry, but you cannot invite a player that is queued into a game.");
+    		return;
+    	}
+    	if(plugin.getGameManager().isInGame(invited)){
+    		from.sendMessage(ChatColor.RED + "Sorry, but you cannot invite a player that is in a game.");
+    		return;
+    	}	
+    			
+    	if(plugin.getParties().getParty(invited) != null){
+    		from.sendMessage(ChatColor.RED + "Sorry, but '" + ChatColor.DARK_RED +  invited.getName() + ChatColor.RED + "' is already in a party."); 
+    		return;
+    	}
+    	plugin.getParties().getParty(from).invitePlayer(from, invited);
+    			
+    	
+    	
     }
 }

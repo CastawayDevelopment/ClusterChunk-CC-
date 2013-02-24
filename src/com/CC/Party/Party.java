@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
@@ -118,6 +120,7 @@ public class Party {
     			return false;
     		}else{
     			invited.sendMessage(new StringBuilder("You have been invited to ").append(PartyName).toString());
+    			invited.sendMessage(ChatColor.GREEN + "To join " + ChatColor.DARK_GREEN + plugin.getParties().getParty(from).getName() + ChatColor.GREEN +", type" + ChatColor.DARK_GREEN + " /party accept" + ChatColor.GREEN + "or" + ChatColor.RED + "/party DENY");
     			Invited.put(invited.getName(), PartyName);
     			return true;
     		}
