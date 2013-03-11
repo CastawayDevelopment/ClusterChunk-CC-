@@ -1,4 +1,5 @@
 package com.CC.Commands;
+
 import com.CC.Commands.Party.*;
 import com.CC.General.onStartup;
 
@@ -19,11 +20,11 @@ public class PartyCommands implements CommandExecutor
     private StartBlue startBlue;
     private Create create;
     private Disband disband;
-    private AcceptInvite accept;
+    private Accept accept;
     private Invite invite;
-    private Changeleader change;
+    private ChangeLeader change;
     private Versus versus;
-    private Remove remove;
+    private Kick kick;
 
     public PartyCommands(onStartup plugin)
     {
@@ -34,111 +35,120 @@ public class PartyCommands implements CommandExecutor
         startBlue = new StartBlue(plugin);
         create = new Create(plugin);
         disband = new Disband(plugin);
-        accept = new AcceptInvite(plugin);
+        accept = new Accept(plugin);
         invite = new Invite(plugin);
-        change = new Changeleader(plugin);
+        change = new ChangeLeader(plugin);
         versus = new Versus(plugin);
-        remove = new Remove(plugin);
-        
-        
+        kick = new Kick(plugin);
+
+
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
-        if(sender instanceof Player) 
+        if (sender instanceof Player)
         {
-            Player player = (Player)sender;
-            if (cmd.getName().equalsIgnoreCase("party")) 
+            Player player = (Player) sender;
+            if (cmd.getName().equalsIgnoreCase("party"))
             {
                 if (args.length == 1)
                 {
-                    if (args[0].equalsIgnoreCase("help")) 
+                    if (args[0].equalsIgnoreCase("help"))
                     {
 
                         help.help(player);
-                    } 
+                    }
                     else if (args[0].equalsIgnoreCase("leave"))
                     {
 
                         leave.leave(player);
                     }
-                    
                     else if (args[0].equalsIgnoreCase("stats") || args[0].equalsIgnoreCase("status"))
                     {
 
                         status.status(player);
-                    } 
+                    }
                     else
                     {
                         return false;
                     }
                     return true;
                 }
-                else if(args.length == 2)
+                else if (args.length == 2)
                 {
                     if (args[0].equalsIgnoreCase("start"))
                     {
 
                         if (args[1].equalsIgnoreCase("red"))
                         {
-                        	
+
                             startRed.start(player);
                         }
                         else if (args[1].equalsIgnoreCase("blue"))
                         {
-                        	
+
                             startBlue.start(player);
+                        }
+                        else
+                        {
+                            sender.sendMessage("Please choose either red or blue");
                         }
                     }
                     else if (args[0].equalsIgnoreCase("create"))
                     {
-                    	
-                    	String partyName = args[1];
-                    	
+
+                        String partyName = args[1];
+
                         create.create(player, partyName);
                     }
                     else if (args[0].equalsIgnoreCase("disband"))
                     {
-                    	disband.disbandParty(player);
+                        disband.disbandParty(player);
                     }
-                    else if (args[0].equalsIgnoreCase("changeleader")){
-                    	if(Bukkit.getPlayer(args[1]) != null)
-                    	{
-                    		change.ChangePartyLeader(player, Bukkit.getPlayer(args[1]));
-                    	}
-                    	else
-                    	{
-                    		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
-                    	}
-                    	
-                    }
-                    else if(args[0].equalsIgnoreCase("invite"))
+                    else if (args[0].equalsIgnoreCase("changeleader"))
                     {
-                    	if(Bukkit.getPlayer(args[1]) != null)
-                    	{
-                    		invite.invitePlayer(player, Bukkit.getPlayer(args[1]));
-                    	}
-                    	else
-                    	{
-                    		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
-                    	}
+                        if (Bukkit.getPlayer(args[1]) != null)
+                        {
+                            change.ChangePartyLeader(player, Bukkit.getPlayer(args[1]));
+                        }
+                        else
+                        {
+                            player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' is not online");
+                        }
+
                     }
-                    else if(args[0].equalsIgnoreCase("remove")){
-                    	if(Bukkit.getPlayer(args[1]) != null)
-                    	{
-                    		remove.removePlayer(player, Bukkit.getPlayer(args[1]));
-                    	}
-                    	else
-                    	{
-                    		player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
-                    	}
-                    }
-                    else if(args[0].equalsIgnoreCase("acceptinvite"))
+                    else if (args[0].equalsIgnoreCase("invite"))
                     {
-                    	accept.accept(args[1], player);
+                        if (Bukkit.getPlayer(args[1]) != null)
+                        {
+                            invite.invitePlayer(player, Bukkit.getPlayer(args[1]));
+                        }
+                        else
+                        {
+                            player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
+                        }
+                    }
+                    else if (args[0].equalsIgnoreCase("kick"))
+                    {
+                        if (Bukkit.getPlayer(args[1]) != null)
+                        {
+                            kick.kickPlayer(player, Bukkit.getPlayer(args[1]));
+                        }
+                        else
+                        {
+                            player.sendMessage(ChatColor.RED + "The player '" + ChatColor.DARK_RED + args[1] + ChatColor.RED + "' does not exist");
+                        }
+                    }
+                    else if (args[0].equalsIgnoreCase("accept"))
+                    {
+                        accept.accept(args[1], player);
+                    }
+                    else if (args[0].equalsIgnoreCase("versus"))
+                    {
+                        this.versus.execute(player, args[1]);
                     }
                 }
-            }		
+            }
             // instance of check because NOT all senders are players. Simply typecasting to player would break on console cmd.
         }
         else
@@ -146,6 +156,5 @@ public class PartyCommands implements CommandExecutor
             // Tho, wtf is happening here? not much ;D
         }
         return false;
-    }	
+    }
 }
-
