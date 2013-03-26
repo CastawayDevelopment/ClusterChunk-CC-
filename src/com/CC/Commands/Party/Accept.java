@@ -1,15 +1,15 @@
 package com.CC.Commands.Party;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Accept
 {
 
-    private onStartup plugin;
+    private ClusterChunk plugin;
 
-    public Accept(onStartup plugin)
+    public Accept(ClusterChunk plugin)
     {
         this.plugin = plugin;
     }

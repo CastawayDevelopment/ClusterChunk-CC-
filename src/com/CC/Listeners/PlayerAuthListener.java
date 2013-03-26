@@ -1,7 +1,7 @@
 package com.CC.Listeners;
 
 import com.CC.General.User;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import java.util.ArrayList;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,9 +15,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class PlayerAuthListener implements Listener
 {
-    private onStartup main;
+    private ClusterChunk main;
     
-    public PlayerAuthListener(onStartup main)
+    public PlayerAuthListener(ClusterChunk main)
     {
         this.main = main;
     }

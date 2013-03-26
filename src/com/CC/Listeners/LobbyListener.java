@@ -2,19 +2,20 @@ package com.CC.Listeners;
 
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
-import com.CC.Arenas.Team;
+import com.CC.Enums.LobbyColour;
+import com.CC.Enums.Team;
+import com.CC.General.ClusterChunk;
 import com.CC.General.User;
 import com.CC.General.UserManager;
-import com.CC.General.onStartup;
 import com.CC.Party.Party;
-
+import com.CC.Party.PartyBattle;
 import java.util.ArrayList;
-import java.util.HashMap;
-import static org.bukkit.ChatColor.*;
-
-import org.bukkit.Bukkit;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
+import static org.bukkit.ChatColor.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,439 +27,202 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-
-public class LobbyListener implements Listener, Runnable
+public class LobbyListener implements Listener
 {
-	
-	public static HashMap<Player, Team> quedplayers = new HashMap<Player, Team>();
-	
-	private onStartup plugin;
-	private GameManager gamemanager;
-	private UserManager usermanager;
+    private ClusterChunk plugin;
+    private GameManager gamemanager;
+    private UserManager usermanager;
     
-    public LobbyListener(onStartup instance) {
-    	plugin = instance;
-    	plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,  this, 0, 80);
-    	gamemanager = plugin.getGameManager();
-    	usermanager = plugin.getUserManager();
-    	//System.out.println("LobbyListener created.");
-	}
+    public LinkedList<String> queueBlue;
+    public LinkedList<String> queueRed;
+    public LinkedList<PartyBattle> queueVersus;
+    public Set<String> partyInQueue;
     
-    public boolean inLobby(Player s){
-    	return quedplayers.containsKey(s);
-    }
-	
-	@EventHandler
-	public void onQueue(PlayerMoveEvent event)
-    {
-		
-		Player player = event.getPlayer();
-		if(plugin.getParties().getParty(player) != null) return;
-			
-		
-	if(gamemanager.isInGame(player)) return;
-		
+    private final Random rnd = new Random();
 
-		if(player.getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
+    public LobbyListener(ClusterChunk instance)
+    {
+        plugin = instance;
+        gamemanager = plugin.getGameManager();
+        usermanager = plugin.getUserManager();
+        queueBlue = plugin.queueBlue;
+        queueRed = plugin.queueRed;
+        queueVersus = plugin.queueVersus;
+        partyInQueue = plugin.partyInQueue;
+        //System.out.println("LobbyListener created.");
+    }
+
+    public boolean inLobby(Player s)
+    {
+        return this.queueBlue.contains(s.getName()) ||
+                this.queueRed.contains(s.getName()) ||
+                this.partyInQueue.contains(s.getName());
+        //return quedplayers.containsKey(s);
+    }
+
+    @EventHandler
+    public void onQueue(PlayerMoveEvent event)
+    {
+
+        Player player = event.getPlayer();
+        if (plugin.getParties().getParty(player) != null)
         {
-			//player.sendMessage("Step 1");
-			if(quedplayers.containsKey(event.getPlayer()))
+            return;
+        }
+
+
+        if (gamemanager.isInGame(player))
+        {
+            return;
+        }
+
+
+        if (!player.getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
+        {
+            return;
+        }
+        
+        //player.sendMessage("Step 1");
+        Block block = event.getPlayer().getLocation().subtract(0, 3, 0).getBlock();
+        if (queueRed.contains(player.getName()) || queueBlue.contains(player.getName()))
+        {
+            //player.sendMessage("Step 2");
+            if (!onLobby(block))
             {
-				//player.sendMessage("Step 2");
-				if(!onLobby(player))
-                {
-					//player.sendMessage("Step 3");
-						quedplayers.remove(player);
-						player.sendMessage(new StringBuilder(BOLD.toString()).append("You've been removed from the waiting list").toString());
-						player.getInventory().setHelmet(null);
-                }
+                //player.sendMessage("Step 3");
+                queueRed.remove(player.getName());
+                queueBlue.remove(player.getName());
+                player.sendMessage(new StringBuilder(BOLD.toString()).append("You've been removed from the waiting list").toString());
+                player.getInventory().setHelmet(null);
+            }
+            return;
+        }
+        
+        //player.sendMessage("Step 1");
+        if (onLobby(block))
+        {
+            //player.sendMessage("Step 3");
+            byte data = block.getData();
+            
+            if (data == LobbyColour.WHITE.getData())
+            {
+                data = rnd.nextBoolean() ? LobbyColour.BLUE.getData(): LobbyColour.RED.getData();
+            }
+            
+            if (data == LobbyColour.BLUE.getData())
+            {
+                //player.sendMessage("Step 4");
+                player.sendMessage(new StringBuilder(BLUE.toString()).append("You have been added to the blue team waiting list").toString());
+                this.queueBlue.addLast(player.getName());
+                player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
+                //System.out.println("" + quedplayers);
             }
             else
             {
-            	//player.sendMessage("Step 1");
-                if(onLobby(player))
+                //player.sendMessage("Step 4");
+                player.sendMessage(new StringBuilder(RED.toString()).append("You have been added to the red team waiting list").toString());
+                this.queueRed.addLast(player.getName());
+                player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
+                //System.out.println("" + quedplayers);
+            }
+        }
+    }
+    
+    
+    
+    public boolean onLobby(Block block)
+    {
+        if (block.getType() == Material.WOOL)
+        {
+            LobbyColour lc = LobbyColour.byData(block.getData());
+            switch(lc)
+            {
+                case RED:
+                case BLUE:
+                case WHITE:
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onQuit(PlayerQuitEvent event)
+    {
+        Player player = event.getPlayer();
+        if (inLobby(player))
+        {
+            queueRed.remove(player.getName());
+            queueBlue.remove(player.getName());
+            Party party = plugin.getParties().getParty(player);
+            if(this.partyInQueue.contains(player.getName()))
+            {
+                for(String member : party.getMembers())
                 {
-                	//player.sendMessage("Step 2");
-                	Block block = event.getPlayer().getWorld().getBlockAt(event.getPlayer().getLocation().getBlockX(), event.getPlayer().getLocation().getBlockY() - 3, event.getPlayer().getLocation().getBlockZ());
-                    if(block.getType() == Material.WOOL)
+                    this.partyInQueue.remove(member);
+                }
+                for(PartyBattle pb : this.queueVersus)
+                {
+                    if(pb.getChallengee() == party || pb.getChallenger() == party)
                     {
-                    	//player.sendMessage("Step 3");
-                    	byte red  = DyeColor.RED.getData();
-                        byte blue = DyeColor.BLUE.getData();
-                        if(block.getData() == blue)
+                        
+                        int index = this.queueVersus.indexOf(pb);
+                        this.queueVersus.remove(index);
+                        int newindex = 0;
+                        List<String> queueToPoll = this.queueBlue;
+                        if(pb.getPreferredTeam() == Team.RED)
                         {
-                        	//player.sendMessage("Step 4");
-                            player.sendMessage(new StringBuilder(BLUE.toString()).append("You have been added to the blue team waiting list").toString());
-                            quedplayers.put(player, Team.BLUE);
-                            player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
-                            //System.out.println("" + quedplayers);
+                            queueToPoll = this.queueRed;
                         }
-                        else if (block.getData() == red)
+                        for(String q : queueToPoll)
                         {
-                        	if(quedplayers.containsKey(player)) return; //This didn't even work :P
-                        	//player.sendMessage("Step 4");
-                            player.sendMessage(new StringBuilder(RED.toString()).append("You have been added to the red team waiting list").toString());
-                            quedplayers.put(player, Team.RED);
-                            player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
-                            //System.out.println("" + quedplayers);
+                            if(q.equals(ClusterChunk.PARTY))
+                            {
+                                if(index == 0)
+                                {
+                                    queueToPoll.remove(newindex);
+                                    break;
+                                }
+                                index--;
+                            }
+                            newindex++;
                         }
-                        else 
-                        {
-                        	if(randomTeam(player) == Team.BLUE){
-                        		if(quedplayers.containsKey(player)) return;
-                        		player.sendMessage(new StringBuilder(BLUE.toString()).append("You have been added to the blue team waiting list").toString());
-                        		quedplayers.put(player, Team.BLUE);
-                        		player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 11));
-                        		//System.out.println("1" + quedplayers);
-                        	}
-                        	else
-                        	{
-                        		if(quedplayers.containsKey(player)) return;
-                        		player.sendMessage(new StringBuilder(RED.toString()).append("You have been added to the red team waiting list").toString());
-                                quedplayers.put(player, Team.RED);
-                                player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short) 14));
-                               // System.out.println("1" + quedplayers);
-                        	}
-                        	
-                        }
+                        break;
                     }
                 }
             }
         }
-   }
-	
-	
-	public boolean onLobby(Player player)
-    {
-		Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() - 3, player.getLocation().getBlockZ());
-		if(block.getType() == Material.WOOL)
-        {
-            byte red = DyeColor.RED.getData();
-            byte blue = DyeColor.BLUE.getData();
-            byte white = DyeColor.WHITE.getData();
-            if(block.getData() == red || block.getData() == blue || block.getData() == white)
-            {
-                return true;
-            }    
-        }
-        return false;
     }
-    
-    @EventHandler(priority=EventPriority.LOW)
-    public void onQuit(PlayerQuitEvent event)
-    {
-        Player player = event.getPlayer();
-        if(quedplayers.containsKey(player))
-        {
-            quedplayers.remove(player);
-        }
-    }
-    
-    
+
     /*@EventHandler
-    public void noJump(PlayerMoveEvent event){
+     public void noJump(PlayerMoveEvent event){
     	
-    Player player = event.getPlayer();
-   // player.sendMessage("Called!");
-    if(quedplayers.containsKey(player)){
-    	//player.sendMessage("1");
-    	if(event.getFrom().getY() < event.getTo().getY()){
-    				event.setCancelled(true);
-    				player.getVelocity().setY(0);
-    				//player.sendMessage("2");
-    			}
-    		}
+     Player player = event.getPlayer();
+     // player.sendMessage("Called!");
+     if(quedplayers.containsKey(player)){
+     //player.sendMessage("1");
+     if(event.getFrom().getY() < event.getTo().getY()){
+     event.setCancelled(true);
+     player.getVelocity().setY(0);
+     //player.sendMessage("2");
+     }
+     }
     		
-    	}*/
-    
-    private Team randomTeam(Player player)
-    {
-    		if(Math.random() >= .50)
-    		{
-    			return Team.RED;
-    		}
-    		else
-    		{
-    			return Team.BLUE;
-    		}
-    	
-    	}
-    
+     }*/
+
     /**
-     * This will block the redstone lamps in the lobby world from
-     * turning off :D 
-     * 
+     * This will block the redstone lamps in the lobby world from turning off :D
+     *
      */
-    
     @EventHandler
-    public void lampAlwaysOn(BlockRedstoneEvent event){
-    if(event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
+    public void lampAlwaysOn(BlockRedstoneEvent event)
     {
-    	if (event.getBlock().getType() == Material.REDSTONE_LAMP_ON || event.getBlock().getType() == Material.REDSTONE_LAMP_OFF)
+        if (event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase("lobby"))
         {
-    		event.setNewCurrent(100);
+            if (event.getBlock().getType() == Material.REDSTONE_LAMP_ON || event.getBlock().getType() == Material.REDSTONE_LAMP_OFF)
+            {
+                event.setNewCurrent(100);
+            }
         }
-    }	
-  }
-    
-    private boolean countTeams(){
-    	int blue = 0;
-    	int red = 0;
-    	for(Player p : quedplayers.keySet()){
-    		if(quedplayers.get(p).equals(Team.BLUE)){
-    			int newnumber = blue + 1;
-    			blue = newnumber;
-    		}else{
-    			int newnumber = red + 1;
-    			red = newnumber;
-    		}
-    	}
-    	if(blue >= 4 && red >=4){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    
     }
-    
-    private ArrayList<Player> blueTeam(){
-    	int i = 0;
-    	ArrayList<Player> remove = new ArrayList<Player>();
-    	ArrayList<Player> players = new ArrayList<Player>();
-    	for(Player p : quedplayers.keySet()){
-    		if(!(i >= 4)){
-    			if(!quedplayers.get(p).equals(Team.RED)) 
-    			{
-    			players.add(p);
-    			int newnumber = i + 1;
-    			i = newnumber;
-    			remove.add(p);
-    			}
-    		}
-    	}
-    	return players;
-    }
-    
-    private ArrayList<Player> redTeam(){
-    	int i = 0;
-    	ArrayList<Player> remove = new ArrayList<Player>();
-    	ArrayList<Player> players = new ArrayList<Player>();
-    	for(Player p : quedplayers.keySet()){
-    		if(!(i >= 4)){
-    			if(!quedplayers.get(p).equals(Team.BLUE)) 
-    			{
-    			players.add(p);
-    			int newnumber = i + 1;
-    			i = newnumber;
-    			remove.add(p);
-    			}
-    		}
-    	}
-    	return players;
-    }
-    
-    private Game gameToJoin(){
-    	
-    	return gamemanager.getOpenGames().get(1);
-    	
-    		
-    }
-    
-    private void removePlayers(ArrayList<Player> players){
-    	for(Player p : players){
-    		if(quedplayers.containsKey(p)){
-    			if(onStartup.debugmode){
-    				System.out.println("players removed!");
-    			}
-    			quedplayers.remove(p);
-    		}
-    	}
-    }
-    
-    public int getRedTeam(){
-    	int amount = 0;
-    	for(int i = 0; i <= quedplayers.size(); i++){
-    		if(quedplayers.get(i).equals(Team.RED)){
-    			amount++;
-    		}
-    	}
-    	return amount;
-    }
-    
-    public int getBlueTeam(){
-    	int amount = 0;
-    	for(int i = 0; i <= quedplayers.size(); i++){
-    		if(quedplayers.get(i).equals(Team.BLUE)){
-    			amount++;
-    		}
-    	}
-    	return amount;
-    }
-    
-//Currently this will not stop regenerating worlds till a certain amount because the players are not teleported
-	public void run() {
-	if(!countTeams()) return;
-		if(gamemanager.getOpenGames().size() > 0 || gamemanager.getGames().keySet().size() < 20){
-			if((redTeam() == null || blueTeam() == null) || (redTeam().size() == 0 || blueTeam().size() == 0)) return;
-			if(gamemanager.getOpenGames().size() > 0 && gamemanager.getGames().keySet().size() < 20){
-				Game game = gameToJoin();
-				for(Player p : redTeam()){
-					game.addRedPlayer(p.getName());
-					quedplayers.remove(p);
-					p.teleport(game.getRedSpawn(game.getName()));
-					User player = usermanager.getUser(p);
-					player.addTimeOnRed();
-					player.changeLatestGame(game.getName());
-					usermanager.updatePlayer(p, "stats");
-				}
-				for(Player p : blueTeam()){
-					game.addBluePlayer(p.getName());
-					quedplayers.remove(p);
-					p.teleport(game.getBlueSpawn(game.getName()));
-					User player = usermanager.getUser(p);
-					player.addTimeOnBlue();
-					player.changeLatestGame(game.getName());
-					usermanager.updatePlayer(p, "stats");
-				}
-			}else if(gamemanager.getOpenGames().size() > 0 && !(gamemanager.getGames().keySet().size() < 20)){
-				Game game = gameToJoin();
-				for(Player p : redTeam()){
-					game.addRedPlayer(p.getName());
-					quedplayers.remove(p);
-					p.teleport(game.getRedSpawn(game.getName()));
-					User player = usermanager.getUser(p);
-					player.addTimeOnRed();
-					player.changeLatestGame(game.getName());
-					usermanager.updatePlayer(p, "stats");
-					//System.out.println("Adding " + p.getName() + " to red");
-				}
-				for(Player p : blueTeam()){
-					game.addBluePlayer(p.getName());
-					quedplayers.remove(p);
-					p.teleport(game.getBlueSpawn(game.getName()));
-					User player = usermanager.getUser(p);
-					player.addTimeOnBlue();
-					player.changeLatestGame(game.getName());
-					usermanager.updatePlayer(p, "stats");
-					//System.out.println("Adding " + p.getName() + " to blue");
-				}
-				//System.out.println(game.getPlayers());
-				gamemanager.startGameCount(game);
-				//If there are no open games and there aren't already 20 games
-			}else if (gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
-				ArrayList<Player> redTeam = redTeam();
-				ArrayList<Player> blueTeam = blueTeam();
-				for(Player p : redTeam()){
-					quedplayers.remove(p);
-				}
-				for(Player p : blueTeam()){
-					quedplayers.remove(p);
-				}
-				int amount = gamemanager.getGames().size() + 1;
-				String arenaName = "Arena" + amount;
-				gamemanager.createGame(arenaName);
-				Game game = gamemanager.getGame(arenaName);
-				for(Player p : redTeam){
-					game.addRedPlayer(p.getName());
-					User player = usermanager.getUser(p);
-					player.addTimeOnRed();
-					player.changeLatestGame(game.getName());
-					usermanager.updatePlayer(p, "stats");
-					//System.out.println("Adding " + p.getName() + " to red");
-				}
-				for(Player p : blueTeam){
-					User player = usermanager.getUser(p);
-					player.addTimeOnBlue();
-					game.addBluePlayer(p.getName());
-					player.changeLatestGame(game.getName());
-					usermanager.updatePlayer(p, "stats");
-					//System.out.println("Adding " + p.getName() + " to blue");
-				}
-				gamemanager.createMap(arenaName, game);
-				//System.out.println(game.getPlayers());
-				
-			}
-		}
-		
-		
-	}
-	
-	public String startGameParty(Party party, Team team){
-		if(gamemanager.getOpenGames().size() <= 0 && gamemanager.getGames().keySet().size() < 20){
-			if(party.inGame()){
-				return ChatColor.RED + "You are already in a game";
-			}
-			if(team.equals(Team.RED)){
-				if(getBlueTeam() >= 4){
-					ArrayList<Player> redTeam = redTeam();
-					ArrayList<String> blueTeam = party.getMembers();
-					for(Player p : blueTeam()){
-						quedplayers.remove(p);
-					}
-						int amount = gamemanager.getGames().size() + 1;
-						String arenaName = "Arena" + amount;
-						gamemanager.createGame(arenaName);
-						Game game = gamemanager.getGame(arenaName);
-						for(Player p : redTeam){
-							game.addRedPlayer(p.getName());
-							User player = usermanager.getUser(p);
-							player.addTimeOnRed();
-							player.changeLatestGame(game.getName());
-							usermanager.updatePlayer(p, "stats");
-							//System.out.println("Adding " + p.getName() + " to red");
-						}
-						for(String p : blueTeam){
-							User player = usermanager.getUser(p);
-							player.addTimeOnBlue();
-							game.addBluePlayer(p);
-							player.changeLatestGame(game.getName());
-							usermanager.updatePlayer(p, "stats");
-							//System.out.println("Adding " + p.getName() + " to blue");
-						}
-						gamemanager.createMap(arenaName, game);
-						return ChatColor.GREEN + "Successfully joined a game";
-					}else{
-						return ChatColor.RED + "There are not enough players on the other team";
-					}
-				}else{
-					if(getBlueTeam() >= 4){
-						ArrayList<Player> blueTeam = blueTeam();
-						ArrayList<String> redTeam = party.getMembers();
-						for(Player p : blueTeam()){
-							quedplayers.remove(p);
-						}
-							int amount = gamemanager.getGames().size() + 1;
-							String arenaName = "Arena" + amount;
-							gamemanager.createGame(arenaName);
-							Game game = gamemanager.getGame(arenaName);
-							for(String p : redTeam){
-								game.addRedPlayer(p);
-								User player = usermanager.getUser(p);
-								player.addTimeOnRed();
-								player.changeLatestGame(game.getName());
-								usermanager.updatePlayer(p, "stats");
-								//System.out.println("Adding " + p.getName() + " to red");
-							}
-							for(Player p : blueTeam){
-								User player = usermanager.getUser(p);
-								player.addTimeOnBlue();
-								game.addBluePlayer(p.getName());
-								player.changeLatestGame(game.getName());
-								usermanager.updatePlayer(p, "stats");
-								//System.out.println("Adding " + p.getName() + " to blue");
-							}
-							gamemanager.createMap(arenaName, game);
-							return ChatColor.GREEN + "Successfully joined a game";
-						}else{
-							return ChatColor.RED + "There are not enough players on the other team";
-						}
-				}
-			}else{
-				return ChatColor.RED + "There are no current games open";
-			}
-		}
-	}
-
-	
-
-
+}

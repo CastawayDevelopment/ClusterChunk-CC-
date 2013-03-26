@@ -5,7 +5,7 @@
 package com.CC.Commands.relation;
 
 import com.CC.General.User;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,11 +20,11 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class Friend
 {
-	private final onStartup plugin;
+	private final ClusterChunk plugin;
 
         private final ConcurrentHashMap<String, CopyOnWriteArrayList<String>> requests = new ConcurrentHashMap<String, CopyOnWriteArrayList<String>>();
         
-	public Friend(onStartup plugin)
+	public Friend(ClusterChunk plugin)
 	{
 		this.plugin = plugin;
 	}

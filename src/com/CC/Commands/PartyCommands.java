@@ -1,7 +1,7 @@
 package com.CC.Commands;
 
 import com.CC.Commands.Party.*;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,7 +26,7 @@ public class PartyCommands implements CommandExecutor
     private Versus versus;
     private Kick kick;
 
-    public PartyCommands(onStartup plugin)
+    public PartyCommands(ClusterChunk plugin)
     {
         help = new Help(plugin);
         leave = new Leave(plugin);

@@ -1,7 +1,7 @@
 package com.CC.Commands.Party;
 
-import com.CC.General.onStartup;
-import com.CC.Party.Storage;
+import com.CC.General.ClusterChunk;
+import com.CC.Party.PartyStorage;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 public class Disband
 {
 
-    private Storage partymanager;
+    private PartyStorage partymanager;
 
-    public Disband(onStartup plugin)
+    public Disband(ClusterChunk plugin)
     {
         partymanager = plugin.getParties();
 

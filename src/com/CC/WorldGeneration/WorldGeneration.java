@@ -14,143 +14,178 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 
-public class WorldGeneration {
-	private onStartup plugin;
-	private GameManager gamemanager;
-	public int Runnable;
+public class WorldGeneration
+{
 
-public WorldGeneration(onStartup instance){
-		plugin = instance;
-		gamemanager = plugin.getGameManager();
-	}
-	//Make sure there is the default world located at /BaseMap/BaseMap
-	
-	public boolean newMap(String MapName, final Game game) {
-		if(MapName.startsWith(".")) return false; //Check that the map name is not "..", Could delete server
-		
-		File baseMap = new File("./BaseMap/BaseMap");
-		
-		File newMapDir = new File("./" + MapName);
-		File newRegionsDir = new File(newMapDir,  "region");
-		if(!Bukkit.unloadWorld(MapName, false) && Bukkit.getWorld(MapName) != null) return false;
+    private ClusterChunk plugin;
+    private GameManager gamemanager;
 
-		if (newMapDir.exists())
-			deleteMap(newMapDir);
-		if(onStartup.debugmode){
-			System.out.println("Deleting  " + MapName);
-		}
-		
-		newRegionsDir.mkdirs();
-		
-		try {
-		if(onStartup.debugmode){
-			System.out.println("Copying level.dat for " + MapName);
-		}
-			copyFile(new File(baseMap, "level.dat"), 
-					new File(newMapDir, "level.dat"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		File[] regionFiles = new File(baseMap, "region").listFiles();
-		for(File region : regionFiles){
-			File newRegion = new File(newRegionsDir, region.getName());
-			try {
-				if(onStartup.debugmode){
-					System.out.println("Copying region files for " + MapName);
-				}
-				copyFile(region, newRegion);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		//System.out.println("New World Creator1");
-		WorldCreator sdfsd = WorldCreator.name(MapName);
-		//S/ystem.out.println("Creating world1");
-		sdfsd.createWorld();
-		//System.out.println("World created1");
-		game.setRegenerated(true);
-		//System.out.println("Blue start");
-		
-		loadedWorldDelay(game, MapName);
-		//System.out.println("Red end");
-		return true;
-		}
-	
-	
-	
-	
-	
-	
-	
-	private void copyFile(File sourceFile, File destFile) throws IOException {
-	    if(!destFile.exists()) {
-	        destFile.createNewFile();
-	    }
+    public WorldGeneration(ClusterChunk instance)
+    {
+        plugin = instance;
+        gamemanager = plugin.getGameManager();
+    }
+    //Make sure there is the default world located at /BaseMap/BaseMap
 
-	    FileChannel source = null;
-	    FileChannel destination = null;
+    public boolean newMap(final Game game)
+    {
+        String MapName = game.getName();
+        if (MapName.startsWith("."))
+        {
+            return false; //Check that the map name is not "..", Could delete server
+        }
+        File baseMap = new File("./BaseMap/BaseMap");
 
-	    try {
-	    if(onStartup.debugmode){
-	    	System.out.println("Copying over " + sourceFile + " to " + destFile);
-	    }
-	        source = new FileInputStream(sourceFile).getChannel();
-	        destination = new FileOutputStream(destFile).getChannel();
-	        destination.transferFrom(source, 0, source.size());
-	        
-	    }
-	    finally {
-	        if(source != null) {
-	            source.close();
-	        }
-	        if(destination != null) {
-	            destination.close();
-	        }
-	    }
-	}
-	//Very dangerous... Do not give the wrong file :D 
-	private void deleteMap(File dir) {
-		File[] files = dir.listFiles();
-		for(File d : files){
-			if(d.isDirectory()){
-				deleteMap(d);
-			}
-			d.delete();
-		}
-	}
-	
-	private void loadedWorldDelay(final Game game, final String MapName){
-		Runnable = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+        File newMapDir = new File("./" + MapName);
+        File newRegionsDir = new File(newMapDir, "region");
+        if (!Bukkit.unloadWorld(MapName, false) && Bukkit.getWorld(MapName) != null)
+        {
+            return false;
+        }
 
-			public void run() {
-				if(!game.getRedSpawn(MapName).getChunk().isLoaded() || !game.getBlueSpawn(MapName).getChunk().isLoaded()){
-					
-				}else{
-					for(Player p : game.getBlueTeamPlayers()){
-						//System.out.println(p.getName());
-						p.teleport(game.getBlueSpawn(MapName));
-						
-					}
-					//System.out.println("Blue end");
-					//System.out.println("Red start");
-					for(Player p : game.getRedTeamPlayers()){
-						//System.out.println(p.getName());
-						p.teleport(game.getRedSpawn(MapName));
-					}
-				
-						gamemanager.startGameCount(game);
-						Bukkit.getScheduler().cancelTask(Runnable);
-				}
-				
-			}
-		
-		}, 0L, 40L);
-	}
-	
-	
-	
+        if (newMapDir.exists())
+        {
+            deleteMap(newMapDir);
+        }
+        if (ClusterChunk.debugmode)
+        {
+            System.out.println("Deleting  " + MapName);
+        }
 
+        newRegionsDir.mkdirs();
+
+        try
+        {
+            if (ClusterChunk.debugmode)
+            {
+                System.out.println("Copying level.dat for " + MapName);
+            }
+            copyFile(new File(baseMap, "level.dat"),
+                    new File(newMapDir, "level.dat"));
+        }
+        catch (IOException e1)
+        {
+            e1.printStackTrace();
+        }
+
+        File[] regionFiles = new File(baseMap, "region").listFiles();
+        for (File region : regionFiles)
+        {
+            File newRegion = new File(newRegionsDir, region.getName());
+            try
+            {
+                if (ClusterChunk.debugmode)
+                {
+                    System.out.println("Copying region files for " + MapName);
+                }
+                copyFile(region, newRegion);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        //System.out.println("New World Creator1");
+        WorldCreator sdfsd = WorldCreator.name(MapName);
+        //System.out.println("Creating world1");
+        sdfsd.createWorld();
+        //System.out.println("World created1");
+        game.setRegenerated(true);
+        //System.out.println("Blue start");
+
+        loadedWorldDelay(game, MapName);
+        //System.out.println("Red end");
+        return true;
+    }
+
+    private void copyFile(File sourceFile, File destFile) throws IOException
+    {
+        if (!destFile.exists())
+        {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try
+        {
+            if (ClusterChunk.debugmode)
+            {
+                System.out.println("Copying over " + sourceFile + " to " + destFile);
+            }
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+
+        }
+        catch(Exception ex)
+        {
+            System.out.println("An error has occurred while moving files!");
+            ex.printStackTrace();
+        }
+        finally
+        {
+            if (source != null)
+            {
+                source.close();
+            }
+            if (destination != null)
+            {
+                destination.close();
+            }
+        }
+    }
+    //Very dangerous... Do not give the wrong file :D 
+
+    private void deleteMap(File dir)
+    {
+        File[] files = dir.listFiles();
+        for (File d : files)
+        {
+            if (d.isDirectory())
+            {
+                deleteMap(d);
+            }
+            d.delete();
+        }
+    }
+
+    private void loadedWorldDelay(final Game game, final String MapName)
+    {
+        try
+        {
+            game.getRedSpawn().getChunk().load(true);
+            game.getBlueSpawn().getChunk().load(true);
+            new BukkitRunnable()
+            {
+                public void run()
+                {
+                    // For later use, I commented this out
+                    /*
+                    for (Player p : game.getBlueTeamPlayers())
+                    {
+                        //System.out.println(p.getName());
+                        p.teleport(game.getBlueSpawn(MapName));
+                    }
+                    //System.out.println("Blue end");
+                    //System.out.println("Red start");
+                    for (Player p : game.getRedTeamPlayers())
+                    {
+                        //System.out.println(p.getName());
+                        p.teleport(game.getRedSpawn(MapName));
+                    }
+
+                    gamemanager.startGameCount(game);*/
+                    plugin.getGameManager().setReady(game);
+                }
+            }.runTaskLater(plugin, 40L);
+        }
+        catch(Exception ex)
+        {
+            System.out.println("World was not loaded properly!");
+        }
+    }
 }

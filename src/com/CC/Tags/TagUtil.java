@@ -1,7 +1,7 @@
 package com.CC.Tags;
 
 import com.CC.Arenas.Game;
-import com.CC.Arenas.Team;
+import com.CC.Enums.Team;
 import java.util.List;
 import net.minecraft.server.v1_4_6.Packet20NamedEntitySpawn;
 import net.minecraft.server.v1_4_6.Packet29DestroyEntity;
@@ -13,7 +13,12 @@ import org.bukkit.entity.Player;
 
 public class TagUtil
 {
-
+    /**
+     * Changing this to TagAPI later
+     * 
+     */
+    
+    
     /*
     *   Takes all players in a game and set the tag
     *    to the corresponding team colour

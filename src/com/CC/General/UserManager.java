@@ -13,10 +13,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class UserManager 
 {
     
-        private onStartup main;
+        private ClusterChunk main;
         HashMap<String, User> players;
 	
-	public UserManager(onStartup main)
+	public UserManager(ClusterChunk main)
         {
             players = new HashMap<String, User>();
             this.main = main;

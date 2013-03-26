@@ -3,16 +3,17 @@ package com.CC.Commands.Party;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.CC.Arenas.Team;
-import com.CC.General.onStartup;
+import com.CC.Enums.Team;
+import com.CC.General.ClusterChunk;
 import com.CC.Party.Party;
+import com.CC.Party.PartyBattle;
 
 public class StartRed
 {
 
-    private onStartup plugin;
+    private ClusterChunk plugin;
 
-    public StartRed(onStartup p)
+    public StartRed(ClusterChunk p)
     {
         this.plugin = p;
     }
@@ -26,7 +27,11 @@ public class StartRed
             {
                 if (party.getMembers().size() == 4)
                 {
-                    player.sendMessage(plugin.getLobbies().startGameParty(party, Team.RED));
+                    //player.sendMessage(plugin.getLobbies().startGameParty(party, Team.RED));
+                    PartyBattle pb = new PartyBattle(party, null);
+                    pb.setPreferredTeam(Team.RED);
+                    this.plugin.queueVersus.add(pb);
+                    this.plugin.queueRed.add(ClusterChunk.PARTY);
                 }
                 else
                 {

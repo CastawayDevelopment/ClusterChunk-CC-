@@ -5,7 +5,7 @@
 package com.CC.Commands.relation;
 
 import com.CC.General.User;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import java.util.List;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
  */
 public class Relations
 {
-	private final onStartup plugin;
+	private final ClusterChunk plugin;
 
-	public Relations(onStartup plugin)
+	public Relations(ClusterChunk plugin)
 	{
 		this.plugin = plugin;
 	}

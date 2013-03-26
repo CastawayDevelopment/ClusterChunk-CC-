@@ -3,14 +3,14 @@ package com.CC.Commands.Party;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 
 public class Kick
 {
 
-    private onStartup plugin;
+    private ClusterChunk plugin;
 
-    public Kick(onStartup p)
+    public Kick(ClusterChunk p)
     {
         this.plugin = p;
     }

@@ -1,15 +1,15 @@
 package com.CC.Commands.Party;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
 public class ChangeLeader
 {
 
-    private onStartup plugin;
+    private ClusterChunk plugin;
 
-    public ChangeLeader(onStartup instance)
+    public ChangeLeader(ClusterChunk instance)
     {
         plugin = instance;
 

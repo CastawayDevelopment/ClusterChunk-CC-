@@ -3,15 +3,15 @@ package com.CC.Commands.Party;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import com.CC.Listeners.LobbyListener.*;
 
 public class Invite
 {
 
-    private onStartup plugin;
+    private ClusterChunk plugin;
 
-    public Invite(onStartup p)
+    public Invite(ClusterChunk p)
     {
         this.plugin = p;
     }

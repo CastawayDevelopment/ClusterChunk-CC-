@@ -5,7 +5,7 @@
 package com.CC.Commands.relation;
 
 import com.CC.General.User;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
  */
 public class Foe
 {
-	private final onStartup plugin;
+	private final ClusterChunk plugin;
 
-	public Foe(onStartup plugin)
+	public Foe(ClusterChunk plugin)
 	{
 		this.plugin = plugin;
 	}

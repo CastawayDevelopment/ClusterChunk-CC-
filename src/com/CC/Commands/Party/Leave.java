@@ -1,15 +1,15 @@
 package com.CC.Commands.Party;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Leave
 {
 
-    private onStartup plugin;
+    private ClusterChunk plugin;
 
-    public Leave(onStartup p)
+    public Leave(ClusterChunk p)
     {
         this.plugin = p;
     }

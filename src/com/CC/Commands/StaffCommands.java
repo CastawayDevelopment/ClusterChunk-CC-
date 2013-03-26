@@ -13,18 +13,18 @@ import com.CC.Arenas.GameManager;
 import com.CC.Commands.Staff.EndGame;
 import com.CC.General.User;
 import com.CC.General.UserManager;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import com.CC.Messages.PlayerMessages;
 
 public class StaffCommands implements CommandExecutor 
 {
 	private final EndGame endgame;
-	private final onStartup plugin;
+	private final ClusterChunk plugin;
 	private final GameManager gamemanager;
 	private final PlayerMessages messages;
 	private final UserManager um;
 	
-	public StaffCommands(onStartup instance)
+	public StaffCommands(ClusterChunk instance)
 	{
 		plugin = instance;
 		endgame = new EndGame(plugin);

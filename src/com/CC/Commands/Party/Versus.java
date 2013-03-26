@@ -1,6 +1,6 @@
 package com.CC.Commands.Party;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import com.CC.Party.Party;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 public class Versus
 {
 
-    public onStartup plugin;
+    public ClusterChunk plugin;
 
-    public Versus(onStartup instance)
+    public Versus(ClusterChunk instance)
     {
         this.plugin = instance;
     }
@@ -21,7 +21,35 @@ public class Versus
         Party otherP = this.plugin.getParties().getParty(other);
         if(thisP != null && thisP.equals(otherP))
         {
-            thisP.versus(otherP);
+            if(thisP.getMembers().size() == 4)
+            {
+                if(otherP.getMembers().size() == 4)
+                {
+                    if(thisP.allOnline())
+                    {
+                        if(otherP.allOnline())
+                        {
+                            thisP.versus(otherP, plugin);
+                        }
+                        else
+                        {
+                            player.sendMessage(new StringBuilder(ChatColor.RED.toString()).append("The other party does not have sufficient member onlines!").toString());
+                        }
+                    }
+                    else
+                    {
+                        player.sendMessage(new StringBuilder(ChatColor.RED.toString()).append("Your party does not have sufficient members online!").toString());
+                    }
+                }
+                else
+                {
+                    player.sendMessage(new StringBuilder(ChatColor.RED.toString()).append("The other party does not have sufficient members!").toString());
+                }
+            }
+            else
+            {
+                player.sendMessage(new StringBuilder(ChatColor.RED.toString()).append("Your party does not have sufficient members!").toString());
+            }
         }
         else if(thisP == null)
         {

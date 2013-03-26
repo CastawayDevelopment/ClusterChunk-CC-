@@ -1,13 +1,13 @@
 package com.CC.Commands.Party;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Help
 {
 
-    public Help(onStartup p)
+    public Help(ClusterChunk p)
     {
     }
 

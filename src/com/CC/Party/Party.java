@@ -1,6 +1,6 @@
 package com.CC.Party;
 
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
@@ -67,8 +67,11 @@ public class Party
 
     public void setLeader(Player player)
     {
-        Leader = player.getName();
-        Members.add(player.getName());
+        String l = player.getName();
+        if(this.Members.contains(l))
+        {
+            Leader = player.getName();   
+        }
     }
 
     public Player getLeader()
@@ -203,9 +206,11 @@ public class Party
         }
     }
     
-    public void versus(Party other)
+    public void versus(Party other, ClusterChunk plugin)
     {
-        
+        PartyBattle pb = new PartyBattle(this, other);
+        plugin.queueVersus.add(pb);
+        plugin.queueBlue.add(ClusterChunk.PARTY);
     }
 
     public ArrayList<String> getMembers()
@@ -216,5 +221,14 @@ public class Party
     public boolean equals(Party other)
     {
         return this.PartyName.equals(other.PartyName);
+    }
+    
+    public boolean allOnline()
+    {
+        for(String member : getMembers())
+        {
+            if(Bukkit.getPlayer(member) == null) return false;
+        }
+        return true;
     }
 }

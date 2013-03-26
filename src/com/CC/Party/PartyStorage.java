@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
-public class Storage
+public class PartyStorage
 {
 
     public HashMap<String, Party> parties = new HashMap<String, Party>();

@@ -7,7 +7,7 @@ package com.CC.Commands;
 import com.CC.Commands.relation.Foe;
 import com.CC.Commands.relation.Friend;
 import com.CC.Commands.relation.Relations;
-import com.CC.General.onStartup;
+import com.CC.General.ClusterChunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,12 +20,12 @@ import org.bukkit.entity.Player;
  */
 public class RelationCommand implements CommandExecutor
 {
-	private final onStartup plugin;
+	private final ClusterChunk plugin;
 	private final Foe enemy;
 	private final Friend friend;
 	private final Relations relations;
 
-	public RelationCommand(onStartup plugin)
+	public RelationCommand(ClusterChunk plugin)
 	{
 		this.plugin = plugin;
 		enemy = new Foe(plugin);
