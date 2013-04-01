@@ -41,6 +41,7 @@ public class GameManager
                 while(!ready.isEmpty())
                 {
                     List<String> players = plugin.assembleTeams();
+                    Bukkit.broadcastMessage("Size of game: "+players.size());
                     if(!players.isEmpty())
                     {
                         Game g = getGame(ready.pop());
@@ -63,7 +64,7 @@ public class GameManager
                     String newArena = plugin.getConfig().getString("game-world-prefix", "CC")+"_"+plugin.getGameManager().getGames().values().size()+1;
                     if(createGame(newArena))
                     {
-                        setReady(getGame(newArena));
+                        plugin.getWorldGenerator().newMap(getGame(newArena));
                     }
                 }
             }

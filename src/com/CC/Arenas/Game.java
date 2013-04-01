@@ -181,7 +181,7 @@ public class Game
         {
             throw new Exception("World not loaded");
         }
-        return new Location(w, -866, 143, -762);
+        return new Location(w, -936, 143, -762); 
     }
     //Just for now until the actual spawn locations are found;
 

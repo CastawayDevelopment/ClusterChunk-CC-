@@ -17,7 +17,10 @@ public enum LobbyColour
 
     RED(DyeColor.RED.getData()),
     BLUE(DyeColor.BLUE.getData()),
-    WHITE(DyeColor.WHITE.getData());
+    WHITE(DyeColor.WHITE.getData()),
+    NONE((byte)-1);
+    
+    
     private final byte data;
 
     LobbyColour(byte data)
@@ -41,6 +44,7 @@ public enum LobbyColour
 
     public static LobbyColour byData(byte data)
     {
-        return byData.get(data);
+        LobbyColour lc = byData.get(data);
+        return lc != null ? lc : LobbyColour.NONE;
     }
 }

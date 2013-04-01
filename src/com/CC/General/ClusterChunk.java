@@ -26,7 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ClusterChunk extends JavaPlugin implements Listener
 {
 
-    public static boolean debugmode;
+    public static boolean debugmode = true;
     public LobbyListener ll;
     public PlayerAuthListener pal;
     private GameManager gm;
@@ -239,6 +239,7 @@ public class ClusterChunk extends JavaPlugin implements Listener
      */
     public List<String> assembleTeams()
     {
+        if(this.queueBlue.isEmpty()) return new ArrayList<String>();
         List<String> team = new ArrayList<String>();
         String first = this.queueBlue.poll();
         int dummyFreq = Collections.frequency(this.queueBlue, PARTY);
@@ -255,6 +256,7 @@ public class ClusterChunk extends JavaPlugin implements Listener
             team.add(first);
             if(this.queueBlue.size() - dummyFreq > 2)
             {
+                List<String> removed = new ArrayList<String>();
                 for(String p : this.queueBlue)
                 {
                     if(team.size() > 3) break;
@@ -262,9 +264,10 @@ public class ClusterChunk extends JavaPlugin implements Listener
                     if(!p.equals(PARTY))
                     {
                         team.add(p);
-                        this.queueBlue.remove(p);
+                        removed.add(p);
                     }
                 }
+                this.queueBlue.removeAll(removed);
             }
             else
             {
@@ -276,7 +279,9 @@ public class ClusterChunk extends JavaPlugin implements Listener
         
         int sizeNow = team.size();
         
-        first = this.queueBlue.poll();
+        if(this.queueRed.isEmpty()) return new ArrayList<String>();
+        
+        first = this.queueRed.poll();
         dummyFreq = Collections.frequency(this.queueRed, PARTY);
         
         if(first.equals(PARTY))
@@ -291,6 +296,7 @@ public class ClusterChunk extends JavaPlugin implements Listener
                 this.queueRed.addFirst(first);
                 if(this.queueRed.size() - dummyFreq > 3)
                 {
+                    List<String> removed = new ArrayList<String>();
                     for(String p : this.queueRed)
                     {
                         if(team.size() > 3) break;
@@ -298,9 +304,10 @@ public class ClusterChunk extends JavaPlugin implements Listener
                         if(!p.equals(PARTY))
                         {
                             team.add(p);
-                            this.queueRed.remove(p);
+                            removed.add(p);
                         }
                     }
+                    this.queueRed.removeAll(removed);
                 }
                 else
                 {
@@ -314,6 +321,7 @@ public class ClusterChunk extends JavaPlugin implements Listener
             team.add(first);
             if(this.queueRed.size() - dummyFreq > 2)
             {
+                List<String> removed = new ArrayList<String>();
                 for(String p : this.queueRed)
                 {
                     if(team.size() > 3) break;
@@ -321,9 +329,10 @@ public class ClusterChunk extends JavaPlugin implements Listener
                     if(!p.equals(PARTY))
                     {
                         team.add(p);
-                        this.queueRed.remove(p);
+                        removed.add(p);
                     }
                 }
+                this.queueRed.removeAll(removed);
             }
             else
             {

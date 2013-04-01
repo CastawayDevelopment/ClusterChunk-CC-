@@ -29,12 +29,17 @@ public class GameMechanicsListener implements Listener
     private ClusterChunk plugin;
     private Game playergame;
     private UserManager usermanager;
+    
+    private final net.minecraft.server.v1_4_6.Packet205ClientCommand packet;
 
     public GameMechanicsListener(ClusterChunk instance)
     {
         plugin = instance;
         gamemanager = plugin.getGameManager();
         usermanager = plugin.getUserManager();
+        
+        packet = new net.minecraft.server.v1_4_6.Packet205ClientCommand();
+        packet.a = 1;
     }
 
     //Updates player's death
@@ -94,6 +99,7 @@ public class GameMechanicsListener implements Listener
             {
                 playergame = gamemanager.getGameByPlayer(peter);
                 playergame.removePlayer(peter);
+                packet.handle(((org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer)peter).getHandle().playerConnection);
                 //Something to teleport to dead box of the game :D 
 
 
