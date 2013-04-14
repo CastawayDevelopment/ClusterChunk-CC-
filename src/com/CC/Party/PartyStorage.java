@@ -1,6 +1,7 @@
 package com.CC.Party;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
@@ -8,7 +9,7 @@ import org.bukkit.entity.Player;
 public class PartyStorage
 {
 
-    public HashMap<String, Party> parties = new HashMap<String, Party>();
+    public Map<String, Party> parties = new HashMap<String, Party>();
 
     public Party getParty(String name)
     {
@@ -16,17 +17,15 @@ public class PartyStorage
         return parties.get(name);
     }
 
-    public void createParty(String name, Player leader)
+    public Party createParty(String name, Player leader)
     {
         if (!parties.containsKey(name))
         {
             Party party = new Party(name, leader.getName());
             parties.put(name, party);
+            return party;
         }
-        else
-        {
-            //player.sendMessage("party already exists");
-        }
+        return null;
     }
 
     private void removeParty(String name)

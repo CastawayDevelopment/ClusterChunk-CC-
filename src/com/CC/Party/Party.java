@@ -11,30 +11,31 @@ import org.bukkit.entity.Player;
 public class Party
 {
 
-    private String PartyName;
+    private String name;
     //private String PartyStatus;
-    private String Leader;
-    private ArrayList<String> Members = new ArrayList<String>(); // Including the leader
-    public List<String> Invited = new ArrayList<String>();
-    private boolean Open;
+    private String leader;
+    private List<String> members = new ArrayList<String>(); // Including the leader
+    public List<String> invited = new ArrayList<String>();
+    private boolean open;
     private boolean ingame;
     
     public Party(String name, String leader)
     {
-        this.PartyName = name;
-        this.Leader = leader;
+        this.name = name;
+        this.leader = leader;
+        this.members.add(leader);
         this.ingame = false;
-        this.Open = true;
+        this.open = true;
     }
 
     public void setName(String string)
     {
-        PartyName = string;
+        name = string;
     }
 
     public String getName()
     {
-        return this.PartyName;
+        return this.name;
     }
 
     public boolean inGame()
@@ -68,64 +69,60 @@ public class Party
     public void setLeader(Player player)
     {
         String l = player.getName();
-        if(this.Members.contains(l))
+        if(this.members.contains(l))
         {
-            Leader = player.getName();   
+            leader = player.getName();   
         }
     }
 
     public Player getLeader()
     {
-        Player player = Bukkit.getServer().getPlayer(Leader);
+        Player player = Bukkit.getServer().getPlayer(leader);
         return player;
     }
 
     public boolean addMember(Player added)
     {
-        if (Invited.contains(added.getName()))
+        if (invited.contains(added.getName()))
         {
-            if (!Open)
+            if (!open)
             {
-                added.sendMessage(new StringBuilder(GRAY.toString()).append("Sorry ").append(added).append(", but the party you are trying to join is currently closed").toString());
-                added.sendMessage(new StringBuilder(GRAY.toString()).append("This is due to the fact that the party you are trying to join has 4 members already").toString());
+                added.sendMessage(new StringBuilder(GRAY.toString()).append("Sorry ").append(added.getDisplayName()).append(", but the party you are trying to join is currently closed").toString());
+                added.sendMessage(new StringBuilder(GRAY.toString()).append("This is due to the fact that the party you are trying to join has ").append(ClusterChunk.TEAM_SIZE).append(" members already").toString());
                 return false;
             }
-
-
-            Members.add(added.getName());
-            Invited.remove(added.getName());
-            added.sendMessage(new StringBuilder(GREEN.toString()).append("You have successfully joined ").append(DARK_GREEN).append(PartyName).toString());
-            if (Members.size() == 4)
+            members.add(added.getName());
+            invited.remove(added.getName());
+            added.sendMessage(new StringBuilder(GREEN.toString()).append("You have successfully joined ").append(DARK_GREEN).append(name).toString());
+            if (members.size() == ClusterChunk.TEAM_SIZE)
             {
-                Open = false;
+                open = false;
             }
             return true;
         }
         else
         {
-            added.sendMessage(new StringBuilder(RED.toString()).append("You have not been invited to ").append(PartyName).append(" therefore you may not join").toString());
+            added.sendMessage(new StringBuilder(RED.toString()).append("You have not been invited to ").append(name).append(" therefore you may not join").toString());
             return false;
         }
-
-
     }
 
     public void playerQuit(Player player)
     {
-        if (!player.getName().equals(Leader))
+        if (!player.getName().equals(leader))
         {
             player.sendMessage(new StringBuilder(GREEN.toString()).append("You have succesfully left your party").toString());
-            Members.remove(player.getName());
-            for (String s : Members)
+            members.remove(player.getName());
+            for (String s : members)
             {
                 if (Bukkit.getServer().getPlayer(s) != null)
                 {
                     Player member = Bukkit.getServer().getPlayer(s);
                     member.sendMessage(new StringBuilder(DARK_GRAY.toString()).append(player.getName()).append(GRAY).append(" has left your party").toString());
                 }
-                if (Members.size() < 4)
+                if (members.size() < 4)
                 {
-                    Open = true;
+                    open = true;
                 }
             }
         }
@@ -140,40 +137,40 @@ public class Party
     //From leader
     public boolean removeMember(Player from, Player removed)
     {
-        if (from.getName().equals(Leader))
+        if (from.getName().equals(leader))
         {
             removed.sendMessage(new StringBuilder(DARK_GRAY.toString()).append(from.getName()).append(GRAY).append(" has removed you from the party").toString());
             from.sendMessage(new StringBuilder(GREEN.toString()).append("You have succesfully removed ").append(DARK_GREEN).append(removed.getName()).append(GREEN).append(" from your party!").toString());
-            Members.remove(removed.getName());
-            if (Members.size() < 4)
+            members.remove(removed.getName());
+            if (members.size() < 4)
             {
-                Open = true;
+                open = true;
             }
             return true;
         }
         else
         {
-            from.sendMessage(new StringBuilder(RED.toString()).append("Only ").append(DARK_RED).append(Leader).append(RED).append(" can remove players from your party").toString());
+            from.sendMessage(new StringBuilder(RED.toString()).append("Only ").append(DARK_RED).append(leader).append(RED).append(" can remove players from your party").toString());
             return false;
         }
     }
 
     public boolean invitePlayer(Player from, Player invited)
     {
-        if (from.getName().equals(Leader))
+        if (from.getName().equals(leader))
         {
-            if (Members.size() < 4)
+            if (members.size() < 4)
             {
-                if (Invited.contains(invited.getName()))
+                if (this.invited.contains(invited.getName()))
                 {
                     from.sendMessage(new StringBuilder(GRAY.toString()).append("You have already invited ").append(DARK_GRAY).append(invited.getName()).toString());
                     return false;
                 }
                 else
                 {
-                    invited.sendMessage(new StringBuilder("You have been invited to ").append(PartyName).toString());
-                    invited.sendMessage(ChatColor.GREEN + "To join " + ChatColor.DARK_GREEN + this.getName() + ChatColor.GREEN + ", type" + ChatColor.DARK_GREEN + " /party accept " + PartyName);
-                    Invited.add(invited.getName());
+                    invited.sendMessage(new StringBuilder(ChatColor.DARK_AQUA.toString()).append("You have been invited to ").append(ChatColor.YELLOW).append(name).toString());
+                    invited.sendMessage(ChatColor.GREEN + "To join " + ChatColor.DARK_GREEN + this.getName() + ChatColor.GREEN + ", type" + ChatColor.YELLOW + " /party accept " + ChatColor.LIGHT_PURPLE + name);
+                    this.invited.add(invited.getName());
                     return true;
                 }
             }
@@ -190,11 +187,11 @@ public class Party
         }
     }
 
-    public boolean declareLoader(Player sender, Player newplayer)
+    public boolean declareLeader(Player sender, Player newplayer)
     {
-        if (sender.getName().equals(Leader))
+        if (sender.getName().equals(leader))
         {
-            Leader = newplayer.getName();
+            leader = newplayer.getName();
             newplayer.sendMessage(new StringBuilder(DARK_GREEN.toString()).append(sender.getName()).append(DARK_GREEN).append(" has given you ownership of the party").toString());
             sender.sendMessage(new StringBuilder(GRAY.toString()).append("You have traded ownership of the party over to ").append(DARK_GRAY).append(newplayer.getName()).toString());
             return true;
@@ -213,14 +210,24 @@ public class Party
         plugin.queueBlue.add(ClusterChunk.PARTY);
     }
 
-    public ArrayList<String> getMembers()
+    public List<String> getMembers()
     {
-        return this.Members;
+        return this.members;
+    }
+    
+    public void broadcast(String message)
+    {
+        Player player;
+        for(String member : getMembers())
+        {
+            player = Bukkit.getPlayerExact(member);
+            if(player != null) player.sendMessage(message);
+        }
     }
     
     public boolean equals(Party other)
     {
-        return this.PartyName.equals(other.PartyName);
+        return this.name.equals(other.name);
     }
     
     public boolean allOnline()

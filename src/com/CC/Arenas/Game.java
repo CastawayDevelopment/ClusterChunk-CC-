@@ -23,6 +23,7 @@ public class Game
     ArrayList<String> blueTeam;
     public boolean regenerated;
     public boolean started;
+    private boolean ended;
     private GameManager gm;
     int TimeofGame;
     int WarningTime;
@@ -112,7 +113,7 @@ public class Game
         {
             blueTeam.remove(string);
             gm.removePlayerFromGame(string);
-            if (blueTeam.size() == 0)
+            if (blueTeam.isEmpty() && !this.ended)
             {
                 gm.endGame(this.name, Team.RED);
             }
@@ -122,7 +123,7 @@ public class Game
         {
             redTeam.remove(string);
             gm.removePlayerFromGame(string);
-            if (redTeam.size() == 0)
+            if (redTeam.isEmpty() && !this.ended)
             {
                 gm.endGame(this.name, Team.BLUE);
             }
@@ -136,6 +137,11 @@ public class Game
     {
         return removePlayer(player.getName());
 
+    }
+    
+    public void setEnded(boolean flag)
+    {
+        this.ended = flag;
     }
 
     public void setRegenerated(boolean trueorfalse)

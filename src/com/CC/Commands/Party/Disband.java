@@ -9,19 +9,19 @@ import org.bukkit.entity.Player;
 public class Disband
 {
 
-    private PartyStorage partymanager;
+    private PartyStorage parties;
 
     public Disband(ClusterChunk plugin)
     {
-        partymanager = plugin.getParties();
+        parties = plugin.getParties();
 
     }
 
     public void disbandParty(Player from)
     {
-        if (partymanager.getParty(from) != null)
+        if (parties.getParty(from) != null)
         {
-            partymanager.disbandParty(from, partymanager.getParty(from));
+            parties.disbandParty(from, parties.getParty(from));
         }
         else
         {

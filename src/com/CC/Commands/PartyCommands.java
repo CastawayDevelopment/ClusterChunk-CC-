@@ -68,6 +68,10 @@ public class PartyCommands implements CommandExecutor
 
                         status.status(player);
                     }
+                    else if (args[0].equalsIgnoreCase("disband"))
+                    {
+                        disband.disbandParty(player);
+                    }
                     else
                     {
                         return false;
@@ -100,10 +104,6 @@ public class PartyCommands implements CommandExecutor
                         String partyName = args[1];
 
                         create.create(player, partyName);
-                    }
-                    else if (args[0].equalsIgnoreCase("disband"))
-                    {
-                        disband.disbandParty(player);
                     }
                     else if (args[0].equalsIgnoreCase("changeleader"))
                     {
@@ -147,6 +147,7 @@ public class PartyCommands implements CommandExecutor
                     {
                         this.versus.execute(player, args[1]);
                     }
+                    return true;
                 }
             }
             // instance of check because NOT all senders are players. Simply typecasting to player would break on console cmd.

@@ -6,6 +6,8 @@ import com.CC.Enums.Team;
 import com.CC.General.User;
 import com.CC.General.UserManager;
 import com.CC.General.ClusterChunk;
+import java.util.HashMap;
+import java.util.Map;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,6 +22,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 
 public class GameMechanicsListener implements Listener
@@ -30,7 +35,9 @@ public class GameMechanicsListener implements Listener
     private Game playergame;
     private UserManager usermanager;
     
-    private final net.minecraft.server.v1_4_6.Packet205ClientCommand packet;
+    private Map<String, String> lastDamageDealer = new HashMap<String, String>();
+    
+    private final net.minecraft.server.v1_5_R2.Packet205ClientCommand packet;
 
     public GameMechanicsListener(ClusterChunk instance)
     {
@@ -38,7 +45,7 @@ public class GameMechanicsListener implements Listener
         gamemanager = plugin.getGameManager();
         usermanager = plugin.getUserManager();
         
-        packet = new net.minecraft.server.v1_4_6.Packet205ClientCommand();
+        packet = new net.minecraft.server.v1_5_R2.Packet205ClientCommand();
         packet.a = 1;
     }
 
@@ -50,9 +57,7 @@ public class GameMechanicsListener implements Listener
         {
             if (event.getDamager() instanceof Player)
             {
-                User killer = usermanager.getUser((Player) event.getDamager());
-                killer.addKill();
-                usermanager.updatePlayer((Player) event.getEntity(), "stats");
+                lastDamageDealer.put(((Player)event.getEntity()).getName(), ((Player)event.getDamager()).getName());
             }
         }
     }
@@ -66,6 +71,15 @@ public class GameMechanicsListener implements Listener
         if (gamemanager.isInGame(peter.getName()))
         {
             player.addDeath();
+            String killerName = lastDamageDealer.get(player.getName());
+            if(killerName != null)
+            {
+                User killer = usermanager.getUser(killerName);
+                killer.addKill();
+                usermanager.updatePlayer(killerName, "stats");
+                lastDamageDealer.remove(player.getName());
+            }
+            
             usermanager.updatePlayer(peter, "stats");
             if (peter.getBedSpawnLocation() != null)
             {
@@ -99,13 +113,20 @@ public class GameMechanicsListener implements Listener
             {
                 playergame = gamemanager.getGameByPlayer(peter);
                 playergame.removePlayer(peter);
-                packet.handle(((org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer)peter).getHandle().playerConnection);
                 //Something to teleport to dead box of the game :D 
-
-
             }
+            packet.handle(((org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer)peter).getHandle().playerConnection);
         }
     }
+    
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event)
+    {
+        if(!event.isBedSpawn())
+        event.setRespawnLocation(GameManager.getLobby());
+        event.getPlayer().setVelocity(new org.bukkit.util.Vector(0,0,0));
+    }
+    
     //Stops crafting of beds
 
     @EventHandler
@@ -137,9 +158,9 @@ public class GameMechanicsListener implements Listener
             event.setCancelled(true);
             player.sendMessage(new StringBuilder(RED.toString()).append("You may not create Nether portals !").toString());
         }
-
-
     }
+    
+    
 
     //Stops building of Ender portals
     @EventHandler(priority = EventPriority.LOWEST)
@@ -256,13 +277,24 @@ public class GameMechanicsListener implements Listener
     }
 
     @EventHandler
+    public void onTeleport(PlayerTeleportEvent event)
+    {
+        if(event.getCause() == TeleportCause.PLUGIN)
+        {
+            this.lastDamageDealer.remove(event.getPlayer().getName());
+        }
+    }
+    
+    @EventHandler
     public void onLeave(PlayerQuitEvent event)
     {
         if (gamemanager.isInGame(event.getPlayer()))
         {
             gamemanager.getGameByPlayer(event.getPlayer()).removePlayer(event.getPlayer());
         }
-
+        event.getPlayer().teleport(GameManager.getLobby());
+        event.getPlayer().saveData();
+        this.lastDamageDealer.remove(event.getPlayer().getName());
     }
 
     @EventHandler

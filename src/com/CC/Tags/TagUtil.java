@@ -3,12 +3,12 @@ package com.CC.Tags;
 import com.CC.Arenas.Game;
 import com.CC.Enums.Team;
 import java.util.List;
-import net.minecraft.server.v1_4_6.Packet20NamedEntitySpawn;
-import net.minecraft.server.v1_4_6.Packet29DestroyEntity;
+import net.minecraft.server.v1_5_R2.Packet20NamedEntitySpawn;
+import net.minecraft.server.v1_5_R2.Packet29DestroyEntity;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
-import org.bukkit.craftbukkit.v1_4_6.entity.CraftHumanEntity;
-import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class TagUtil

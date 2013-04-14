@@ -1,20 +1,16 @@
 package com.CC.Listeners;
 
-import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
 import com.CC.Enums.LobbyColour;
 import com.CC.Enums.Team;
 import com.CC.General.ClusterChunk;
-import com.CC.General.User;
 import com.CC.General.UserManager;
 import com.CC.Party.Party;
 import com.CC.Party.PartyBattle;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import org.bukkit.ChatColor;
 import static org.bukkit.ChatColor.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -63,7 +59,7 @@ public class LobbyListener implements Listener
     @EventHandler
     public void onQueue(PlayerMoveEvent event)
     {
-
+        
         Player player = event.getPlayer();
         if (plugin.getParties().getParty(player) != null)
         {

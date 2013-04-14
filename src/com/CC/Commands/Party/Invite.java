@@ -36,9 +36,10 @@ public class Invite
 
         if (plugin.getParties().getParty(invited) != null)
         {
-            from.sendMessage(ChatColor.RED + "Sorry, but '" + ChatColor.DARK_RED + invited.getName() + ChatColor.RED + "' is already in a party.");
+            from.sendMessage(ChatColor.RED + "Sorry, but '" + ChatColor.YELLOW + invited.getName() + ChatColor.RED + "' is already in a party.");
             return;
         }
+        from.sendMessage(ChatColor.GREEN+"Invitation sent to "+ChatColor.YELLOW+invited.getName());
         plugin.getParties().getParty(from).invitePlayer(from, invited);
 
     }

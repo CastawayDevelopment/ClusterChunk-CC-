@@ -41,14 +41,13 @@ public class GameManager
                 while(!ready.isEmpty())
                 {
                     List<String> players = plugin.assembleTeams();
-                    Bukkit.broadcastMessage("Size of game: "+players.size());
                     if(!players.isEmpty())
                     {
                         Game g = getGame(ready.pop());
                         int i = 0;
                         for(String player : players)
                         {
-                            if(i > 3) g.addRedPlayer(player);
+                            if(i >= (ClusterChunk.TEAM_SIZE)) g.addRedPlayer(player);
                             else g.addBluePlayer(player);
                             i++;
                         }
@@ -146,8 +145,9 @@ public class GameManager
         return false;
     }
     
-    private void endGame(Game game, String reason)
+    private void endGame(final Game game, String reason)
     {
+        game.setEnded(true);
         game.sendMessageAll(reason);
         teleportToSpawn(game.getBlueTeamPlayers());
         teleportToSpawn(game.getRedTeamPlayers());
@@ -162,12 +162,19 @@ public class GameManager
             game.removePlayer(p);
             p.sendMessage(reason);
         }
-        
+        game.setEnded(false);
         Bukkit.broadcastMessage(new StringBuilder(GRAY.toString()).append(game.getName()).append(GREEN).append(" is being regenerated. You may experience lag").toString());
-        if(!worldgen.newMap(game))
+        new BukkitRunnable()
         {
-            Bukkit.broadcastMessage("An error has occurred while generating the new world. Please check the logs");
-        }
+            @Override
+            public void run()
+            {
+                if(!worldgen.newMap(game))
+                {
+                    Bukkit.broadcastMessage("An error has occurred while generating the new world. Please check the logs");
+                }
+            }
+        }.runTaskLater(plugin, 5L);
 
     }
 
@@ -227,14 +234,20 @@ public class GameManager
 
     public void teleportToSpawn(ArrayList<Player> players)
     {
+        Location loc = getLobby();
         for (Player p : players)
         {
-            p.teleport(new Location(Bukkit.getWorld("lobby"), 330, 231, 332));
+            p.teleport(loc);
         }
     }
     
     public void setReady(Game g)
     {
         this.ready.addLast(g.getName());
+    }
+    
+    public static Location getLobby()
+    {
+        return new Location(Bukkit.getWorld("lobby"), 330, 231, 332);
     }
 }

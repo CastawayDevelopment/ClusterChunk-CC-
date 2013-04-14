@@ -17,7 +17,7 @@ public class User
 	ArrayList<String> friends;
 	ArrayList<String> enemies;
 	
-        private User(String name)
+        public User(String name)
         {
             friends = new ArrayList<String>();
             enemies = new ArrayList<String>();

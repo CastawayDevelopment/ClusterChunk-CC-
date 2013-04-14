@@ -24,7 +24,7 @@ public class ChangeLeader
         }
         else
         {
-            return plugin.getParties().getParty(sender).declareLoader(sender, newOwner);
+            return plugin.getParties().getParty(sender).declareLeader(sender, newOwner);
         }
     }
 }

@@ -21,9 +21,9 @@ public class Versus
         Party otherP = this.plugin.getParties().getParty(other);
         if(thisP != null && thisP.equals(otherP))
         {
-            if(thisP.getMembers().size() == 4)
+            if(thisP.getMembers().size() == ClusterChunk.TEAM_SIZE)
             {
-                if(otherP.getMembers().size() == 4)
+                if(otherP.getMembers().size() == ClusterChunk.TEAM_SIZE)
                 {
                     if(thisP.allOnline())
                     {

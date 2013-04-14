@@ -1,7 +1,7 @@
 package com.CC.Commands.Party;
 
 import com.CC.General.ClusterChunk;
-import org.bukkit.ChatColor;
+import com.CC.Messages.MessageUtil;
 import org.bukkit.entity.Player;
 
 public class Accept
@@ -23,7 +23,7 @@ public class Accept
         }
         catch (Exception e)
         {
-            invited.sendMessage(ChatColor.RED + "The party you are trying to join does not exist");
+            invited.sendMessage(MessageUtil.parseWarning("The party <p>%s<r>does not exist", new Object[]{partyName}));
         }
     }
 }

@@ -20,10 +20,12 @@ public class Status
         if(plugin.getParties().getParty(player) != null){
         	Party party = plugin.getParties().getParty(player);
         	player.sendMessage(ChatColor.GREEN + "============" + ChatColor.DARK_GREEN + "[Party Status]" + ChatColor.GREEN + "============");
-        	player.sendMessage(ChatColor.GREEN + "Players: " + ChatColor.DARK_GREEN + 
-        			party.getMembers().size() + ChatColor.GREEN + "/4" 
-        			+ party.getMembers().get(0) + ", " + party.getMembers().get(1) + ", " 
-        			+ party.getMembers().get(2) + ", " + party.getMembers().get(3) + "");
+        	StringBuilder players = new StringBuilder(ChatColor.GREEN + "Players: " + ChatColor.DARK_GREEN +
+                                             party.getMembers().size() + ChatColor.GREEN + "/"+ClusterChunk.TEAM_SIZE+"\n");
+                for(String member : party.getMembers()) players.append(member).append(", ");
+                String ps = players.toString();
+                if(ps.endsWith(", ")) ps = ps.substring(0, ps.length() - 2);
+                player.sendMessage(ps);
         	player.sendMessage(ChatColor.GREEN + "Leader: " + party.getLeader().getName());
         	player.sendMessage("Pending invites");
         	player.sendMessage(ChatColor.GREEN + "======================================");

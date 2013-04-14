@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -47,6 +48,8 @@ public class ClusterChunk extends JavaPlugin implements Listener
     public Set<String> partyInQueue = new HashSet<String>();
     
     public static final String PARTY = "ClusterChunkDummy";
+    
+    public static final int TEAM_SIZE = 2;
 
     public ClusterChunk()
     {
@@ -114,8 +117,8 @@ public class ClusterChunk extends JavaPlugin implements Listener
         }
         catch (SQLException ex)
         {
-            log.info("Failed to connect to MySQL server with credentials 'localhost@root' using database 'hw'");
-            log.info("Exception thrown: " + ex.getMessage());
+            log.log(Level.SEVERE, "Failed to connect to MySQL server with credentials '{0}@{1}' using database '{2}'", new Object[]{username, host, database});
+            log.log(Level.INFO, "Exception thrown: {0}", ex.getMessage());
             log.info("Disabling plugin...");
             // Our plugin is MySQL dependant right :3?
             Bukkit.getPluginManager().disablePlugin(this);
@@ -174,12 +177,12 @@ public class ClusterChunk extends JavaPlugin implements Listener
                 .append(" PRIMARY KEY(id),")
                 .append(" name VARCHAR(16) NOT NULL")
                 .append(");").toString();
-        String reputation = new StringBuilder("CREATE TABLE reputation ( player_id INT NOT NULL,")
+        String reputation = new StringBuilder("CREATE TABLE reputation ( player_id INT NOT NULL UNIQUE,")
                 .append(" reputation FLOAT(4,2) NOT NULL,")
                 .append(" FOREIGN KEY(player_id)")
                 .append("    REFERENCES players(id)")
                 .append(");").toString();
-        String stats = new StringBuilder("CREATE TABLE stats     ( player_id INT NOT NULL,")
+        String stats = new StringBuilder("CREATE TABLE stats     ( player_id INT NOT NULL UNIQUE,")
                 .append(" points INT DEFAULT 0,")
                 .append(" kills INT DEFAULT 0,")
                 .append(" deaths INT DEFAULT 0,")
@@ -189,7 +192,7 @@ public class ClusterChunk extends JavaPlugin implements Listener
                 .append("    REFERENCES players(id)")
                 .append(");").toString();
         // Nakama :3
-        String relation = new StringBuilder("CREATE TABLE relation ( player_id INT NOT NULL,")
+        String relation = new StringBuilder("CREATE TABLE relation ( player_id INT NOT NULL UNIQUE,")
                 .append(" rel_id INT NOT NULL,")
                 .append(" isfoe BOOLEAN DEFAULT FALSE,")
                 .append(" FOREIGN KEY(player_id)")
@@ -234,8 +237,8 @@ public class ClusterChunk extends JavaPlugin implements Listener
     }
     
     /**
-     * First 4 players are in the first team, 
-     * second 4 players are in the second team
+     * First {TEAM_SIZE} players are in the first team, 
+     * second {TEAM_SIZE} players are in the second team
      */
     public List<String> assembleTeams()
     {
@@ -243,23 +246,27 @@ public class ClusterChunk extends JavaPlugin implements Listener
         List<String> team = new ArrayList<String>();
         String first = this.queueBlue.poll();
         int dummyFreq = Collections.frequency(this.queueBlue, PARTY);
+        
+        boolean blueWasParty = false;
+        
         if(first.equals(PARTY))
         {
             fetchParty(team, false);
-            if(team.size() == 8)
+            if(team.size() == 2*ClusterChunk.TEAM_SIZE)
             {
                 return team;
             }
+            blueWasParty = true;
         }
         else
         {
             team.add(first);
-            if(this.queueBlue.size() - dummyFreq > 2)
+            if(this.queueBlue.size() - dummyFreq >= ClusterChunk.TEAM_SIZE - 1)
             {
                 List<String> removed = new ArrayList<String>();
                 for(String p : this.queueBlue)
                 {
-                    if(team.size() > 3) break;
+                    if(team.size() >= ClusterChunk.TEAM_SIZE) break;
                     
                     if(!p.equals(PARTY))
                     {
@@ -281,25 +288,25 @@ public class ClusterChunk extends JavaPlugin implements Listener
         
         if(this.queueRed.isEmpty()) return new ArrayList<String>();
         
-        first = this.queueRed.poll();
+        first = this.queueRed.peek();
         dummyFreq = Collections.frequency(this.queueRed, PARTY);
         
         if(first.equals(PARTY))
         {
+            this.queueRed.poll();
             fetchParty(team, true);
-            if(team.size() == 8)
+            if(team.size() == 2*ClusterChunk.TEAM_SIZE)
             {
                 return team;
             }
             else if(team.size() == sizeNow)
             {
-                this.queueRed.addFirst(first);
-                if(this.queueRed.size() - dummyFreq > 3)
+                if(this.queueRed.size() - dummyFreq >= ClusterChunk.TEAM_SIZE)
                 {
                     List<String> removed = new ArrayList<String>();
                     for(String p : this.queueRed)
                     {
-                        if(team.size() > 3) break;
+                        if(team.size() >= ClusterChunk.TEAM_SIZE*2) break;
 
                         if(!p.equals(PARTY))
                         {
@@ -311,6 +318,17 @@ public class ClusterChunk extends JavaPlugin implements Listener
                 }
                 else
                 {
+                    if(blueWasParty)
+                    {
+                        this.queueBlue.addFirst(PARTY);
+                        Party party = this.getParties().getParty(team.get(0));
+                        PartyBattle pb = new PartyBattle(party, null);
+                        this.queueVersus.addFirst(pb);
+                    }
+                    else
+                    {
+                        for(String t : team) this.queueBlue.addFirst(t);
+                    }
                     team.clear();
                     return team;
                 }
@@ -318,13 +336,12 @@ public class ClusterChunk extends JavaPlugin implements Listener
         }
         else
         {
-            team.add(first);
-            if(this.queueRed.size() - dummyFreq > 2)
+            if(this.queueRed.size() - dummyFreq >= ClusterChunk.TEAM_SIZE)
             {
                 List<String> removed = new ArrayList<String>();
                 for(String p : this.queueRed)
                 {
-                    if(team.size() > 3) break;
+                    if(team.size() >= ClusterChunk.TEAM_SIZE*2) break;
                     
                     if(!p.equals(PARTY))
                     {
@@ -336,7 +353,18 @@ public class ClusterChunk extends JavaPlugin implements Listener
             }
             else
             {
-                this.queueRed.addFirst(first);
+                if(blueWasParty)
+                {
+                    this.queueBlue.addFirst(PARTY);
+                    Party party = this.getParties().getParty(team.get(0));
+                    PartyBattle pb = new PartyBattle(party, null);
+                    this.queueVersus.addFirst(pb);
+                }
+                else
+                {
+                    for(String t : team) this.queueBlue.addFirst(t);
+                }
+                team.clear();
                 team.clear();
                 return team;
             }

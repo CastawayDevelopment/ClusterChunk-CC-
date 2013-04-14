@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.CC.Arenas.Game;
 import com.CC.Arenas.GameManager;
 import com.CC.General.ClusterChunk;
+import java.util.logging.Level;
 
 public class WorldGeneration
 {
@@ -34,6 +35,7 @@ public class WorldGeneration
         String MapName = game.getName();
         if (MapName.startsWith("."))
         {
+            this.plugin.log.log(Level.SEVERE, "Map name is invalid");
             return false; //Check that the map name is not "..", Could delete server
         }
         File baseMap = new File("./BaseMap/BaseMap");
@@ -42,6 +44,7 @@ public class WorldGeneration
         File newRegionsDir = new File(newMapDir, "region");
         if (!Bukkit.unloadWorld(MapName, false) && Bukkit.getWorld(MapName) != null)
         {
+            this.plugin.log.log(Level.WARNING, "Could not unload the world");
             return false;
         }
 
